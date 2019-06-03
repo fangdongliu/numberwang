@@ -10,6 +10,7 @@
         <module name="numberwang-entity" />
         <module name="numberwang-frontend" />
         <module name="numberwang-mock" />
+        <module name="project" />
       </profile>
     </annotationProcessing>
   </component>
