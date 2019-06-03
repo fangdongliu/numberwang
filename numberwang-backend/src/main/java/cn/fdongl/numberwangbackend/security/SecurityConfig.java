@@ -1,4 +1,4 @@
-package cn.fdongl.numberwangmock.security;
+package cn.fdongl.numberwangbackend.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -38,7 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 and()
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/css/**","/js/**","/login","/register","/image/**").permitAll()
+                .antMatchers("/css/**","/js/**","/register","/login","/image/**").permitAll()
                 .antMatchers("/","/html/**").hasRole("USER")
                 .and()
                 .formLogin()
