@@ -1,9 +1,9 @@
-package cn.fdongl.numberwangmock.security;
+package cn.fdongl.numberwangbackend.security;
 
+import cn.fdongl.numberwangbackend.repository.UserRepository;
 import cn.fdongl.numberwangentity.entity.User;
 import cn.fdongl.numberwangentity.result.FailMsg;
 import cn.fdongl.numberwangentity.result.Result;
-import cn.fdongl.numberwangmock.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -48,7 +49,7 @@ public class AppUserDetailServiceImpl implements UserDetailsService {
         return appUser;
     }
 
-    public Result register(String username, String password, String mail){
+    public Result register(String username,String password,String mail){
         if (username.length()>100||password.length()>100||mail.length()>100){
             return Result.fail(FailMsg.PARAM_TOO_LONG);
         }

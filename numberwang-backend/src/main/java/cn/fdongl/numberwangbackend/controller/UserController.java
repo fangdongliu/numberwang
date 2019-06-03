@@ -1,18 +1,18 @@
-package cn.fdongl.numberwangmock.controller;
+package cn.fdongl.numberwangbackend.controller;
 
+import cn.fdongl.numberwangbackend.repository.UserRepository;
+import cn.fdongl.numberwangbackend.security.AppUser;
+import cn.fdongl.numberwangbackend.security.AppUserDetailServiceImpl;
+import cn.fdongl.numberwangentity.entity.User;
 import cn.fdongl.numberwangentity.result.Result;
-import cn.fdongl.numberwangmock.security.AppUser;
-import cn.fdongl.numberwangmock.security.AppUserDetailServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
-/**
- *
- */
 @Controller
 public class UserController {
 
@@ -21,10 +21,9 @@ public class UserController {
 
     @PostMapping("/register")
     @ResponseBody
-    public Result register(String username, String password, String mail){
+    public Result register(String username,String password,String mail){
         return userService.register(username, password, mail);
     }
-
 
     @RequestMapping("/login")
     public String login(){
