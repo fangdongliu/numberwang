@@ -13,7 +13,8 @@ html{
 }
 
 #app{
-    height:calc(100% - 60px);
+    height: 100%;
+    /*height:calc(100% - 60px);*/
 }
 
 .el-header{
@@ -41,4 +42,73 @@ html{
     -khtml-user-select: none;
     user-select: none;
     color: #FFF;
+}
+
+/*左上角下拉菜单*/
+.el-dropdown__caret-button{
+    background-color: #6366A0;
+    border-color: #5e619a !important;
+    border-right-color: #6366A0 !important;
+}
+
+.el-button--medium{
+    background-color: #6366A0;
+    border-color: #5e619a !important;
+    border-right-color: #5e619a !important;
+}
+
+.el-button-group :hover, .el-button-group :focus {
+    background-color: #5e619a;
+    /*border-color: #5e619a !important;*/
+    border-color: #5e619a !important;
+    border-right-color: rgba(255,255,255,0.5) !important;
+}
+
+.el-button-group .el-button--primary:first-child:hover {
+    border-color: #5e619a !important;
+    border-right-color: rgba(255,255,255,0.5) !important;
+}
+
+.el-button-group .el-button--primary:last-child:hover {
+    border-color: transparent !important;
+    border-left-color: rgba(255,255,255,0.5) !important;
+}
+
+/*tabBar*/
+.is-active{
+    color: #020E52 !important;
+}
+
+.el-tabs__active-bar{
+    width: 200px !important;
+    background-color: #020E52;
+    color: #020E52;
+}
+
+.el-tabs__item:hover{
+    color: #020E52;
+}
+
+.el-tabs__item{
+    width: 200px !important;
+    text-align: center;
+    font-size: medium;
+}
+
+.el-tabs{
+    width: 100%;
+}
+
+.el-tabs__content{
+    width: 100%;
+}
+
+.el-tabs__header{
+    width:100%;
+    justify-content: center;
+    display: flex;
+}
+
+.el-tabs__nav-wrap::after{
+    width: 600px;
 }

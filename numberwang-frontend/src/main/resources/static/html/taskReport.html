@@ -32,9 +32,25 @@
         </el-header>
         <el-container style="height:100%">
             <el-container>
-                <el-main>Main
+                <el-main>
                     <!--在此输入内容-->
-
+                    <el-row>
+                        <el-col :span="4" style="justify-content: center;display: flex;">
+                            <el-dropdown size="medium" split-button type="primary" @command="chooseProject">
+                                选择项目
+                                <el-dropdown-menu slot="dropdown">
+                                    <el-dropdown-item v-for="item in projectList" v-bind:command="item.id">项目{{item.name}}</el-dropdown-item>
+                                </el-dropdown-menu>
+                            </el-dropdown>
+                        </el-col>
+                        <el-col :span="20">
+                            <el-tabs v-model="tabIndex" :before-leave="clickTab">
+                                <el-tab-pane name="a" label="上传日志数据">1</el-tab-pane>
+                                <el-tab-pane name="b" label="定义日志格式">2</el-tab-pane>
+                                <el-tab-pane name="c" label="生成日志图表">生成日志图表</el-tab-pane>
+                            </el-tabs>
+                        </el-col>
+                    </el-row>
                 </el-main>
             </el-container>
         </el-container>
@@ -45,11 +61,31 @@
     var vue=new Vue({
         el:'#app',
         data:{
-            username:'username'
+            username:'username',
+            projectList:[{
+                name:1,
+                id:1
+            }, {
+                name:2,
+                id:2
+            }],
+            tabIndex:"c"
         },
         methods:{
             onLogout(){
                 window.location.href="/logout";
+            },
+            chooseProject(command){
+                console.log(command);
+            },
+            clickTab(a,b){
+                if(a === 'b') {
+                    window.location.href = '/html/taskDefine.html'
+                }
+                else if(a === 'a'){
+                    window.location.href = '/html/taskUpload.html'
+                }
+                return false;
             }
         },
         mounted(){
