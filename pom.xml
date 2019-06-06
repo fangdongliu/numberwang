@@ -12,6 +12,7 @@
         <module>numberwang-mock</module>
         <module>numberwang-frontend</module>
         <module>numberwang-backend</module>
+        <module>numberwang-entity</module>
     </modules>
 
 </project>

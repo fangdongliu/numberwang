@@ -12,14 +12,13 @@
     <!-- 引入组件库 -->
     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
     <script src="../incubator-echarts-master/dist/echarts.min.js"></script>
-    <link rel="stylesheet" href="../css/stylesheet.css">
+    <link rel="stylesheet" href="./css/stylesheet.css">
 </head>
 <body>
 <div id="app">
     <el-container style="height:100%">
         <el-header>Header</el-header>
         <el-container style="height:100%">
-            <el-aside width="300px">Aside</el-aside>
             <el-container>
                 <el-main>Main
                     <div v-for="item in items">{{item}}</div>

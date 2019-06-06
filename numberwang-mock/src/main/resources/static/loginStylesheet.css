@@ -1,0 +1,109 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+
+body{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+
+#app{
+    width: 100%;
+    height:100%;
+    position: relative;
+}
+
+#logoImg{
+    position: absolute;
+    width: 400px;
+    height: 80px;
+    top: calc(50% - 240px);
+    left: calc(50% - 200px);
+    z-index: 1;
+    transition-duration: 0.1s;
+}
+
+#formContainer{
+    position: absolute;
+    width: 400px;
+    height: 350px;
+    top: calc(50% - 150px);
+    left: calc(50% - 200px);
+    z-index: 1;
+    background-color: #DAD8E4;
+    transition-duration: 0.1s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
+    border-radius: 2px;
+}
+.styleForRegImg{
+    top: calc(50% - 265px) !important;
+    transition-duration: 0.1s;
+}
+
+.styleForReg{
+    height: 400px !important;
+    top: calc(50% - 175px) !important;
+    transition-duration: 0.1s;
+}
+
+#pics{
+    z-index: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.el-tabs__header,.el-tabs__nav-wrap,.el-tabs__nav-scroll,.el-tabs__nav{
+    height: 50px;
+}
+
+.el-tabs__active-bar{
+    width: 200px !important;
+    background-color: #020E52;
+    color: #020E52;
+}
+
+.el-tabs__item{
+    width: 200px !important;
+    text-align: center;
+    color: #90a0b3 !important;
+    font-size: large;
+    font-weight: bolder;
+    line-height: 50px;
+}
+
+.is-active{
+    color: #020E52 !important;
+}
+
+.inputItem{
+    padding:0 20px;
+    margin-bottom: 40px;
+}
+
+input{
+    -webkit-box-shadow: 0 0 0px 1000px #DAD8E4 inset;
+    border:none !important;
+    border-radius: 0 !important;
+    border-bottom: 2px solid #ccc !important;
+    color: #606266 !important;
+    font-size: medium !important;
+}
+
+#loginBtn,#registerBtn{
+    background-color: #020E52;
+    width:100% !important;
+    height: 50px;
+    font-size: large;
+    font-weight: bolder;
+    color: #FFFFFF;
+}
+
+#loginForm{
+    margin-top: 20px;
+}
