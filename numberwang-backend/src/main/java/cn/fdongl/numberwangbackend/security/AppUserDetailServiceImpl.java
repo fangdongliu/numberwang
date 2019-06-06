@@ -4,7 +4,7 @@ import cn.fdongl.numberwangbackend.repository.UserRepository;
 import cn.fdongl.numberwangentity.entity.User;
 import cn.fdongl.numberwangentity.result.FailMsg;
 import cn.fdongl.numberwangentity.result.Result;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -23,7 +23,7 @@ import java.util.List;
  * @author LiuFangdong
  */
 @Service
-@Log4j2
+@Slf4j
 public class AppUserDetailServiceImpl implements UserDetailsService {
 
     @Autowired
@@ -61,7 +61,7 @@ public class AppUserDetailServiceImpl implements UserDetailsService {
         user.setMail(mail);
         user.setCreateDate(new Date());
         userRepository.save(user);
-       log.info(user.getId());
+        log.info(user.getId()+"");
         return Result.success();
     }
 
