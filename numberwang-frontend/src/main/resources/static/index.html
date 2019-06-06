@@ -11,35 +11,75 @@
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
     <!-- 引入组件库 -->
     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
-    <script src="../incubator-echarts-master/dist/echarts.min.js"></script>
+    <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>
     <link rel="stylesheet" href="./css/stylesheet.css">
 </head>
 <body>
 <div id="app">
     <el-container style="height:100%">
-        <el-header>Header</el-header>
+        <el-header>
+            <el-row>
+                <el-col :offset="1" :span="5" style="display: flex;">
+                    <img src="./images/logo.png" style="height:60px; width: auto;"/>
+                    <span class="headerName">方神带我们飞</span>
+                </el-col>
+                <el-col :offset="14" :span="4" style="line-height: 60px;">
+                    <span class="headerUsername">{{username}}</span>
+                    <el-divider direction="vertical"></el-divider>
+                    <span @click="onLogout" id="logoutBtn">logout</span>
+                </el-col>
+            </el-row>
+        </el-header>
         <el-container style="height:100%">
             <el-container>
                 <el-main>Main
-                    <div v-for="item in items">{{item}}</div>
+                    <!--在此输入内容-->
+
                 </el-main>
-                <!--<el-footer>Footer</el-footer>-->
             </el-container>
         </el-container>
     </el-container>
 </div>
 
 <script>
-    var app=new Vue({
+    var vue=new Vue({
         el:'#app',
         data:{
-            items:[]
+            username:'username'
+        },
+        methods:{
+            onLogout(){
+                window.location.href="/logout";
+            }
         },
         mounted(){
-            console.log(this);
-            for(var i = 0; i < 100; i ++){
-                this.items.push(i)
-            }
+            $.ajax({
+                url:'',
+                method:'',
+                data:{
+
+                },
+                success(res){
+
+                },
+                fail:console.log
+            })
+            var that = this;
+            $.ajax({
+                url:'/user/info',
+                method:'GET',
+                success(res){
+                    if(res.code === 0){
+                        that.username = res.data.username;
+                    }
+                    else{
+                        that.$message.error('获取用户信息出错！');
+                    }
+                },
+                error(res){
+                    that.$message.error('获取用户信息出错！');
+                }
+            })
         }
     })
 </script>

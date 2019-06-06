@@ -9,7 +9,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @SpringBootApplication
 @ComponentScan(basePackages = "cn.fdongl.numberwangmock")
 public class NumberwangFrontendApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(NumberwangFrontendApplication.class, args);
     }

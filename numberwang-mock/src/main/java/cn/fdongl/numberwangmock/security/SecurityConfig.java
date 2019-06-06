@@ -19,15 +19,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     AppUserDetailServiceImpl appUserDetailService;
 
-    @Bean(name="encoder")
-    public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
+   @Autowired
+   PasswordEncoder passwordEncoder;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
-        auth.userDetailsService(appUserDetailService).passwordEncoder(passwordEncoder());
+        auth.userDetailsService(appUserDetailService).passwordEncoder(passwordEncoder);
     }
 
     @Override

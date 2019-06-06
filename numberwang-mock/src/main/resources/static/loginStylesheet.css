@@ -20,10 +20,12 @@ body{
     position: absolute;
     width: 400px;
     height: 80px;
-    top: calc(50% - 240px);
+    top: calc(50% - 230px);
     left: calc(50% - 200px);
     z-index: 1;
     transition-duration: 0.1s;
+    background-color: rgba(218,216,228,0.8);
+    border-radius: 2px 2px 0 0;
 }
 
 #formContainer{
@@ -33,19 +35,21 @@ body{
     top: calc(50% - 150px);
     left: calc(50% - 200px);
     z-index: 1;
-    background-color: #DAD8E4;
+    background-color: rgba(218,216,228,0.8);
     transition-duration: 0.1s;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
-    border-radius: 2px;
+    /*box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);*/
+    border-radius: 0 0 2px 2px;
+    border-collapse:collapse;
 }
 .styleForRegImg{
-    top: calc(50% - 265px) !important;
+    top: calc(50% - 245px) !important;
     transition-duration: 0.1s;
+    /*box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);*/
 }
 
 .styleForReg{
     height: 400px !important;
-    top: calc(50% - 175px) !important;
+    top: calc(50% - 165px) !important;
     transition-duration: 0.1s;
 }
 
@@ -56,6 +60,8 @@ body{
     left: 0;
     width: 100%;
     height: 100%;
+    background-image: url("/bgImg.png");
+    background-size: 100% 100%;
 }
 
 .el-tabs__header,.el-tabs__nav-wrap,.el-tabs__nav-scroll,.el-tabs__nav{
@@ -86,13 +92,29 @@ body{
     margin-bottom: 40px;
 }
 
+.el-input__inner{
+    background-color: transparent;
+}
+
 input{
-    -webkit-box-shadow: 0 0 0px 1000px #DAD8E4 inset;
+    /*-webkit-box-shadow: 0 0 0px 1000px #DAD8E4 inset;*/
     border:none !important;
     border-radius: 0 !important;
-    border-bottom: 2px solid #ccc !important;
+    border-bottom: 2px solid #a4a9b4 !important;
     color: #606266 !important;
     font-size: medium !important;
+}
+
+input::-ms-input-placeholder{
+    color: #939291 !important;
+}
+
+input::-webkit-input-placeholder{
+    color: #939291 !important;
+}
+
+input:-ms-input-placeholder{
+    color: #939291 !important;
 }
 
 #loginBtn,#registerBtn{

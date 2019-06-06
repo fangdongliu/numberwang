@@ -27,6 +27,7 @@ public class UserController {
     }
 
     @GetMapping("/user/info")
+    @ResponseBody
     public Result info(AppUser user){
         user.getUser().setPassword("");
         return Result.success(user.getUser());

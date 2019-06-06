@@ -63,12 +63,12 @@
         </el-tab-pane>
     </el-tabs>
 
-   <#--<div id="pics">-->
+   <div id="pics">
         <#--<el-carousel :height="screenH+'px'">-->
             <#--<el-carousel-item><img :height="screenH+'px'" :width="screenW+'px'" src="/test1.JPG" /></el-carousel-item>-->
             <#--<el-carousel-item><img :height="screenH+'px'" :width="screenW+'px'" src="/test1.JPG" /></el-carousel-item>-->
         <#--</el-carousel>-->
-    <#--</div>-->
+    </div>
 </div>
 </body>
 <script>
