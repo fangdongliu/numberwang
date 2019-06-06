@@ -54,7 +54,6 @@ html{
 .el-button--medium{
     background-color: #6366A0;
     border-color: #5e619a !important;
-    border-right-color: #5e619a !important;
 }
 
 .el-button-group :hover, .el-button-group :focus {
