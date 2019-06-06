@@ -6,7 +6,7 @@ import cn.fdongl.numberwangentity.result.TableResult;
 import cn.fdongl.numberwangmock.repository.JobRepository;
 import cn.fdongl.numberwangmock.repository.ReportRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -15,7 +15,7 @@ import springfox.documentation.spring.web.json.Json;
 import java.util.*;
 
 @Component
-@Log4j2
+@Slf4j
 public class WorkReceiver {
 
     @Autowired
