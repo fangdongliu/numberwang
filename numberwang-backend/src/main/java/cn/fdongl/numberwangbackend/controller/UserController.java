@@ -8,10 +8,7 @@ import cn.fdongl.numberwangentity.result.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class UserController {
@@ -21,7 +18,10 @@ public class UserController {
 
     @PostMapping("/register")
     @ResponseBody
-    public Result register(String username,String password,String mail){
+    public Result register(
+            @RequestParam String username,
+            @RequestParam String password,
+            @RequestParam String mail){
         return userService.register(username, password, mail);
     }
 

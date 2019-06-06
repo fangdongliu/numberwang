@@ -16,6 +16,7 @@ public class NumberwangBackendApplication {
 
 
     public static void main(String[] args) {
+
         System.setProperty("hadoop.home.dir","E:\\winutils-master\\hadoop-3.0.0");
         System.setProperty("HADOOP_USER_NAME","root");
         SpringApplication.run(NumberwangBackendApplication.class, args);
