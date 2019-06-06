@@ -18,6 +18,7 @@
 </head>
 <body>
 <div id="app">
+    <img id="logoImg" v-bind:class="{ styleForRegImg: activeFlag }" src="/logo.png">
     <el-tabs id="formContainer" v-bind:class="{ styleForReg: activeFlag }" v-model="activeName" @tab-click="changeTab">
         <el-tab-pane label="登录" name="login">
             <el-form id="loginForm" ref="loginForm" :model="loginForm" action="/login" method="post">

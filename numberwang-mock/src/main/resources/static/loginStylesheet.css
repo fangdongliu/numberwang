@@ -8,7 +8,6 @@ body{
     width: 100%;
     height: 100%;
     position: absolute;
-    background-color: #23334b;
 }
 
 #app{
@@ -17,20 +16,36 @@ body{
     position: relative;
 }
 
+#logoImg{
+    position: absolute;
+    width: 400px;
+    height: 80px;
+    top: calc(50% - 240px);
+    left: calc(50% - 200px);
+    z-index: 1;
+    transition-duration: 0.1s;
+}
+
 #formContainer{
     position: absolute;
     width: 400px;
     height: 350px;
-    top: calc(50% - 175px);
+    top: calc(50% - 150px);
     left: calc(50% - 200px);
     z-index: 1;
-    background-color: #202d42;
+    background-color: #DAD8E4;
+    transition-duration: 0.1s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
+    border-radius: 2px;
+}
+.styleForRegImg{
+    top: calc(50% - 265px) !important;
     transition-duration: 0.1s;
 }
 
 .styleForReg{
     height: 400px !important;
-    top: calc(50% - 200px) !important;
+    top: calc(50% - 175px) !important;
     transition-duration: 0.1s;
 }
 
@@ -49,8 +64,8 @@ body{
 
 .el-tabs__active-bar{
     width: 200px !important;
-    background-color: #ffd74d;
-    color: #ffd74d;
+    background-color: #020E52;
+    color: #020E52;
 }
 
 .el-tabs__item{
@@ -63,7 +78,7 @@ body{
 }
 
 .is-active{
-    color: #ffd74d !important;
+    color: #020E52 !important;
 }
 
 .inputItem{
@@ -72,21 +87,21 @@ body{
 }
 
 input{
-    -webkit-box-shadow: 0 0 0px 1000px #202d42 inset;
+    -webkit-box-shadow: 0 0 0px 1000px #DAD8E4 inset;
     border:none !important;
     border-radius: 0 !important;
     border-bottom: 2px solid #ccc !important;
-    color: #FFFFFF !important;
+    color: #606266 !important;
     font-size: medium !important;
 }
 
-#loginBtn, #registerBtn{
-    background-color: #ffd74d;
+#loginBtn,#registerBtn{
+    background-color: #020E52;
     width:100% !important;
     height: 50px;
     font-size: large;
     font-weight: bolder;
-    color: #4d5b71;
+    color: #FFFFFF;
 }
 
 #loginForm{
