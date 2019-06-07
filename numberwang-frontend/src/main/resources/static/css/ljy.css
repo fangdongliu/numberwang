@@ -55,8 +55,8 @@ html{
 }
 .el-button--danger:focus, .el-button--danger:hover{
     color: #FFF;
-    background-color: #E46D72;
-    border-color: #E46D72;
+    background-color: rgb(130,40,40);
+    border-color: rgb(130,40,40);
 }
 .el-button--success{
     color: #FFF;
