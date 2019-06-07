@@ -8,6 +8,7 @@ import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
 
@@ -34,6 +35,7 @@ public interface FileRepository extends JpaRepository<LogFile,Long> {
 
     LogFile findByCreateByAndAndId(@Param("createBy")Long createBy,@Param("id")Long id);
 
+@Transactional
     void deleteLogFileByCreateByAndAndId(@Param("createBy")Long createBy,@Param("id")Long id);
 
     int countByCreateBy(Long createBy);

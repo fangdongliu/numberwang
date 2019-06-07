@@ -76,3 +76,13 @@
 .topGap{
     margin-top: 20px;
 }
+
+#preView{
+    padding: 10px;
+    min-height: 100px;
+    border-radius: 2px;
+    border:1px solid #d7dae2;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    color:#303133;
+    font-size: small;
+}

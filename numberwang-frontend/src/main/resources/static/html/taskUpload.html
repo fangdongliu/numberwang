@@ -7,10 +7,7 @@
     <script src="https://cdn.bootcss.com/vue/2.6.9/vue.min.js"></script>
     <link href="https://cdn.bootcss.com/element-ui/2.6.1/theme-chalk/index.css" rel="stylesheet">
     <script src="https://cdn.bootcss.com/element-ui/2.6.1/index.js"></script>
-    <!-- 引入样式 -->
-    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
     <!-- 引入组件库 -->
-    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
     <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>
     <link rel="stylesheet" href="../css/stylesheet.css">
     <link rel="stylesheet" href="../css/shannon.css">
@@ -54,7 +51,19 @@
                 </el-row>
                 <el-row>
                     <el-col :span="3" :offset="1" id="navTitle">最近文件</el-col>
-                    <el-col :span="3" :offset="17"><el-button id="uploadFileBtn" size="small">上传文件</el-button></el-col>
+                    <el-col :span="3" :offset="17">
+                        <el-upload
+                                class="upload-demo"
+                                ref="upload"
+                                action="/file/upload"
+                                :show-file-list="false"
+                                :on-success="uploadSuccess"
+                                :on-error="uploadFail"
+                                :before-upload="beforeUpload"
+                        >
+                            <el-button id="uploadFileBtn" size="small" slot="trigger">上传文件</el-button>
+                        </el-upload>
+                    </el-col>
                 </el-row>
                 <el-row class="topGap">
                     <el-col :offset="1" :span="22">
@@ -122,6 +131,11 @@
                                 </el-row>
                             </el-col>
                         </el-row>
+                        <el-row class="topGap" type="flex" justify="center">
+                            <el-col :span="20" id="preView">
+                                {{fileContent}}
+                            </el-col>
+                        </el-row>
                     </el-col>
                 </el-row>
             </el-main>
@@ -147,7 +161,8 @@
             fileListLength:0,
             currentPage:1,
             pageSize:10,
-            pageSizeList:[10, 20, 30, 40, 50]
+            pageSizeList:[10, 20, 30, 40, 50],
+            fileContent:'选择文件以查看内容'
         },
         methods:{
             onLogout(){
@@ -181,7 +196,6 @@
                                 i.createDate = i.createDate.substring(0,10)
                                     + ' '+ i.createDate.substring(11,19)
                             }
-                            console.log(res.data);
                             that.fileList = res.data;
                         }else{
                             that.$message.error('获取文件信息出错！')
@@ -201,13 +215,79 @@
                 this.getFileList();
             },
             deleteFile(index){
-                console.log(index)
+                console.log(this.fileList[index].id)
+                this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    return new Promise((resolve,reject)=>{
+                    $.ajax({
+                        url:'/file/remove',
+                        method:'DELETE',
+                        data:{
+                            fileId:this.fileList[index].id
+                        },
+                        success:resolve,
+                        fail:reject
+                    })
+                }).then((res)=>{
+                    if(res.code === 0){
+                        this.$message({
+                            type: 'success',
+                            message: '删除成功!'
+                        });
+                        this.getFileList();
+                    }
+                    else {
+                        console.log(res);
+                        this.$message.error('删除失败！!')
+                    }
+                }).catch(() => {
+                    this.$message.error('删除失败！')
+                });
+            })
             },
             downloadFile(index){
-                console.log(index)
+                window.location.href = '/file/download?fileId='+this.fileList[index].id;
             },
             viewFile(index){
+                let that = this;
                 console.log(index);
+                $.ajax({
+                    url:'/file/top5line',
+                    method:'GET',
+                    data:{
+                        fileId: that.fileList[index].id
+                    },
+                    success(res){
+                        if(res.code === 0){
+                            that.fileContent = res.data;
+                        }
+                        else{
+                            console.log(res);
+                            this.$message.error('删除失败！!')
+                        }
+                    },
+                    fail(res){
+                        console.log(res);
+                        this.$message.error('预览失败！!')
+                    }
+                })
+            },
+            uploadSuccess(res){
+                if(res.code === 0) this.getFileList();
+                else this.$message.error('上传文件失败！')
+            },
+            uploadFail(res){
+                console.log(res);
+                this.$message.error('上传文件失败！')
+            },
+            beforeUpload(file){
+                if(file.size >= 10485760){
+                    this.$message.error('上传文件失败！')
+                    return false;
+                }
             }
         },
         mounted(){
@@ -216,7 +296,6 @@
                 url:'/file/count',
                 method:'GET',
                 success(res){
-                    console.log(res)
                     if(res.code === 0) {
                         that.fileListLength = res.data;
                         that.getFileList();
