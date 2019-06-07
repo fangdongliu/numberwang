@@ -55,32 +55,29 @@
                 <el-aside width="250px">
                     <h6 class="chartListTitle">图表展示项</h6>
                     <el-menu
-                            default-active="1"
+                            default-active="requestBrowser"
                             mode="vertical"
                             @select="handleSelect">
-                        <el-menu-item index="1" class="chartListItem">
-                            <span slot="title">用户数量</span>
-                        </el-menu-item>
-                        <el-menu-item index="2" class="chartListItem">
-                            <span slot="title">用户登录总次数</span>
-                        </el-menu-item>
-                        <el-menu-item index="3" class="chartListItem">
-                            <span slot="title">请求时间分布</span>
-                        </el-menu-item>
-                        <el-menu-item index="4" class="chartListItem">
-                            <span slot="title">请求协议分布</span>
-                        </el-menu-item>
-                        <el-menu-item index="5" class="chartListItem">
-                            <span slot="title">返回状态码分布</span>
-                        </el-menu-item>
-                        <el-menu-item index="6" class="chartListItem">
+                        <el-menu-item index="requestBrowser" class="chartListItem">
                             <span slot="title">请求浏览器分布</span>
                         </el-menu-item>
-                        <el-menu-item index="7" class="chartListItem">
+                        <el-menu-item index="requestProtocol" class="chartListItem">
+                            <span slot="title">请求协议分布</span>
+                        </el-menu-item>
+                        <el-menu-item index="requestTime" class="chartListItem">
+                            <span slot="title">请求时间分布</span>
+                        </el-menu-item>
+                        <el-menu-item index="requestUrl" class="chartListItem">
                             <span slot="title">请求URL分布</span>
                         </el-menu-item>
-                        <el-menu-item index="8" class="chartListItem">
+                        <el-menu-item index="staticResourceAccess" class="chartListItem">
+                            <span slot="title">静态资源访问分布</span>
+                        </el-menu-item>
+                        <el-menu-item index="httpMethod" class="chartListItem">
                             <span slot="title">HTTP方法分布</span>
+                        </el-menu-item>
+                        <el-menu-item index="returnStatusCode" class="chartListItem">
+                            <span slot="title">返回状态码分布</span>
                         </el-menu-item>
                     </el-menu>
                 </el-aside>
@@ -140,8 +137,35 @@
                             </el-card>
                         </el-col>
                     </el-row>
-                    <h6 class="timeRange">起：2016-06-01 终：2019-06-03</h6>
-                    <div id="testChart" style="width: 600px;height:400px;"></div>
+                    <el-container>
+                        <el-aside width="300px">
+                            <div class="datePickerBlock">
+                                <span class="datePickerTitle">起始日期</span>
+                                <br/>
+                                <el-date-picker
+                                        v-model="startDate"
+                                        type="date"
+                                        placeholder="选择日期">
+                                </el-date-picker>
+                            </div>
+                            <div class="datePickerBlock">
+                                <span class="datePickerTitle">结束日期</span>
+                                <br/>
+                                <el-date-picker
+                                        v-model="endDate"
+                                        type="date"
+                                        placeholder="选择日期">
+                                </el-date-picker>
+                            </div>
+                            <div class="createButton">
+                                <el-button type="success" @click="createChart">生成</el-button>
+                            </div>
+                        </el-aside>
+                        <dl-main>
+                            <div id="myChart" style="width: 900px;height:500px;"></div>
+                        </dl-main>
+                    </el-container>
+
                 </el-main>
             </el-container>
         </el-container>
@@ -153,6 +177,8 @@
         el:'#app',
         data:{
             username:'username',
+            myChart:null,
+            selectOption:"requestBrowser",
             projectList:[{
                 name:1,
                 id:1
@@ -160,7 +186,9 @@
                 name:2,
                 id:2
             }],
-            tabIndex:"c"
+            tabIndex:"c",
+            startDate:'',
+            endDate:''
         },
         methods:{
             onLogout(){
@@ -178,22 +206,66 @@
                 }
                 return false;
             },
+            createChart(){
+                var option=null;
+                console.log(this.selectOption);
+                switch (this.selectOption) {
+                    case "requestBrowser":
+                        option=this.getRequestBrowser();
+                        break;
+                    case "requestProtocol":
+                        option=this.getRequestProtocol();
+                        break;
+                    case "requestTime":
+                        option=this.getRequestTime();
+                        break;
+                    case "requestUrl":
+                        option=this.getRequestUrl();
+                        break;
+                    case "staticResourceAccess":
+                        option=this.getStaticResourceAccess();
+                        break;
+                    case "httpMethod":
+                        option=this.getHttpMethod();
+                        break;
+                    case "returnStatusCode":
+                        option=this.getReturnStatusCode();
+                        break;
+                    default:
+                        break;
+                }
+                if(option==null){
+                    console.log("图表生成失败");
+                    return;
+                }
+                this.myChart.setOption(option);
+            },
             handleSelect(key, keyPath) {
-                console.log(key.toString());
-                // 基于准备好的dom，初始化echarts实例
-                var myChart = echarts.init(document.getElementById('testChart'));
-
-                // 指定图表的配置项和数据
+                this.selectOption=key.toString();
+            },
+            getRequestBrowser(){
+                if(this.startDate===''&&this.endDate===''){
+                    alert("请选择起始日期和结束日期！");
+                    return;
+                }
+                else if(this.startDate===''){
+                    alert("请选择起始日期！");
+                    return;
+                }
+                else if(this.endDate===''){
+                    alert("请选择结束日期！");
+                    return;
+                }
                 var option = {
                     title: {
-                        text: 'ECharts 入门示例'
+                        text: '用户数量'
                     },
                     tooltip: {},
                     legend: {
                         data:['销量']
                     },
                     xAxis: {
-                        data: [key.toString(),"羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
+                        data: ["数量","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
                     },
                     yAxis: {},
                     series: [{
@@ -202,9 +274,14 @@
                         data: [5, 20, 36, 10, 10, 20]
                     }]
                 };
-                // 使用刚指定的配置项和数据显示图表。
-                myChart.setOption(option);
-            }
+                return option;
+            },
+            getRequestProtocol(){},
+            getRequestTime(){},
+            getRequestUrl(){},
+            getStaticResourceAccess(){},
+            getHttpMethod(){},
+            getReturnStatusCode(){}
         },
         mounted(){
             var that = this;
@@ -222,7 +299,8 @@
                 error(res){
                     that.$message.error('获取用户信息出错！');
                 }
-            })
+            });
+            this.myChart = echarts.init(document.getElementById('myChart'));
         }
     })
 </script>
