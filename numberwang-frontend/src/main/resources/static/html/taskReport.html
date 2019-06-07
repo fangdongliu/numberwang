@@ -13,11 +13,12 @@
     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
     <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>
     <link rel="stylesheet" href="../css/stylesheet.css">
+    <link rel="stylesheet" href="../css/stylesheet-zhangxin.css">
 </head>
 <body>
 <div id="app">
-    <el-container style="height:100%">
-        <el-header>
+    <el-container style="height: 100%;width: 100%">
+        <el-header style="background-color: #020E52;color: #b4c6d6;">
             <el-row>
                 <el-col :offset="1" :span="5" style="display: flex;">
                     <img src="../images/logo.png" style="height:60px; width: auto;"/>
@@ -30,34 +31,125 @@
                 </el-col>
             </el-row>
         </el-header>
-        <el-container style="height:100%">
-            <el-container>
-                <el-main>
-                    <!--在此输入内容-->
-                    <el-row>
-                        <el-col :span="4" style="justify-content: center;display: flex;">
-                            <el-dropdown size="medium" split-button type="primary" @command="chooseProject">
+        <el-container>
+            <el-header style="height: 100px;margin-top: 20px">
+                <el-row>
+                    <el-col :span="4" style="justify-content: center;display: flex;">
+                        <el-dropdown size="medium" split-button type="primary" @command="chooseProject">
                                 选择项目
-                                <el-dropdown-menu slot="dropdown">
-                                    <el-dropdown-item v-for="item in projectList" v-bind:command="item.id">项目{{item.name}}</el-dropdown-item>
-                                </el-dropdown-menu>
-                            </el-dropdown>
+                            <el-dropdown-menu slot="dropdown">
+                                <el-dropdown-item v-for="item in projectList" v-bind:command="item.id">项目{{item.name}}</el-dropdown-item>
+                            </el-dropdown-menu>
+                        </el-dropdown>
+                    </el-col>
+                    <el-col :span="20">
+                        <el-tabs v-model="tabIndex" :before-leave="clickTab">
+                            <el-tab-pane name="a" label="上传日志数据"></el-tab-pane>
+                            <el-tab-pane name="b" label="定义日志格式"></el-tab-pane>
+                            <el-tab-pane name="c" label="生成日志图表"></el-tab-pane>
+                        </el-tabs>
+                    </el-col>
+                </el-row>
+            </el-header>
+            <el-container>
+                <el-aside width="250px">
+                    <h6 class="chartListTitle">图表展示项</h6>
+                    <el-menu
+                            default-active="1"
+                            mode="vertical"
+                            @select="handleSelect">
+                        <el-menu-item index="1" class="chartListItem">
+                            <span slot="title">用户数量</span>
+                        </el-menu-item>
+                        <el-menu-item index="2" class="chartListItem">
+                            <span slot="title">用户登录总次数</span>
+                        </el-menu-item>
+                        <el-menu-item index="3" class="chartListItem">
+                            <span slot="title">请求时间分布</span>
+                        </el-menu-item>
+                        <el-menu-item index="4" class="chartListItem">
+                            <span slot="title">请求协议分布</span>
+                        </el-menu-item>
+                        <el-menu-item index="5" class="chartListItem">
+                            <span slot="title">返回状态码分布</span>
+                        </el-menu-item>
+                        <el-menu-item index="6" class="chartListItem">
+                            <span slot="title">请求浏览器分布</span>
+                        </el-menu-item>
+                        <el-menu-item index="7" class="chartListItem">
+                            <span slot="title">请求URL分布</span>
+                        </el-menu-item>
+                        <el-menu-item index="8" class="chartListItem">
+                            <span slot="title">HTTP方法分布</span>
+                        </el-menu-item>
+                    </el-menu>
+                </el-aside>
+                <el-main>
+                    <h6 class="keyIndicator">关键指标</h6>
+                    <el-row>
+                        <el-col :span="6">
+                            <el-card shadow="never">
+                                <div>
+                                    <span class="keyIndicatorText">
+                                        用户数量
+                                    </span>
+                                    <br/>
+                                    <span class="keyIndicatorNumber">
+                                        77
+                                    </span>
+                                </div>
+                            </el-card>
                         </el-col>
-                        <el-col :span="20">
-                            <el-tabs v-model="tabIndex" :before-leave="clickTab">
-                                <el-tab-pane name="a" label="上传日志数据">1</el-tab-pane>
-                                <el-tab-pane name="b" label="定义日志格式">2</el-tab-pane>
-                                <el-tab-pane name="c" label="生成日志图表">生成日志图表</el-tab-pane>
-                            </el-tabs>
+                        <el-col :span="6">
+                            <el-card shadow="never">
+                                <div>
+                                    <span class="keyIndicatorText">
+                                        访问次数
+                                    </span>
+                                    <br/>
+                                    <span class="keyIndicatorNumber">
+                                        152
+                                    </span>
+                                </div>
+                            </el-card>
+                        </el-col>
+                        <el-col :span="6">
+                            <el-card shadow="never">
+                                <div>
+                                    <span class="keyIndicatorText">
+                                        发送总字节数
+                                    </span>
+                                    <br/>
+                                    <span class="keyIndicatorNumber">
+                                        253
+                                    </span>
+                                </div>
+                            </el-card>
+                        </el-col>
+                        <el-col :span="6">
+                            <el-card shadow="never">
+                                <div>
+                                    <span class="keyIndicatorText">
+                                        接收总字节数
+                                    </span>
+                                    <br/>
+                                    <span class="keyIndicatorNumber">
+                                        100
+                                    </span>
+                                </div>
+                            </el-card>
                         </el-col>
                     </el-row>
+                    <h6 class="timeRange">起：2016-06-01 终：2019-06-03</h6>
+                    <div id="testChart" style="width: 600px;height:400px;"></div>
                 </el-main>
             </el-container>
         </el-container>
     </el-container>
 </div>
 
-<script>
+<script type="text/javascript">
+
     var vue=new Vue({
         el:'#app',
         data:{
@@ -86,6 +178,33 @@
                     window.location.href = '/html/taskUpload.html'
                 }
                 return false;
+            },
+            handleSelect(key, keyPath) {
+                console.log(key.toString());
+                // 基于准备好的dom，初始化echarts实例
+                var myChart = echarts.init(document.getElementById('testChart'));
+
+                // 指定图表的配置项和数据
+                var option = {
+                    title: {
+                        text: 'ECharts 入门示例'
+                    },
+                    tooltip: {},
+                    legend: {
+                        data:['销量']
+                    },
+                    xAxis: {
+                        data: [key.toString(),"羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
+                    },
+                    yAxis: {},
+                    series: [{
+                        name: '销量',
+                        type: 'bar',
+                        data: [5, 20, 36, 10, 10, 20]
+                    }]
+                };
+                // 使用刚指定的配置项和数据显示图表。
+                myChart.setOption(option);
             }
         },
         mounted(){

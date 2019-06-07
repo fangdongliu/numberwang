@@ -17,10 +17,10 @@ html{
     /*height:calc(100% - 60px);*/
 }
 
-.el-header{
-    background-color: #020E52;
-    color: #b4c6d6;
-}
+/*.el-header{*/
+    /*background-color: #020E52;*/
+    /*color: #b4c6d6;*/
+/*}*/
 
 .headerName{
     font-size: larger;

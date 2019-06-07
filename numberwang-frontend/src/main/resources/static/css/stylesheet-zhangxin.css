@@ -1,0 +1,57 @@
+.test{
+    line-height:100px;
+}
+
+.chartListTitle{
+    font-size: larger;
+    color: #ffffff;
+    line-height: 45px;
+    font-weight: bolder;
+    padding-left: 20px;
+    background: #082b52;
+}
+
+.chartListItem{
+    max-height: 45px;
+}
+
+.chartTitle{
+
+}
+
+.el-main{
+    padding: 0px;
+}
+
+.menuTitle{
+    background-color: #020E52;
+    color: #b4c6d6;
+}
+
+.keyIndicator{
+    font-size: larger;
+    color: #ffffff;
+    line-height: 45px;
+    padding-left: 20px;
+    font-weight: bolder;
+    background: #020E52;
+}
+
+.keyIndicatorText{
+    line-height: 30px;
+    padding-left: 20px;
+}
+
+.keyIndicatorNumber{
+    font-size: larger;
+    line-height: 30px;
+    padding-left: 20px;
+    font-weight: bolder;
+}
+
+.timeRange{
+    font-size: larger;
+    line-height: 30px;
+    padding-left: 20px;
+    font-weight: bolder;
+}
