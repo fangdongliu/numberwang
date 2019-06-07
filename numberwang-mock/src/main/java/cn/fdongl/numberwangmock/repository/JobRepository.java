@@ -21,6 +21,8 @@ public interface JobRepository extends JpaRepository<Job,Long> {
 
     List<Job> findByCreateBy(Long createBy, Pageable pageable);
 
+    int countByCreateBy(Long createBy);
+
     @Transactional
     @Query(value = "update job set `status` = ?1 where id = ?2 and `status` = ?3",nativeQuery = true)
     @Modifying

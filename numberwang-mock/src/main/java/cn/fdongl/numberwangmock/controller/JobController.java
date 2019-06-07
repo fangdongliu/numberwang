@@ -37,6 +37,11 @@ public class JobController {
         return Result.success(job.getId());
     }
 
+    @GetMapping("count")
+    public Result count(AppUser user){
+        return Result.success(jobRepository.countByCreateBy(user.getUser().getId()));
+    }
+
     @GetMapping("detail")
     public Result detail(@RequestParam Long jobId,AppUser user){
         Job job = jobRepository.findByIdAndCreateBy(jobId,user.getUser().getId());

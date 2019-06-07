@@ -7,7 +7,7 @@
     padding:0;
 }
 body{
-    background-color: #F4F4F5;
+    background-color: #FFF;
     height: 100%;
     padding:0 5px;
 }
@@ -17,8 +17,8 @@ html{
 }
 
 #app{
-    height: 100%;
-    /*height:calc(100% - 60px);*/
+    /*height: 100%;*/
+    height:calc(100% - 60px);
 }
 
 .el-header{

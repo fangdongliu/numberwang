@@ -40,6 +40,11 @@ public class FileController {
         return fileService.upload(file);
     }
 
+    @GetMapping("count")
+    public Result count(AppUser user){
+        return Result.success(fileRepository.countByCreateBy(user.getUser().getId()));
+    }
+
     @GetMapping("list")
     public Result list(
             AppUser appUser,

@@ -1,0 +1,78 @@
+#navTitle{
+    font-size: large;
+    font-weight: bold;
+}
+
+#uploadFileBtn{
+    background-color: #202958;
+    border-color: #202958;
+    color: #FFF !important;
+    min-width: 100px;
+    height: 30px;
+}
+#uploadFileBtn:hover, #uploadFileBtn:focus, .downloadBtn:hover, .downloadBtn:focus{
+    background-color: darkslateblue !important;
+    border-color:darkslateblue;
+    color: #FFF !important;
+}
+
+#searchInput{
+    background-color: #F0F2FF;
+    border-color: #d5d9ff;
+}
+
+.deleteBtn{
+    color: #FFF;
+    background-color: #630407;
+    border-color: #630407;
+}
+
+.deleteBtn:hover,.deleteBtn:focus{
+    color: #FFF;
+    background-color: rgb(130,40,40);
+    border-color: rgb(130,40,40);
+}
+
+.downloadBtn{
+    background-color: #202958;
+    border-color: #202958;
+    color: #FFF !important;
+}
+
+.viewBtn{
+    color: #FFF;
+    background-color: #058277;
+    border-color: #058277;
+}
+
+.viewBtn:hover, .viewBtn:focus{
+    color: #FFF;
+    background-color: #05a095;
+    border-color: #05a095;
+}
+
+.el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner{
+    background-color: #6366A0 !important;
+    border-color: #6366A0 !important;
+}
+
+.el-checkbox__inner:hover, .el-checkbox__inner:focus, .el-checkbox__inner:checked{
+    border-color: #6366A0 !important;
+    box-shadow: none;
+}
+
+.el-pager li.active, .el-pager li:hover, .el-pagination button:hover{
+    color: #6366A0;
+}
+
+.el-pagination__sizes .el-select .el-input input:hover,.el-pagination__sizes .el-select .el-input input:focus{
+    border-color: #6366A0 !important;
+}
+
+.el-select-dropdown__item.selected{
+    color: #6366A0;
+}
+
+.topGap{
+    margin-top: 20px;
+}
