@@ -13,10 +13,11 @@
     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
     <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>
     <link rel="stylesheet" href="../css/stylesheet.css">
+    <link rel="stylesheet" href="../css/ljy.css">
 </head>
 <body>
 <div id="app">
-    <el-container style="height:100%">
+    <el-container style="height:100%" v-clock>
         <el-header>
             <el-row>
                 <el-col :offset="1" :span="5" style="display: flex;">
@@ -46,9 +47,77 @@
                         <el-col :span="20">
                             <el-tabs v-model="tabIndex" :before-leave="clickTab">
                                 <el-tab-pane name="a" label="上传日志数据">1</el-tab-pane>
-                                <el-tab-pane name="b" label="定义日志格式">定义日志格式</el-tab-pane>
+                                <el-tab-pane name="b" label="定义日志格式"></el-tab-pane>
                                 <el-tab-pane name="c" label="生成日志图表">2</el-tab-pane>
                             </el-tabs>
+                        </el-col>
+                    </el-row>
+                    <el-row style="width: 100% ;margin-top: 4%">
+                        <el-col :offset="5" :span="14">
+                            <el-card shadow="hover" >
+                                <div slot="header" class="card-header">
+                                    <span>Define</span>
+                                </div>
+                                <el-form id="defineForm" ref="defineForm" :model="defineForm" :rules="defineRules">
+                                    <el-form-item class="inputItem" prop="define">
+                                        <el-input v-model="defineForm.define"
+                                                  placeholder="请输入dataFormat"
+                                                  name="define"
+                                                  type="textarea"
+                                                  :rows="3"
+                                                  maxlength="100"
+                                                  resize="none"
+                                                  clearable
+                                                  show-word-limit></el-input>
+                                    </el-form-item>
+                                    <el-form-item class="inputItem" prop="jobid">
+                                        <el-input v-model="defineForm.jobid"
+                                                  placeholder="请输入jobid"
+                                                  name="jobid"
+                                                  type="textarea"
+                                                  :rows="1"
+                                                  resize="none"
+                                                  clearable
+                                                  ></el-input>
+                                    </el-form-item>
+                                    <el-form-item class="inputItem">
+                                        <el-form-item class="inputItem" prop="lineFormat">
+                                            <el-input v-model="defineForm.lineFormat"
+                                                      placeholder="请输入lineFormat"
+                                                      name="lineFormat"
+                                                      type="textarea"
+                                                      :rows="3"
+                                                      maxlength="100"
+                                                      resize="none"
+                                                      clearable
+                                                      show-word-limit></el-input>
+                                        </el-form-item>
+                                    </el-form-item>
+                                        <el-form-item class="inputItem">
+                                            <el-form-item class="inputItem">
+                                                <el-form-item class="inputItem" prop="suffix">
+                                                    <el-input v-model="defineForm.suffix"
+                                                              placeholder="请输入suffix"
+                                                              name="suffix"
+                                                              type="textarea"
+                                                              :rows="3"
+                                                              maxlength="100"
+                                                              resize="none"
+                                                              clearable
+                                                              show-word-limit></el-input>
+                                                </el-form-item>
+                                                <el-form-item class="inputItem">
+                                        <el-row style="width: 100% ;margin-top: 5%">
+                                            <el-col :offset="4" :span="4">
+                                                <el-button id="createBtn" type="success"  @click="submitForm('defineForm')" >Create</el-button>
+                                            </el-col>
+                                            <el-col :offset="8" :span="4">
+                                                <el-button id="resetBtn" type="danger"  @click="resetForm('defineForm')" >Reset</el-button>
+                                            </el-col>
+                                        </el-row>
+                                    </el-form-item>
+                                </el-form>
+                            </el-card>
                         </el-col>
                     </el-row>
                 </el-main>
@@ -62,6 +131,15 @@
         el:'#app',
         data:{
             username:'username',
+            defineForm:{
+                define:''
+            },
+            defineRules:{
+                define:[{required: true, message: '项目名不能为空', trigger: 'blur'}],
+                jobid:[{required: true,message: '项目id不能为空',trigger: 'blur'}],
+                lineFormat:[{required: true,message: '项目id不能为空',trigger: 'blur'}],
+                suffix:[{required: true,message: '项目id不能为空',trigger: 'blur'}]
+            },
             projectList:[{
                 name:1,
                 id:1
@@ -86,6 +164,43 @@
                     window.location.href = '/html/taskReport.html'
                 }
                 return false;
+            },
+            submitForm(formName) {
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        var that=this;
+                        $.ajax({
+                            url:'/job/setFormat',
+                            method:'put',
+                            data:{
+                                dataFormat:that.define,
+                                jobid:that.jobid,
+                                lineFormat: that.lineFormat,
+                                suffix: that.suffix
+                            },
+                            success(res){
+                                if(res.code === 0){
+                                    window.location.href = '/html/taskReport.html'
+                                }
+                                else{
+                                    that.$message.error('format错误');
+                                }
+                            },
+                            fail:console.log
+                         })
+                    } else {
+                        console.log('error submit!!');
+                        return false;
+                    }
+                });
+            },
+            resetForm(formName) {
+                console.log(this.$refs)
+                console.log(this.$refs[formName])
+
+                this.activeFlag=
+                    this.$refs[formName].resetFields();
+                console.log(formName);
             }
         },
         mounted(){

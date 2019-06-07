@@ -13,10 +13,16 @@
     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
     <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>
     <link rel="stylesheet" href="./css/stylesheet.css">
+    <link rel="stylesheet" href="./css/ljy.css">
+    <style>
+        [v-clock]{
+            display: none;
+        }
+    </style>
 </head>
 <body>
 <div id="app">
-    <el-container style="height:100%">
+    <el-container style="height:100%" v-clock>
         <el-header>
             <el-row>
                 <el-col :offset="1" :span="5" style="display: flex;">
@@ -32,10 +38,46 @@
         </el-header>
         <el-container style="height:100%">
             <el-container>
-                <el-main>Main
-                    <!--在此输入内容-->
+                <el-main>
+                <el-row>
+                    <el-button type="primary" style="margin-left: 75%" class="newpro-btn" onclick=javascrtpt:jump()>
+                        New Project</el-button>
+                    <el-col :offset="4" :span="16" style="margin-top: 2%">
+                        <el-card shadow="hover" >
+                            <div slot="header" class="card-header">
+                                <span>Open your project</span>
+                            </div>
+                        <el-table :data="tableData" style="max-width:1000px "
+                                  max-height="365"  :row-class-name="tableRowClassName">
+                            <el-table-column prop="projectname"  label="Project" width="180">
+                            </el-table-column>
+                            <el-table-column prop="intro"   label="Describe" class='Describe' width="540">
+                            </el-table-column>
+                            <el-table-column
+                                    fixed="right"
+                                    label="Delete"
+                                    width="200">
+                                <template slot-scope="scope">
+                                    <el-button
+                                            size="mini"
+                                            type="success"
+                                            @click="open(scope.$index)"
+                                    >Open</el-button>
+                                    <el-button
+                                            size="mini"
+                                            type="danger"
+                                            @click="handleEdit(scope.$index)">Delete</el-button>
+
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                        </el-card>
+                    </el-col>
+                </el-row>
+
 
                 </el-main>
+                <!--<el-footer>Footer</el-footer>-->
             </el-container>
         </el-container>
     </el-container>
@@ -45,13 +87,76 @@
     var vue=new Vue({
         el:'#app',
         data:{
-            username:'username'
+            username:'username',
+            tableData: [{
+                projectname: '小虎',
+                intro:'huhuhu'
+            },
+                {
+                    projectname: '小虎',
+                    intro:'huhuhu'
+                },
+                {
+                    projectname: '小虎',
+                    intro:'huhuhu'
+                },
+                {
+                    projectname: '小虎',
+                    intro:'huhuhu'
+                },
+                {
+                    projectname: '小虎',
+                    intro:'huhuhu'
+                },
+                {
+                    projectname: '小虎',
+                    intro:'huhuhu'
+            }, {
+                    projectname: '小虎',
+                    intro:'huhuhu'
+            }, {
+                    projectname: '小虎',
+                    intro:'huhuhu'
+            }]
+
         },
         methods:{
             onLogout(){
                 window.location.href="/logout";
+            },
+            tableRowClassName({row, rowIndex}) {
+                if (rowIndex%2 === 1) {
+                    return 'warning-row';
+                }
+                return 'success-row';
+            },
+            open(index){
+                window.location.href="/html/taskReport.html";
+            },
+            handleEdit(index) {
+
+                this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+
+                    this.$message({
+                        type: 'success',
+                        message: '删除成功!'
+                    });
+                    this.tableData.splice(index, 1);
+                    // console.log(index, rows);//后端删除
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
             }
         },
+
+
         mounted(){
             var that = this;
             $.ajax({
@@ -71,6 +176,9 @@
             })
         }
     })
+    function jump(){
+        window.location.href="/html/create.html";
+    }
 </script>
 </body>
 </html>

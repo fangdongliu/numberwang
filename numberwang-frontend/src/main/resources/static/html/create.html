@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/vue/2.6.9/vue.min.js"></script>
+    <link href="https://cdn.bootcss.com/element-ui/2.6.1/theme-chalk/index.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/element-ui/2.6.1/index.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>
+    <link rel="stylesheet" href="../css/stylesheet.css">
+    <link rel="stylesheet" href="../css/ljy.css">
+</head>
+<body>
+<div id="app">
+    <el-container style="height:100%">
+        <el-header>
+            <el-row>
+                <el-col :offset="1" :span="5" style="display: flex;">
+                    <img src="../images/logo.png" style="height:60px; width: auto;"/>
+                    <span class="headerName">方神带我们飞</span>
+                </el-col>
+                <el-col :offset="14" :span="4" style="line-height: 60px;">
+                    <span class="headerUsername">{{username}}</span>
+                    <el-divider direction="vertical"></el-divider>
+                    <span @click="onLogout" id="logoutBtn">logout</span>
+                </el-col>
+            </el-row>
+        </el-header>
+        <el-container style="height:100%">
+                <el-row style="width: 100% ;margin-top: 6%">
+                    <el-col :offset="5" :span="14">
+                        <el-card shadow="hover" >
+                            <div slot="header" class="card-header">
+                                <span>创建新项目</span>
+                            </div>
+                            <el-form id="createForm" ref="createForm"
+                                     :model="createForm"
+                                     :rules="createRules"
+                                    >
+                                <el-form-item class="inputItem" prop="name">
+                                    <el-input v-model="createForm.name"
+                                              placeholder="请输入项目名称"
+                                              name="projectName"
+                                              maxlength="10"
+                                              clearable
+                                              show-word-limit></el-input>
+                                </el-form-item>
+
+                                <el-form-item class="inputItem" prop="describe">
+                                    <el-input
+                                            type="textarea"
+                                            placeholder="请输入项目描述"
+                                            v-model="createForm.describe"
+                                            maxlength="100"
+                                            :rows="5"
+                                            resize="none"
+                                            show-word-limit
+                                    >
+                                    </el-input>
+                                </el-form-item>
+                                <el-form-item class="inputItem">
+                                    <el-row style="width: 100% ;margin-top: 5%">
+                                        <el-col :offset="4" :span="4">
+                                            <el-button id="createBtn" type="success"  @click="submitForm('createForm')" >Create</el-button>
+                                        </el-col>
+                                        <el-col :offset="8" :span="4">
+                                            <el-button id="resetBtn" type="danger"  @click="resetForm('createForm')" >Reset</el-button>
+                                        </el-col>
+                                    </el-row>
+                                </el-form-item>
+                            </el-form>
+                        </el-card>
+                    </el-col>
+                </el-row>
+        </el-container>
+    </el-container>
+</div>
+
+<script>
+    var app=new Vue({
+        el:'#app',
+        data:{
+            items:[],
+            username:'username',
+            createForm:{
+                name:'',
+                describe:''
+            },
+            createRules:{
+                name:[{required: true, message: '项目名不能为空', trigger: 'blur'}],
+            }
+        },
+        mounted(){
+            console.log(this);
+            var that = this;
+            $.ajax({
+                url:'/user/info',
+                method:'GET',
+                success(res){
+                    if(res.code === 0){
+                        that.username = res.data.username;
+                    }
+                    else{
+                        that.$message.error('获取用户信息出错！');
+                    }
+                },
+                error(res){
+                    that.$message.error('获取用户信息出错！');
+                }
+            })
+        },
+        methods:{
+            onLogout(){
+                window.location.href="/logout";
+            },
+            submitForm(formName) {
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        var that = this;
+                        $.ajax({
+                            url:'/job/create',
+                            method:'post',
+                            data:{
+                                name:that.createForm.name,
+                                description: that.createForm.describe
+                            },
+                            success(res){
+                                console.log(res);
+                                if(res.code === 0) {
+                                    window.location.href="taskDefine.html";//跳到日志页面
+                                }
+                                else{
+                                    that.$message.error('项目创建失败！');
+                                }
+                            },
+                            fail:console.log
+                        })
+                    } else {
+                        console.log('上传失败!!');
+                        return false;
+                    }
+                });
+            },
+            resetForm(formName) {
+                console.log(this.$refs)
+                console.log(this.$refs[formName])
+
+                this.activeFlag=
+                this.$refs[formName].resetFields();
+                console.log(formName);
+            }
+
+        }
+    })
+</script>
+</body>
+</html>

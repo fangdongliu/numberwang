@@ -13,10 +13,12 @@
     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
     <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>
     <link rel="stylesheet" href="../css/stylesheet.css">
+    <link rel="stylesheet" href="../css/shannon.css">
+
 </head>
 <body>
 <div id="app">
-    <el-container style="height:100%">
+    <el-container style="height:100%" v-clock>
         <el-header>
             <el-row>
                 <el-col :offset="1" :span="5" style="display: flex;">
@@ -31,28 +33,98 @@
             </el-row>
         </el-header>
         <el-container style="height:100%">
-            <el-container>
-                <el-main>
-                    <!--在此输入内容-->
-                    <el-row>
-                        <el-col :span="4" style="justify-content: center;display: flex;">
-                            <el-dropdown size="medium" split-button type="primary" @command="chooseProject">
-                                选择项目
-                                <el-dropdown-menu slot="dropdown">
-                                    <el-dropdown-item v-for="item in projectList" v-bind:command="item.id">项目{{item.name}}</el-dropdown-item>
-                                </el-dropdown-menu>
-                            </el-dropdown>
-                        </el-col>
-                        <el-col :span="20">
-                            <el-tabs v-model="tabIndex" :before-leave="clickTab">
-                                <el-tab-pane name="a" label="上传日志数据">上传日志数据</el-tab-pane>
-                                <el-tab-pane name="b" label="定义日志格式">1</el-tab-pane>
-                                <el-tab-pane name="c" label="生成日志图表">2</el-tab-pane>
-                            </el-tabs>
-                        </el-col>
-                    </el-row>
-                </el-main>
-            </el-container>
+            <el-main>
+                <!--在此输入内容-->
+                <el-row>
+                    <el-col :span="4" style="justify-content: center;display: flex;">
+                        <el-dropdown size="medium" split-button type="primary" @command="chooseProject">
+                            选择项目
+                            <el-dropdown-menu slot="dropdown">
+                                <el-dropdown-item v-for="item in projectList" v-bind:command="item.id">项目{{item.name}}</el-dropdown-item>
+                            </el-dropdown-menu>
+                        </el-dropdown>
+                    </el-col>
+                    <el-col :span="20">
+                        <el-tabs v-model="tabIndex" :before-leave="clickTab">
+                            <el-tab-pane name="a" label="上传日志数据"></el-tab-pane>
+                            <el-tab-pane name="b" label="定义日志格式">1</el-tab-pane>
+                            <el-tab-pane name="c" label="生成日志图表">2</el-tab-pane>
+                        </el-tabs>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col :span="3" :offset="1" id="navTitle">最近文件</el-col>
+                    <el-col :span="3" :offset="17"><el-button id="uploadFileBtn" size="small">上传文件</el-button></el-col>
+                </el-row>
+                <el-row class="topGap">
+                    <el-col :offset="1" :span="22">
+                        <el-row type="flex" justify="center">
+                            <el-col :span="20">
+                                <el-input placeholder="关键词" v-model="searchWord" size="small" id="searchInput">
+                                    <el-button slot="append" icon="el-icon-search" ></el-button>>
+                                </el-input>
+                            </el-col>
+                        </el-row>
+                        <el-row class="topGap" type="flex" justify="center">
+                            <el-col :span="20">
+                                <el-row>
+                                    <el-table :data="fileList" style="width:100%;">
+                                        <el-table-column
+                                                type="selection"
+                                                width="80">
+                                        </el-table-column>
+                                        <el-table-column
+                                                prop="filename"
+                                                label="文件名"
+                                                min-width="200">
+                                        </el-table-column>
+                                        <el-table-column
+                                                prop="createDate"
+                                                label="上传日期"
+                                                min-width="200">
+                                        </el-table-column>
+                                        <el-table-column
+                                                label="操作"
+                                                min-width="200">
+                                            <template slot-scope="scope">
+                                                <el-button
+                                                        class="deleteBtn"
+                                                        size="small"
+                                                        @click.native.prevent="deleteFile(scope.$index)">
+                                                    移除
+                                                </el-button>
+                                                <el-button
+                                                        class="downloadBtn"
+                                                        size="small"
+                                                        @click.native.prevent="downloadFile(scope.$index)">
+                                                    下载
+                                                </el-button>
+                                                <el-button
+                                                        class="viewBtn"
+                                                        size="small"
+                                                        @click.native.prevent="viewFile(scope.$index)">
+                                                    预览
+                                                </el-button>
+                                            </template>
+                                        </el-table-column>
+                                    </el-table>
+                                </el-row>
+                                <el-row class="topGap" type="flex" justify="center">
+                                    <el-pagination
+                                            @size-change="listSizeChange"
+                                            @current-change="listPageChange"
+                                            :current-page.sync="currentPage"
+                                            :page-sizes="pageSizeList"
+                                            :page-size.sync="pageSize"
+                                            layout="sizes, prev, pager, next"
+                                            :total="fileListLength">
+                                    </el-pagination>
+                                </el-row>
+                            </el-col>
+                        </el-row>
+                    </el-col>
+                </el-row>
+            </el-main>
         </el-container>
     </el-container>
 </div>
@@ -69,7 +141,13 @@
                 name:2,
                 id:2
             }],
-            tabIndex:"a"
+            tabIndex:"a",
+            searchWord:'',
+            fileList:[],
+            fileListLength:0,
+            currentPage:1,
+            pageSize:10,
+            pageSizeList:[10, 20, 30, 40, 50]
         },
         methods:{
             onLogout(){
@@ -86,11 +164,72 @@
                     window.location.href = '/html/taskReport.html'
                 }
                 return false;
-
+            },
+            getFileList(){
+                let that = this;
+                $.ajax({
+                    url:'/file/list',
+                    method:'GET',
+                    data:{
+                        page:that.currentPage-1,
+                        pageSize:that.pageSize,
+                        filename: that.searchWord
+                    },
+                    success(res){
+                        if(res.code === 0){
+                            for(let i of res.data){
+                                i.createDate = i.createDate.substring(0,10)
+                                    + ' '+ i.createDate.substring(11,19)
+                            }
+                            console.log(res.data);
+                            that.fileList = res.data;
+                        }else{
+                            that.$message.error('获取文件信息出错！')
+                        }
+                    },
+                    fail(res){
+                        that.$message.error('获取文件信息出错！')
+                    }
+                })
+            },
+            listSizeChange(){
+                console.log(this.pageSize)
+                this.getFileList();
+            },
+            listPageChange(){
+                console.log(this.currentPage)
+                this.getFileList();
+            },
+            deleteFile(index){
+                console.log(index)
+            },
+            downloadFile(index){
+                console.log(index)
+            },
+            viewFile(index){
+                console.log(index);
             }
         },
         mounted(){
             var that = this;
+            $.ajax({
+                url:'/file/count',
+                method:'GET',
+                success(res){
+                    console.log(res)
+                    if(res.code === 0) {
+                        that.fileListLength = res.data;
+                        that.getFileList();
+                    }
+                    else{
+                        that.$message.error('获取文件信息出错！')
+                    }
+                },
+                fail(res){
+                    that.$message.error('获取文件信息出错！')
+                }
+            })
+            
             $.ajax({
                 url:'/user/info',
                 method:'GET',

@@ -17,8 +17,8 @@
 </head>
 <body>
 <div id="app">
-    <el-container style="height: 100%;width: 100%">
-        <el-header style="background-color: #020E52;color: #b4c6d6;">
+    <el-container style="height:100%" v-clock>
+        <el-header>
             <el-row>
                 <el-col :offset="1" :span="5" style="display: flex;">
                     <img src="../images/logo.png" style="height:60px; width: auto;"/>
@@ -148,8 +148,7 @@
     </el-container>
 </div>
 
-<script type="text/javascript">
-
+<script>
     var vue=new Vue({
         el:'#app',
         data:{

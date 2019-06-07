@@ -36,4 +36,6 @@ public interface FileRepository extends JpaRepository<LogFile,Long> {
 
     void deleteLogFileByCreateByAndAndId(@Param("createBy")Long createBy,@Param("id")Long id);
 
+    int countByCreateBy(Long createBy);
+
 }

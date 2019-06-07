@@ -1,0 +1,71 @@
+*{
+    margin: 0;
+    padding:0;
+}
+body{
+    background-color: #F4F4F5;
+    height: 100%;
+    padding:0 5px;
+}
+
+html{
+    height: 100%;
+}
+
+#app{
+    height:calc(100% - 60px);
+}
+
+.el-header{
+    background-color: #020E52;
+    color: #b4c6d6;
+}
+
+.el-card{
+    background-color:rgb(235,235,252);
+    opacity: 0.8;
+}
+
+.card-header{
+    color: #020E52;
+    font-size: 20px;
+    font-weight: bold;
+}
+.el-table .warning-row {
+    background: ghostwhite;
+}
+
+.el-table .success-row {
+    background: #f0f9eb;
+}
+.el-table{
+    border: none;
+}
+.newpro-btn{
+    background: #020E52;
+    border: none;
+}
+.el-button--primary:focus, .el-button--primary:hover{
+    background:darkslateblue;
+}
+.el-button--danger {
+    color: #FFF;
+    background-color: #630407;
+    border-color: #630407;
+}
+.el-button--danger:focus, .el-button--danger:hover{
+    color: #FFF;
+    background-color: rgb(130,40,40);
+    border-color: rgb(130,40,40);
+}
+.el-button--success{
+    color: #FFF;
+    background-color: #202958;
+    border-color: #202958;
+}
+
+.el-button--success:focus, .el-button--success:hover{
+    background:darkslateblue;
+    border-color:darkslateblue;
+}
+
