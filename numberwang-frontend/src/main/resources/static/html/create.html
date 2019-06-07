@@ -36,7 +36,7 @@
                     <el-col :offset="5" :span="14">
                         <el-card shadow="hover" >
                             <div slot="header" class="card-header">
-                                <span>Create a new project</span>
+                                <span>创建新项目</span>
                             </div>
                             <el-form id="createForm" ref="createForm"
                                      :model="createForm"
@@ -121,10 +121,27 @@
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        alert('submit!');
-                        //这里需要检验是否有一样名字的项目！！！
+                        var that = this;
+                        $.ajax({
+                            url:'/job/create',
+                            method:'post',
+                            data:{
+                                name:that.createForm.name,
+                                description: that.createForm.describe
+                            },
+                            success(res){
+                                console.log(res);
+                                if(res.code === 0) {
+                                    window.location.href="taskDefine.html";//跳到日志页面
+                                }
+                                else{
+                                    that.$message.error('项目创建失败！');
+                                }
+                            },
+                            fail:console.log
+                        })
                     } else {
-                        console.log('error submit!!');
+                        console.log('上传失败!!');
                         return false;
                     }
                 });

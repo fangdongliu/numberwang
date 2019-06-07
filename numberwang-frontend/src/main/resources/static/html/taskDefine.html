@@ -61,16 +61,52 @@
                                 <el-form id="defineForm" ref="defineForm" :model="defineForm" :rules="defineRules">
                                     <el-form-item class="inputItem" prop="define">
                                         <el-input v-model="defineForm.define"
-                                                  placeholder="请输入获取的日志格式"
+                                                  placeholder="请输入dataFormat"
                                                   name="define"
                                                   type="textarea"
-                                                  :rows="5"
+                                                  :rows="3"
                                                   maxlength="100"
                                                   resize="none"
                                                   clearable
                                                   show-word-limit></el-input>
                                     </el-form-item>
+                                    <el-form-item class="inputItem" prop="jobid">
+                                        <el-input v-model="defineForm.jobid"
+                                                  placeholder="请输入jobid"
+                                                  name="jobid"
+                                                  type="textarea"
+                                                  :rows="1"
+                                                  resize="none"
+                                                  clearable
+                                                  ></el-input>
+                                    </el-form-item>
                                     <el-form-item class="inputItem">
+                                        <el-form-item class="inputItem" prop="lineFormat">
+                                            <el-input v-model="defineForm.lineFormat"
+                                                      placeholder="请输入lineFormat"
+                                                      name="lineFormat"
+                                                      type="textarea"
+                                                      :rows="3"
+                                                      maxlength="100"
+                                                      resize="none"
+                                                      clearable
+                                                      show-word-limit></el-input>
+                                        </el-form-item>
+                                    </el-form-item>
+                                        <el-form-item class="inputItem">
+                                            <el-form-item class="inputItem">
+                                                <el-form-item class="inputItem" prop="suffix">
+                                                    <el-input v-model="defineForm.suffix"
+                                                              placeholder="请输入suffix"
+                                                              name="suffix"
+                                                              type="textarea"
+                                                              :rows="3"
+                                                              maxlength="100"
+                                                              resize="none"
+                                                              clearable
+                                                              show-word-limit></el-input>
+                                                </el-form-item>
+                                                <el-form-item class="inputItem">
                                         <el-row style="width: 100% ;margin-top: 5%">
                                             <el-col :offset="4" :span="4">
                                                 <el-button id="createBtn" type="success"  @click="submitForm('defineForm')" >Create</el-button>
@@ -100,6 +136,9 @@
             },
             defineRules:{
                 define:[{required: true, message: '项目名不能为空', trigger: 'blur'}],
+                jobid:[{required: true,message: '项目id不能为空',trigger: 'blur'}],
+                lineFormat:[{required: true,message: '项目id不能为空',trigger: 'blur'}],
+                suffix:[{required: true,message: '项目id不能为空',trigger: 'blur'}]
             },
             projectList:[{
                 name:1,
@@ -129,8 +168,26 @@
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        alert('submit!');
-                        //这里需要检验字符串是否符合要求！！！
+                        var that=this;
+                        $.ajax({
+                            url:'/job/setFormat',
+                            method:'put',
+                            data:{
+                                dataFormat:that.define,
+                                jobid:that.jobid,
+                                lineFormat: that.lineFormat,
+                                suffix: that.suffix
+                            },
+                            success(res){
+                                if(res.code === 0){
+                                    window.location.href = '/html/taskReport.html'
+                                }
+                                else{
+                                    that.$message.error('format错误');
+                                }
+                            },
+                            fail:console.log
+                         })
                     } else {
                         console.log('error submit!!');
                         return false;
