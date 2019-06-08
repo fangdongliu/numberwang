@@ -39,41 +39,51 @@
         <el-container style="height:100%">
             <el-container>
                 <el-main>
-                <el-row>
-                    <el-button type="primary" style="margin-left: 75%" class="newpro-btn" onclick=javascrtpt:jump()>
-                        New Project</el-button>
-                    <el-col :offset="4" :span="16" style="margin-top: 2%">
-                        <el-card shadow="hover" >
-                            <div slot="header" class="card-header">
-                                <span>Open your project</span>
-                            </div>
-                        <el-table :data="tableData" style="max-width:1000px "
-                                  max-height="365"  :row-class-name="tableRowClassName">
-                            <el-table-column prop="projectname"  label="Project" width="180">
-                            </el-table-column>
-                            <el-table-column prop="intro"   label="Describe" class='Describe' width="540">
-                            </el-table-column>
-                            <el-table-column
-                                    fixed="right"
-                                    label="Delete"
-                                    width="200">
-                                <template slot-scope="scope">
-                                    <el-button
-                                            size="mini"
-                                            type="success"
-                                            @click="open(scope.$index)"
-                                    >Open</el-button>
-                                    <el-button
-                                            size="mini"
-                                            type="danger"
-                                            @click="handleEdit(scope.$index)">Delete</el-button>
-
-                                </template>
-                            </el-table-column>
-                        </el-table>
-                        </el-card>
-                    </el-col>
-                </el-row>
+                    <el-row>
+                        <el-button type="primary" style="margin-left: 75%" class="newpro-btn" onclick=javascrtpt:jump()>
+                            New Project</el-button>
+                        <el-col :offset="4" :span="16" style="margin-top: 2%">
+                            <el-card shadow="hover" >
+                                <div slot="header" class="card-header">
+                                    <span>Open your project</span>
+                                </div>
+                                <el-row class="topGap">
+                                    <el-col :offset="1" :span="22">
+                                        <el-row class="topGap" type="flex" justify="center">
+                                            <el-col :span="20">
+                                                <el-row>
+                                                    <el-table :data="jobList" style="width:100%;" :row-class-name="tableRowClassName">
+                                                        <el-table-column prop="projectname"  label="Project" width="180"></el-table-column>
+                                                        <el-table-column prop="intro"   label="Describe" class='Describe' width="540"></el-table-column>
+                                                        <el-table-column fixed="right" label="Delete" width="200">
+                                                            <template slot-scope="scope">
+                                                                <el-button size="mini" type="success" @click="open(scope.$index)">Open</el-button>
+                                                                <el-button size="mini" type="danger"
+                                                                        @click="handleEdit(scope.$index)">Delete</el-button>
+                                                            </template>
+                                                        </el-table-column>
+                                                    </el-table>
+                                                </el-row>
+                                                <el-row class="topGap" type="flex" justify="center">
+                                                    <el-pagination
+                                                            @size-change="listSizeChange"
+                                                            @current-change="listPageChange"
+                                                            :current-page.sync="currentPage"
+                                                            :page-sizes="pageSizeList"
+                                                            :page-size.sync="pageSize"
+                                                            layout="sizes, prev, pager, next"
+                                                            :total="jobListLength">
+                                                    </el-pagination>
+                                                </el-row>
+                                            </el-col>
+                                        </el-row>
+                                    </el-col>
+                                </el-row>
+                                    </el-table-column>
+                                </el-table>
+                            </el-card>
+                        </el-col>
+                    </el-row>
 
 
                 </el-main>
@@ -88,7 +98,11 @@
         el:'#app',
         data:{
             username:'username',
-            tableData: [{
+            jobListLength:0,
+            currentPage:1,
+            pageSize:10,
+            pageSizeList:[10, 20, 30, 40, 50],
+            jobList: [{
                 projectname: '小虎',
                 intro:'huhuhu'
             },
@@ -111,18 +125,75 @@
                 {
                     projectname: '小虎',
                     intro:'huhuhu'
-            }, {
+                },
+                {
                     projectname: '小虎',
                     intro:'huhuhu'
-            }, {
+                },
+                {
                     projectname: '小虎',
                     intro:'huhuhu'
-            }]
+                },
+                {
+                    projectname: '小虎',
+                    intro:'huhuhu'
+                },
+                {
+                    projectname: '小虎',
+                    intro:'huhuhu'
+                },
+                {
+                    projectname: '小虎',
+                    intro:'huhuhu'
+                },
+                {
+                    projectname: '小虎',
+                    intro:'huhuhu'
+                },
+                {
+                    projectname: '小虎',
+                    intro:'huhuhu'
+                }, {
+                    projectname: '小虎',
+                    intro:'huhuhu'
+                }, {
+                    projectname: '小虎',
+                    intro:'huhuhu'
+                }]
 
         },
         methods:{
             onLogout(){
                 window.location.href="/logout";
+            },
+            getJobList(){
+                let that = this;
+                $.ajax({
+                    url:'/job/list',
+                    method:'GET',
+                    data:{
+                        page:that.currentPage-1,
+                        pageSize:that.pageSize,
+                    },
+                    success(res){
+                        if(res.code === 0){
+                            that.jobList = res.data;
+                        }else{
+                            that.$message.error('获取项目信息出错！')
+                        }
+                    },
+                    fail(res){
+                        that.$message.error('获取项目信息出错！')
+                    }
+                })
+            },
+            listSizeChange(){
+                console.log(this.pageSize)
+                this.getJobList();
+            },
+            listPageChange(){
+                console.log(this.currentPage)
+                this.getJobList();
             },
             tableRowClassName({row, rowIndex}) {
                 if (rowIndex%2 === 1) {
@@ -159,6 +230,22 @@
 
         mounted(){
             var that = this;
+            $.ajax({
+                url:'/job/count',
+                method:'GET',
+                success(res){
+                    if(res.code === 0) {
+                        that.jobListLength = res.data;
+                        that.getFileList();
+                    }
+                    else{
+                        that.$message.error('获取项目信息出错！')
+                    }
+                },
+                fail(res){
+                    that.$message.error('获取项目信息出错！')
+                }
+             })
             $.ajax({
                 url:'/user/info',
                 method:'GET',
