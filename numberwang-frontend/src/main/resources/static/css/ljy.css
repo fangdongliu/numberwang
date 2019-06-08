@@ -69,3 +69,20 @@ html{
     border-color:darkslateblue;
 }
 
+.el-pager li.active, .el-pager li:hover, .el-pagination button:hover{
+    color: #6366A0;
+}
+
+.el-pagination__sizes .el-select .el-input input:hover,.el-pagination__sizes .el-select .el-input input:focus{
+    border-color: #6366A0 !important;
+}
+
+.el-select-dropdown__item.selected{
+    color: #6366A0;
+}
+
+.btn-prev, .number, .btn-next{
+    background-color: rgb(235,235,252) !important;
+}
+
+

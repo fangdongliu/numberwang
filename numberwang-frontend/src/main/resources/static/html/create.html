@@ -29,51 +29,58 @@
             </el-row>
         </el-header>
         <el-container style="height:100%">
-                <el-row style="width: 100% ;margin-top: 6%">
-                    <el-col :offset="5" :span="14">
-                        <el-card shadow="hover" >
-                            <div slot="header" class="card-header">
-                                <span>创建新项目</span>
-                            </div>
-                            <el-form id="createForm" ref="createForm"
-                                     :model="createForm"
-                                     :rules="createRules"
-                                    >
-                                <el-form-item class="inputItem" prop="name">
-                                    <el-input v-model="createForm.name"
-                                              placeholder="请输入项目名称"
-                                              name="projectName"
-                                              maxlength="10"
-                                              clearable
-                                              show-word-limit></el-input>
-                                </el-form-item>
+            <el-row>
+                <el-steps :active="activeStep" finish-status="success">
+                    <el-step title="创建新项目"></el-step>
+                    <el-step title="选择输入文件"></el-step>
+                    <el-step title="格式化字符串"></el-step>
+                </el-steps>
+            </el-row>
+            <el-row style="width: 100% ;margin-top: 6%">
+                <el-col :offset="5" :span="14">
+                    <el-card shadow="hover" >
+                        <div slot="header" class="card-header">
+                            <span>创建新项目</span>
+                        </div>
+                        <el-form id="createForm" ref="createForm"
+                                 :model="createForm"
+                                 :rules="createRules"
+                                >
+                            <el-form-item class="inputItem" prop="name">
+                                <el-input v-model="createForm.name"
+                                          placeholder="请输入项目名称"
+                                          name="projectName"
+                                          maxlength="10"
+                                          clearable
+                                          show-word-limit></el-input>
+                            </el-form-item>
 
-                                <el-form-item class="inputItem" prop="describe">
-                                    <el-input
-                                            type="textarea"
-                                            placeholder="请输入项目描述"
-                                            v-model="createForm.describe"
-                                            maxlength="100"
-                                            :rows="5"
-                                            resize="none"
-                                            show-word-limit
-                                    >
-                                    </el-input>
-                                </el-form-item>
-                                <el-form-item class="inputItem">
-                                    <el-row style="width: 100% ;margin-top: 5%">
-                                        <el-col :offset="4" :span="4">
-                                            <el-button id="createBtn" type="success"  @click="submitForm('createForm')" >Create</el-button>
-                                        </el-col>
-                                        <el-col :offset="8" :span="4">
-                                            <el-button id="resetBtn" type="danger"  @click="resetForm('createForm')" >Reset</el-button>
-                                        </el-col>
-                                    </el-row>
-                                </el-form-item>
-                            </el-form>
-                        </el-card>
-                    </el-col>
-                </el-row>
+                            <el-form-item class="inputItem" prop="describe">
+                                <el-input
+                                        type="textarea"
+                                        placeholder="请输入项目描述"
+                                        v-model="createForm.describe"
+                                        maxlength="100"
+                                        :rows="5"
+                                        resize="none"
+                                        show-word-limit
+                                >
+                                </el-input>
+                            </el-form-item>
+                            <el-form-item class="inputItem">
+                                <el-row style="width: 100% ;margin-top: 5%">
+                                    <el-col :offset="4" :span="4">
+                                        <el-button id="createBtn" type="success"  @click="submitForm('createForm')" >确认创建</el-button>
+                                    </el-col>
+                                    <el-col :offset="8" :span="4">
+                                        <el-button id="resetBtn" type="danger"  @click="goBack" >返回</el-button>
+                                    </el-col>
+                                </el-row>
+                            </el-form-item>
+                        </el-form>
+                    </el-card>
+                </el-col>
+            </el-row>
         </el-container>
     </el-container>
 </div>
@@ -90,7 +97,8 @@
             },
             createRules:{
                 name:[{required: true, message: '项目名不能为空', trigger: 'blur'}],
-            }
+            },
+            activeStep:0
         },
         mounted(){
             console.log(this);
@@ -129,27 +137,24 @@
                             success(res){
                                 console.log(res);
                                 if(res.code === 0) {
-                                    window.location.href="taskDefine.html";//跳到日志页面
+                                    window.location.href="/html/fileCenter.html?jobId="+ res.data;
                                 }
                                 else{
                                     that.$message.error('项目创建失败！');
                                 }
                             },
-                            fail:console.log
+                            fail(res){
+                                that.$message.error('项目创建失败！');
+                            }
                         })
                     } else {
-                        console.log('上传失败!!');
+                        console.log('项目失败!!');
                         return false;
                     }
                 });
             },
-            resetForm(formName) {
-                console.log(this.$refs)
-                console.log(this.$refs[formName])
-
-                this.activeFlag=
-                this.$refs[formName].resetFields();
-                console.log(formName);
+            goBack(){
+                window.location.href='/'
             }
 
         }

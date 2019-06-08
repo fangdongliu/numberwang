@@ -7,13 +7,13 @@
     <script src="https://cdn.bootcss.com/vue/2.6.9/vue.min.js"></script>
     <link href="https://cdn.bootcss.com/element-ui/2.6.1/theme-chalk/index.css" rel="stylesheet">
     <script src="https://cdn.bootcss.com/element-ui/2.6.1/index.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
     <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
     <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>
     <link rel="stylesheet" href="../css/stylesheet.css">
     <link rel="stylesheet" href="../css/shannon.css">
-
-
-
 </head>
 <body>
 <div id="app">
@@ -33,24 +33,30 @@
         </el-header>
         <el-container style="height:100%">
             <el-main>
-                <!--在此输入内容-->
-                <el-row>
-                    <el-col :span="4" style="justify-content: center;display: flex;">
-                        <el-dropdown size="medium" split-button type="primary" @command="chooseProject">
-                            选择项目
-                            <el-dropdown-menu slot="dropdown">
-                                <el-dropdown-item v-for="item in projectList" v-bind:command="item.id">项目{{item.name}}</el-dropdown-item>
-                            </el-dropdown-menu>
-                        </el-dropdown>
-                    </el-col>
-                    <el-col :span="20">
-                        <el-tabs v-model="tabIndex" :before-leave="clickTab">
-                            <el-tab-pane name="a" label="上传日志数据"></el-tab-pane>
-                            <el-tab-pane name="b" label="定义日志格式">1</el-tab-pane>
-                            <el-tab-pane name="c" label="生成日志图表">2</el-tab-pane>
-                        </el-tabs>
-                    </el-col>
+                <el-row v-if="flag">
+                    <el-steps :active="activeStep" finish-status="success">
+                        <el-step title="创建新项目"></el-step>
+                        <el-step title="选择输入文件"></el-step>
+                        <el-step title="格式化字符串"></el-step>
+                    </el-steps>
                 </el-row>
+                <!--<el-row v-if="flag">-->
+                    <!--<el-col :span="4" style="justify-content: center;display: flex;">-->
+                        <!--<el-dropdown size="medium" split-button type="primary" @command="chooseProject">-->
+                            <!--选择项目-->
+                            <!--<el-dropdown-menu slot="dropdown">-->
+                                <!--<el-dropdown-item v-for="item in projectList" v-bind:command="item.id">项目{{item.name}}</el-dropdown-item>-->
+                            <!--</el-dropdown-menu>-->
+                        <!--</el-dropdown>-->
+                    <!--</el-col>-->
+                    <!--<el-col :span="20">-->
+                        <!--<el-tabs v-model="tabIndex" :before-leave="clickTab">-->
+                            <!--<el-tab-pane name="a" label="上传日志数据"></el-tab-pane>-->
+                            <!--<el-tab-pane name="b" label="定义日志格式">1</el-tab-pane>-->
+                            <!--<el-tab-pane name="c" label="生成日志图表">2</el-tab-pane>-->
+                        <!--</el-tabs>-->
+                    <!--</el-col>-->
+                <!--</el-row>-->
                 <el-row>
                     <el-col :span="3" :offset="1" id="navTitle">最近文件</el-col>
                     <el-col :span="3" :offset="17">
@@ -72,15 +78,16 @@
                         <el-row type="flex" justify="center">
                             <el-col :span="20">
                                 <el-input placeholder="关键词" v-model="searchWord" size="small" id="searchInput">
-                                    <el-button slot="append" icon="el-icon-search" ></el-button>>
+                                    <el-button slot="append" icon="el-icon-search" @click="searchFiles"></el-button>>
                                 </el-input>
                             </el-col>
                         </el-row>
                         <el-row class="topGap" type="flex" justify="center">
                             <el-col :span="20">
                                 <el-row>
-                                    <el-table :data="fileList" style="width:100%;">
+                                    <el-table :data="fileList" style="width:100%;" @selection-change="selectFiles">
                                         <el-table-column
+                                                v-if="flag"
                                                 type="selection"
                                                 width="80">
                                         </el-table-column>
@@ -99,12 +106,14 @@
                                                 min-width="200">
                                             <template slot-scope="scope">
                                                 <el-button
+                                                        v-if="!flag"
                                                         class="deleteBtn"
                                                         size="small"
                                                         @click.native.prevent="deleteFile(scope.$index)">
                                                     移除
                                                 </el-button>
                                                 <el-button
+                                                        v-if="!flag"
                                                         class="downloadBtn"
                                                         size="small"
                                                         @click.native.prevent="downloadFile(scope.$index)">
@@ -138,6 +147,11 @@
                                 {{fileContent}}
                             </el-col>
                         </el-row>
+                        <el-row class="topGap" type="flex" justify="center" v-if="flag">
+                            <el-col :span="3">
+                                <el-button class="downloadBtn" size="medium" @click="setInputBtn">下一步</el-button>
+                            </el-col>
+                        </el-row>
                     </el-col>
                 </el-row>
             </el-main>
@@ -164,7 +178,11 @@
             currentPage:1,
             pageSize:10,
             pageSizeList:[10, 20, 30, 40, 50],
-            fileContent:'选择文件以查看内容'
+            fileContent:'选择文件以查看内容',
+            selectedFiles:[],
+            flag:true, //是否直接进入文件中心
+            activeStep:1,
+            jobId:-1
         },
         methods:{
             onLogout(){
@@ -206,18 +224,34 @@
                     fail(res){
                         that.$message.error('获取文件信息出错！')
                     }
+                });
+                this.getListLength();
+            },
+            getListLength(){
+                let that = this;
+                $.ajax({
+                    url:'/file/count',
+                    method:'GET',
+                    success(res){
+                        if(res.code === 0) {
+                            that.fileListLength = res.data;
+                        }
+                        else{
+                            that.$message.error('获取文件信息出错！')
+                        }
+                    },
+                    fail(res){
+                        that.$message.error('获取文件信息出错！')
+                    }
                 })
             },
             listSizeChange(){
-                console.log(this.pageSize)
                 this.getFileList();
             },
             listPageChange(){
-                console.log(this.currentPage)
                 this.getFileList();
             },
             deleteFile(index){
-                console.log(this.fileList[index].id)
                 this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
@@ -290,27 +324,53 @@
                     this.$message.error('上传文件失败！')
                     return false;
                 }
+            },
+            selectFiles(val){
+                this.selectedFiles = val;
+            },
+            searchFiles(){
+                this.getFileList();
+            },
+            setInputBtn(){
+                let that = this;
+                let filesId=[];
+                for(let i of this.selectedFiles){
+                    filesId.push(i.id)
+                }
+                $.ajax({
+                    url:'/job/setInput',
+                    method:'PUT',
+                    data:{
+                        files:filesId,
+                        jobId:that.jobId
+                    },
+                    success(res){
+                        if(res.code === 0){
+                            window.location.href = '/html/taskDefine.html?jobId='+that.jobId;
+                        }else{
+                            that.$message.error('设定输入文件出错！')
+                        }
+                    },
+                    fail(){
+                        that.$message.error('设定输入文件出错！')
+                    }
+                })
             }
         },
         mounted(){
-            var that = this;
-            $.ajax({
-                url:'/file/count',
-                method:'GET',
-                success(res){
-                    if(res.code === 0) {
-                        that.fileListLength = res.data;
-                        that.getFileList();
-                    }
-                    else{
-                        that.$message.error('获取文件信息出错！')
-                    }
-                },
-                fail(res){
-                    that.$message.error('获取文件信息出错！')
-                }
-            })
-            
+            let that = this;
+            let url = window.location.href;
+
+            if(url.indexOf('flag') >  -1) this.flag = false;
+            else this.flag=true;
+
+            if(url.indexOf('jobId') > -1){
+                let tmp = url.split('jobId=')
+                console.log(tmp)
+                this.jobId = parseInt(tmp[1]);
+            }
+
+            this.getFileList();
             $.ajax({
                 url:'/user/info',
                 method:'GET',

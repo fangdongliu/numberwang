@@ -86,3 +86,35 @@
     color:#303133;
     font-size: small;
 }
+
+.el-card{
+    padding-top: 24px;
+    background-color: rgb(235, 235, 252);
+    cursor:pointer;
+}
+
+.indexImg{
+    width:60%;
+    display: block;
+    margin: 0 auto;
+}
+
+.cardInfo{
+    background-color: #FFF;
+    color: #606266;
+    padding: 0 50px 50px 50px;
+    font-size: large;
+    font-weight: 600;
+}
+
+.arrow{
+    width: 100%;
+    color: #909399;
+    text-align: right;
+    float: right;
+    font-size: 14px;
+}
+
+.arrow i{
+    margin-left: 10px;
+}
