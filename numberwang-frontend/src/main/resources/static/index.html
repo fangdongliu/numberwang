@@ -7,11 +7,18 @@
     <script src="https://cdn.bootcss.com/vue/2.6.9/vue.min.js"></script>
     <link href="https://cdn.bootcss.com/element-ui/2.6.1/theme-chalk/index.css" rel="stylesheet">
     <script src="https://cdn.bootcss.com/element-ui/2.6.1/index.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
     <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
     <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>
-    <link rel="stylesheet" href="../css/stylesheet.css">
-    <link rel="stylesheet" href="../css/shannon.css">
-
+    <link rel="stylesheet" href="./css/stylesheet.css">
+    <link rel="stylesheet" href="./css/ljy.css">
+    <style>
+        [v-clock]{
+            display: none;
+        }
+    </style>
 </head>
 <body>
 <div id="app">
@@ -19,7 +26,7 @@
         <el-header>
             <el-row>
                 <el-col :offset="1" :span="5" style="display: flex;">
-                    <img src="../images/logo.png" style="height:60px; width: auto;"/>
+                    <img src="./images/logo.png" style="height:60px; width: auto;"/>
                     <span class="headerName">方神带我们飞</span>
                 </el-col>
                 <el-col :offset="14" :span="4" style="line-height: 60px;">
@@ -30,98 +37,58 @@
             </el-row>
         </el-header>
         <el-container style="height:100%">
-            <el-main>
-                <!--在此输入内容-->
-                <el-row>
-                    <el-col :span="4" style="justify-content: center;display: flex;">
-                        <el-dropdown size="medium" split-button type="primary" @command="chooseProject">
-                            选择项目
-                            <el-dropdown-menu slot="dropdown">
-                                <el-dropdown-item v-for="item in projectList" v-bind:command="item.id">项目{{item.name}}</el-dropdown-item>
-                            </el-dropdown-menu>
-                        </el-dropdown>
-                    </el-col>
-                    <el-col :span="20">
-                        <el-tabs v-model="tabIndex" :before-leave="clickTab">
-                            <el-tab-pane name="a" label="上传日志数据"></el-tab-pane>
-                            <el-tab-pane name="b" label="定义日志格式">1</el-tab-pane>
-                            <el-tab-pane name="c" label="生成日志图表">2</el-tab-pane>
-                        </el-tabs>
-                    </el-col>
-                </el-row>
-                <el-row>
-                    <el-col :span="3" :offset="1" id="navTitle">最近文件</el-col>
-                    <el-col :span="3" :offset="17"><el-button id="uploadFileBtn" size="small">上传文件</el-button></el-col>
-                </el-row>
-                <el-row class="topGap">
-                    <el-col :offset="1" :span="22">
-                        <el-row type="flex" justify="center">
-                            <el-col :span="20">
-                                <el-input placeholder="关键词" v-model="searchWord" size="small" id="searchInput">
-                                    <el-button slot="append" icon="el-icon-search" ></el-button>>
-                                </el-input>
-                            </el-col>
-                        </el-row>
-                        <el-row class="topGap" type="flex" justify="center">
-                            <el-col :span="20">
-                                <el-row>
-                                    <el-table :data="fileList" style="width:100%;">
-                                        <el-table-column
-                                                type="selection"
-                                                width="80">
-                                        </el-table-column>
-                                        <el-table-column
-                                                prop="filename"
-                                                label="文件名"
-                                                min-width="200">
-                                        </el-table-column>
-                                        <el-table-column
-                                                prop="createDate"
-                                                label="上传日期"
-                                                min-width="200">
-                                        </el-table-column>
-                                        <el-table-column
-                                                label="操作"
-                                                min-width="200">
-                                            <template slot-scope="scope">
-                                                <el-button
-                                                        class="deleteBtn"
-                                                        size="small"
-                                                        @click.native.prevent="deleteFile(scope.$index)">
-                                                    移除
-                                                </el-button>
-                                                <el-button
-                                                        class="downloadBtn"
-                                                        size="small"
-                                                        @click.native.prevent="downloadFile(scope.$index)">
-                                                    下载
-                                                </el-button>
-                                                <el-button
-                                                        class="viewBtn"
-                                                        size="small"
-                                                        @click.native.prevent="viewFile(scope.$index)">
-                                                    预览
-                                                </el-button>
-                                            </template>
-                                        </el-table-column>
-                                    </el-table>
+            <el-container>
+                <el-main>
+                    <el-row>
+                        <el-button type="primary" style="margin-left: 75%" class="newpro-btn" onclick=javascrtpt:jump()>
+                            New Project</el-button>
+                        <el-col :offset="4" :span="16" style="margin-top: 2%">
+                            <el-card shadow="hover" >
+                                <div slot="header" class="card-header">
+                                    <span>Open your project</span>
+                                </div>
+                                <el-row class="topGap">
+                                    <el-col :offset="1" :span="22">
+                                        <el-row class="topGap" type="flex" justify="center">
+                                            <el-col :span="20">
+                                                <el-row>
+                                                    <el-table :data="jobList" style="width:100%;" :row-class-name="tableRowClassName">
+                                                        <el-table-column prop="projectname"  label="Project" width="180"></el-table-column>
+                                                        <el-table-column prop="intro"   label="Describe" class='Describe' width="540"></el-table-column>
+                                                        <el-table-column fixed="right" label="Delete" width="200">
+                                                            <template slot-scope="scope">
+                                                                <el-button size="mini" type="success" @click="open(scope.$index)">Open</el-button>
+                                                                <el-button size="mini" type="danger"
+                                                                        @click="handleEdit(scope.$index)">Delete</el-button>
+                                                            </template>
+                                                        </el-table-column>
+                                                    </el-table>
+                                                </el-row>
+                                                <el-row class="topGap" type="flex" justify="center">
+                                                    <el-pagination
+                                                            @size-change="listSizeChange"
+                                                            @current-change="listPageChange"
+                                                            :current-page.sync="currentPage"
+                                                            :page-sizes="pageSizeList"
+                                                            :page-size.sync="pageSize"
+                                                            layout="sizes, prev, pager, next"
+                                                            :total="jobListLength">
+                                                    </el-pagination>
+                                                </el-row>
+                                            </el-col>
+                                        </el-row>
+                                    </el-col>
                                 </el-row>
-                                <el-row class="topGap" type="flex" justify="center">
-                                    <el-pagination
-                                            @size-change="listSizeChange"
-                                            @current-change="listPageChange"
-                                            :current-page.sync="currentPage"
-                                            :page-sizes="pageSizeList"
-                                            :page-size.sync="pageSize"
-                                            layout="sizes, prev, pager, next"
-                                            :total="fileListLength">
-                                    </el-pagination>
-                                </el-row>
-                            </el-col>
-                        </el-row>
-                    </el-col>
-                </el-row>
-            </el-main>
+                                    </el-table-column>
+                                </el-table>
+                            </el-card>
+                        </el-col>
+                    </el-row>
+
+
+                </el-main>
+                <!--<el-footer>Footer</el-footer>-->
+            </el-container>
         </el-container>
     </el-container>
 </div>
@@ -131,102 +98,154 @@
         el:'#app',
         data:{
             username:'username',
-            projectList:[{
-                name:1,
-                id:1
-            }, {
-                name:2,
-                id:2
-            }],
-            tabIndex:"a",
-            searchWord:'',
-            fileList:[],
-            fileListLength:0,
+            jobListLength:0,
             currentPage:1,
             pageSize:10,
-            pageSizeList:[10, 20, 30, 40, 50]
+            pageSizeList:[10, 20, 30, 40, 50],
+            jobList: [{
+                projectname: '小虎',
+                intro:'huhuhu'
+            },
+                {
+                    projectname: '小虎',
+                    intro:'huhuhu'
+                },
+                {
+                    projectname: '小虎',
+                    intro:'huhuhu'
+                },
+                {
+                    projectname: '小虎',
+                    intro:'huhuhu'
+                },
+                {
+                    projectname: '小虎',
+                    intro:'huhuhu'
+                },
+                {
+                    projectname: '小虎',
+                    intro:'huhuhu'
+                },
+                {
+                    projectname: '小虎',
+                    intro:'huhuhu'
+                },
+                {
+                    projectname: '小虎',
+                    intro:'huhuhu'
+                },
+                {
+                    projectname: '小虎',
+                    intro:'huhuhu'
+                },
+                {
+                    projectname: '小虎',
+                    intro:'huhuhu'
+                },
+                {
+                    projectname: '小虎',
+                    intro:'huhuhu'
+                },
+                {
+                    projectname: '小虎',
+                    intro:'huhuhu'
+                },
+                {
+                    projectname: '小虎',
+                    intro:'huhuhu'
+                }, {
+                    projectname: '小虎',
+                    intro:'huhuhu'
+                }, {
+                    projectname: '小虎',
+                    intro:'huhuhu'
+                }]
+
         },
         methods:{
             onLogout(){
                 window.location.href="/logout";
             },
-            chooseProject(command){
-                console.log(command);
-            },
-            clickTab(a,b){
-                if(a === 'b') {
-                    window.location.href = '/html/taskDefine.html'
-                }
-                else if(a === 'c'){
-                    window.location.href = '/html/taskReport.html'
-                }
-                return false;
-            },
-            getFileList(){
+            getJobList(){
                 let that = this;
                 $.ajax({
-                    url:'/file/list',
+                    url:'/job/list',
                     method:'GET',
                     data:{
                         page:that.currentPage-1,
                         pageSize:that.pageSize,
-                        filename: that.searchWord
                     },
                     success(res){
                         if(res.code === 0){
-                            for(let i of res.data){
-                                i.createDate = i.createDate.substring(0,10)
-                                    + ' '+ i.createDate.substring(11,19)
-                            }
-                            console.log(res.data);
-                            that.fileList = res.data;
+                            that.jobList = res.data;
                         }else{
-                            that.$message.error('获取文件信息出错！')
+                            that.$message.error('获取项目信息出错！')
                         }
                     },
                     fail(res){
-                        that.$message.error('获取文件信息出错！')
+                        that.$message.error('获取项目信息出错！')
                     }
                 })
             },
             listSizeChange(){
                 console.log(this.pageSize)
-                this.getFileList();
+                this.getJobList();
             },
             listPageChange(){
                 console.log(this.currentPage)
-                this.getFileList();
+                this.getJobList();
             },
-            deleteFile(index){
-                console.log(index)
+            tableRowClassName({row, rowIndex}) {
+                if (rowIndex%2 === 1) {
+                    return 'warning-row';
+                }
+                return 'success-row';
             },
-            downloadFile(index){
-                console.log(index)
+            open(index){
+                window.location.href="/html/taskReport.html";
             },
-            viewFile(index){
-                console.log(index);
+            handleEdit(index) {
+
+                this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+
+                    this.$message({
+                        type: 'success',
+                        message: '删除成功!'
+                    });
+                    this.tableData.splice(index, 1);
+                    // console.log(index, rows);//后端删除
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
             }
         },
+
+
         mounted(){
             var that = this;
             $.ajax({
-                url:'/file/count',
+                url:'/job/count',
                 method:'GET',
                 success(res){
-                    console.log(res)
                     if(res.code === 0) {
-                        that.fileListLength = res.data;
+                        that.jobListLength = res.data;
                         that.getFileList();
                     }
                     else{
-                        that.$message.error('获取文件信息出错！')
+                        that.$message.error('获取项目信息出错！')
                     }
                 },
                 fail(res){
-                    that.$message.error('获取文件信息出错！')
+                    that.$message.error('获取项目信息出错！')
                 }
-            })
-
+             })
             $.ajax({
                 url:'/user/info',
                 method:'GET',
@@ -244,6 +263,9 @@
             })
         }
     })
+    function jump(){
+        window.location.href="/html/create.html";
+    }
 </script>
 </body>
 </html>
