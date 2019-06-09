@@ -68,6 +68,11 @@
                                         >打开</el-button>
                                         <el-button
                                                 size="mini"
+                                                type="success"
+                                                @click="change(scope.$index)"
+                                        >修改</el-button>
+                                        <el-button
+                                                size="mini"
                                                 type="danger"
                                                 @click="handleDelete(scope.$index)">删除</el-button>
                                     </template>
@@ -117,6 +122,11 @@
                     return 'warning-row';
                 }
                 return 'success-row';
+            },
+            change(index)
+            {
+                console.log(this.jobList[index].id)
+                window.location.href="/html/fileCenter.html?jobId="+this.jobList[index].id;
             },
             open(index){
                 console.log(this.jobList[index].id)
