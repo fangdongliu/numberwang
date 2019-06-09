@@ -55,28 +55,28 @@
                 <el-aside width="250px">
                     <h6 class="chartListTitle">图表展示项</h6>
                     <el-menu
-                            default-active="requestBrowser"
+                            :default-active="1"
                             mode="vertical"
                             @select="handleSelect">
-                        <el-menu-item index="requestBrowser" class="chartListItem">
+                        <el-menu-item index="1" class="chartListItem">
                             <span slot="title">请求浏览器分布</span>
                         </el-menu-item>
-                        <el-menu-item index="requestProtocol" class="chartListItem">
+                        <el-menu-item index="2" class="chartListItem">
                             <span slot="title">请求协议分布</span>
                         </el-menu-item>
-                        <el-menu-item index="requestTime" class="chartListItem">
+                        <el-menu-item index="3" class="chartListItem">
                             <span slot="title">请求时间分布</span>
                         </el-menu-item>
-                        <el-menu-item index="requestUrl" class="chartListItem">
+                        <el-menu-item index="4" class="chartListItem">
                             <span slot="title">请求URL分布</span>
                         </el-menu-item>
-                        <el-menu-item index="staticResourceAccess" class="chartListItem">
+                        <el-menu-item index="5" class="chartListItem">
                             <span slot="title">静态资源访问分布</span>
                         </el-menu-item>
-                        <el-menu-item index="httpMethod" class="chartListItem">
+                        <el-menu-item index="6" class="chartListItem">
                             <span slot="title">HTTP方法分布</span>
                         </el-menu-item>
-                        <el-menu-item index="returnStatusCode" class="chartListItem">
+                        <el-menu-item index="7" class="chartListItem">
                             <span slot="title">返回状态码分布</span>
                         </el-menu-item>
                     </el-menu>
@@ -138,34 +138,171 @@
                         </el-col>
                     </el-row>
                     <el-container>
-                        <el-aside width="300px">
-                            <div class="datePickerBlock">
-                                <span class="datePickerTitle">起始日期</span>
-                                <br/>
-                                <el-date-picker
-                                        v-model="startDate"
-                                        type="date"
-                                        placeholder="选择日期">
-                                </el-date-picker>
+                        <el-header style="background-color: #FFFFFF;">
+                        <div class="selectChartType">
+                            <template>
+                                <el-select v-model="chartOptionsValue" @change="change">
+                                    <el-option
+                                            v-for="item in chartOptions"
+                                            :key="item.value"
+                                            :label="item.value"
+                                            :value="item.value">
+                                    </el-option>
+                                </el-select>
+                            </template>
+                        </div>
+                        </el-header>
+                        <el-main>
+                            <div id="requestBrowserTable" class="displayTable">
+                            <template>
+                                    <el-table
+                                            :data="requestBrowserData">
+                                        <el-table-column
+                                                prop="date"
+                                                label="日期"
+                                                width="180">
+                                        </el-table-column>
+                                        <el-table-column
+                                                prop="name"
+                                                label="姓名"
+                                                width="180">
+                                        </el-table-column>
+                                        <el-table-column
+                                                prop="address"
+                                                label="地址">
+                                        </el-table-column>
+                                    </el-table>
+                                </template>
                             </div>
-                            <div class="datePickerBlock">
-                                <span class="datePickerTitle">结束日期</span>
-                                <br/>
-                                <el-date-picker
-                                        v-model="endDate"
-                                        type="date"
-                                        placeholder="选择日期">
-                                </el-date-picker>
+                            <div id="requestProtocolTable" class="displayTable">
+                                <template>
+                                    <el-table
+                                            :data="requestProtocolData">
+                                        <!--<el-table-column-->
+                                                <!--prop="date"-->
+                                                <!--label="日期"-->
+                                                <!--width="180">-->
+                                        <!--</el-table-column>-->
+                                        <!--<el-table-column-->
+                                                <!--prop="name"-->
+                                                <!--label="姓名"-->
+                                                <!--width="180">-->
+                                        <!--</el-table-column>-->
+                                        <!--<el-table-column-->
+                                                <!--prop="address"-->
+                                                <!--label="地址">-->
+                                        <!--</el-table-column>-->
+                                    </el-table>
+                                </template>
                             </div>
-                            <div class="createButton">
-                                <el-button type="success" @click="createChart">生成</el-button>
+                            <div id="requestTimeTable" class="displayTable">
+                                <template>
+                                    <el-table
+                                            :data="requestTimeData">
+                                        <!--<el-table-column-->
+                                                <!--prop="date"-->
+                                                <!--label="日期"-->
+                                                <!--width="180">-->
+                                        <!--</el-table-column>-->
+                                        <!--<el-table-column-->
+                                                <!--prop="name"-->
+                                                <!--label="姓名"-->
+                                                <!--width="180">-->
+                                        <!--</el-table-column>-->
+                                        <!--<el-table-column-->
+                                                <!--prop="address"-->
+                                                <!--label="地址">-->
+                                        <!--</el-table-column>-->
+                                    </el-table>
+                                </template>
                             </div>
-                        </el-aside>
-                        <dl-main>
-                            <div id="myChart" style="width: 900px;height:500px;"></div>
-                        </dl-main>
+                            <div id="requestUrlTable" class="displayTable">
+                                <template>
+                                    <el-table
+                                            :data="requestUrlData">
+                                        <!--<el-table-column-->
+                                                <!--prop="date"-->
+                                                <!--label="日期"-->
+                                                <!--width="180">-->
+                                        <!--</el-table-column>-->
+                                        <!--<el-table-column-->
+                                                <!--prop="name"-->
+                                                <!--label="姓名"-->
+                                                <!--width="180">-->
+                                        <!--</el-table-column>-->
+                                        <!--<el-table-column-->
+                                                <!--prop="address"-->
+                                                <!--label="地址">-->
+                                        <!--</el-table-column>-->
+                                    </el-table>
+                                </template>
+                            </div>
+                            <div id="staticResourceAccessTable" class="displayTable">
+                                <template>
+                                    <el-table
+                                            :data="staticResourceAccessData">
+                                        <!--<el-table-column-->
+                                                <!--prop="date"-->
+                                                <!--label="日期"-->
+                                                <!--width="180">-->
+                                        <!--</el-table-column>-->
+                                        <!--<el-table-column-->
+                                                <!--prop="name"-->
+                                                <!--label="姓名"-->
+                                                <!--width="180">-->
+                                        <!--</el-table-column>-->
+                                        <!--<el-table-column-->
+                                                <!--prop="address"-->
+                                                <!--label="地址">-->
+                                        <!--</el-table-column>-->
+                                    </el-table>
+                                </template>
+                            </div>
+                            <div id="httpMethodTable" class="displayTable">
+                                <template>
+                                    <el-table
+                                            :data="httpMethodData">
+                                        <!--<el-table-column-->
+                                                <!--prop="date"-->
+                                                <!--label="日期"-->
+                                                <!--width="180">-->
+                                        <!--</el-table-column>-->
+                                        <!--<el-table-column-->
+                                                <!--prop="name"-->
+                                                <!--label="姓名"-->
+                                                <!--width="180">-->
+                                        <!--</el-table-column>-->
+                                        <!--<el-table-column-->
+                                                <!--prop="address"-->
+                                                <!--label="地址">-->
+                                        <!--</el-table-column>-->
+                                    </el-table>
+                                </template>
+                            </div>
+                            <div id="returnStatusCodeTable" class="displayTable">
+                                <template>
+                                    <el-table
+                                            :data="returnStatusCodeData">
+                                        <!--<el-table-column-->
+                                                <!--prop="date"-->
+                                                <!--label="日期"-->
+                                                <!--width="180">-->
+                                        <!--</el-table-column>-->
+                                        <!--<el-table-column-->
+                                                <!--prop="name"-->
+                                                <!--label="姓名"-->
+                                                <!--width="180">-->
+                                        <!--</el-table-column>-->
+                                        <!--<el-table-column-->
+                                                <!--prop="address"-->
+                                                <!--label="地址">-->
+                                        <!--</el-table-column>-->
+                                    </el-table>
+                                </template>
+                            </div>
+                            <div id="myChart"></div>
+                        </el-main>
                     </el-container>
-
                 </el-main>
             </el-container>
         </el-container>
@@ -177,8 +314,6 @@
         el:'#app',
         data:{
             username:'username',
-            myChart:null,
-            selectOption:"requestBrowser",
             projectList:[{
                 name:1,
                 id:1
@@ -187,8 +322,42 @@
                 id:2
             }],
             tabIndex:"c",
-            startDate:'',
-            endDate:''
+            selectOption:"requestBrowser",
+            chartOptions: [{
+                value: '表格'
+            }, {
+                value: '柱状图'
+            }, {
+                value: '折线图'
+            }, {
+                value: '饼图'
+            }],
+            chartOptionsValue: '表格',
+            myChart:null,
+            requestBrowserData:[{
+                date: '2016-05-02',
+                name: '王小虎',
+                address: '上海市普陀区金沙江路 1518 弄'
+            }, {
+                date: '2016-05-04',
+                name: '王小虎',
+                address: '上海市普陀区金沙江路 1517 弄'
+            }, {
+                date: '2016-05-01',
+                name: '王小虎',
+                address: '上海市普陀区金沙江路 1519 弄'
+            }, {
+                date: '2016-05-03',
+                name: '王小虎',
+                address: '上海市普陀区金沙江路 1516 弄'
+            }],
+            requestProtocolData:[],
+            requestTimeData:[],
+            requestUrlData:[],
+            staticResourceAccessData:[],
+            httpMethodData:[],
+            returnStatusCodeData:[],
+
         },
         methods:{
             onLogout(){
@@ -243,18 +412,6 @@
                 this.selectOption=key.toString();
             },
             getRequestBrowser(){
-                if(this.startDate===''&&this.endDate===''){
-                    alert("请选择起始日期和结束日期！");
-                    return;
-                }
-                else if(this.startDate===''){
-                    alert("请选择起始日期！");
-                    return;
-                }
-                else if(this.endDate===''){
-                    alert("请选择结束日期！");
-                    return;
-                }
                 var option = {
                     title: {
                         text: '用户数量'
@@ -284,23 +441,20 @@
             getEmptyChart(){
                 var option = {
                     title: {
-                        text: '用户数量'
+                        text: '空表'
                     },
-                    tooltip: {},
-                    // legend: {
-                    //     data:['销量']
-                    // },
-                    xAxis: {
-                        data: ["数量","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
-                    },
+                    xAxis: {},
                     yAxis: {},
                     series: [{
-                        name: '销量',
+                        name: '空表',
                         type: 'bar',
                         data: null
                     }]
                 };
                 return option;
+            },
+            change(){
+                console.log(this.value);
             }
         },
         mounted(){
@@ -321,6 +475,7 @@
                 }
             });
             this.myChart = echarts.init(document.getElementById('myChart'));
+            //this.myChart.setOption(this.getEmptyChart());
         }
     })
 </script>
