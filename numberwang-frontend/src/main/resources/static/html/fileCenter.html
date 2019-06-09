@@ -33,11 +33,12 @@
         </el-header>
         <el-container style="height:100%">
             <el-main>
-                <el-row v-if="flag">
+                <el-row v-if="flag"style="width: 76%; margin-left: 12%">
                     <el-steps :active="activeStep" finish-status="success">
                         <el-step title="创建新项目"></el-step>
                         <el-step title="选择输入文件"></el-step>
                         <el-step title="格式化字符串"></el-step>
+                        <el-step title="确认提交"></el-step>
                     </el-steps>
                 </el-row>
                 <!--<el-row v-if="flag">-->
@@ -58,8 +59,8 @@
                     <!--</el-col>-->
                 <!--</el-row>-->
                 <el-row>
-                    <el-col :span="3" :offset="1" id="navTitle">最近文件</el-col>
-                    <el-col :span="3" :offset="17">
+                    <el-col :span="3" :offset="3" id="navTitle">最近文件</el-col>
+                    <el-col :span="3" :offset="20">
                         <el-upload
                                 class="upload-demo"
                                 ref="upload"
@@ -147,9 +148,20 @@
                                 {{fileContent}}
                             </el-col>
                         </el-row>
-                        <el-row class="topGap" type="flex" justify="center" v-if="flag">
-                            <el-col :span="3">
+                        <el-row class="topGap" type="flex" justify="center" v-if="flag" >
+                            <el-col :span="3" >
                                 <el-button class="downloadBtn" size="medium" @click="setInputBtn">下一步</el-button>
+                            </el-col>
+                            <el-col :span="3" >
+                                <el-button class="downloadBtn" size="medium" @click="to_create">上一步</el-button>
+                            </el-col>
+                            <el-col :span="3" >
+                                <el-button class="downloadBtn" size="medium" @click="to_index">返回</el-button>
+                            </el-col>
+                        </el-row>
+                        <el-row class="topGap" type="flex" justify="center" v-if="!flag">
+                            <el-col :span="3" style="display: flex;justify-content: center;">
+                                <el-button class="downloadBtn" size="medium" @click="to_index">返回</el-button>
                             </el-col>
                         </el-row>
                     </el-col>
@@ -191,14 +203,8 @@
             chooseProject(command){
                 console.log(command);
             },
-            clickTab(a,b){
-                if(a === 'b') {
-                    window.location.href = '/html/taskDefine.html'
-                }
-                else if(a === 'c'){
-                    window.location.href = '/html/taskReport.html'
-                }
-                return false;
+            to_create(){
+                window.location.href="/html/create.html?jobId="+this.jobId;
             },
             getFileList(){
                 let that = this;
@@ -312,6 +318,7 @@
                 })
             },
             uploadSuccess(res){
+                console.log(res)
                 if(res.code === 0) this.getFileList();
                 else this.$message.error('上传文件失败！')
             },
@@ -330,6 +337,9 @@
             },
             searchFiles(){
                 this.getFileList();
+            },
+            to_index(){
+                window.location.href = '../index.html';
             },
             setInputBtn(){
                 let that = this;

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/vue/2.6.9/vue.min.js"></script>
+    <link href="https://cdn.bootcss.com/element-ui/2.6.1/theme-chalk/index.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/element-ui/2.6.1/index.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>
+    <link rel="stylesheet" href="../css/stylesheet.css">
+    <link rel="stylesheet" href="../css/shannon.css">
+</head>
+<body>
+<div id="app">
+    <el-container style="height:100%" v-clock>
+        <el-header>
+            <el-row>
+                <el-col :offset="1" :span="5" style="display: flex;">
+                    <img src="../images/logo.png" style="height:60px; width: auto;"/>
+                    <span class="headerName">方神带我们飞</span>
+                </el-col>
+                <el-col :offset="14" :span="4" style="line-height: 60px;">
+                    <span class="headerUsername">{{username}}</span>
+                    <el-divider direction="vertical"></el-divider>
+                    <span @click="onLogout" id="logoutBtn">logout</span>
+                </el-col>
+            </el-row>
+        </el-header>
+        <el-container style="height:100%">
+            <el-container>
+                <el-main>
+                    <el-row>
+                        <el-steps :active="activeStep" finish-status="success">
+                            <el-step title="创建新项目"></el-step>
+                            <el-step title="选择输入文件"></el-step>
+                            <el-step title="格式化字符串"></el-step>
+                            <el-step title="确认提交"></el-step>
+                        </el-steps>
+                    </el-row>
+                    <el-row type="flex" justify="center">
+                        <el-col :span="12">
+                            <el-card style="cursor: default">
+                                <el-row type="flex" justify="center">
+                                    <el-col :span="24">
+                                        <el-row>
+                                            <el-col :span="5">项目名称</el-col>
+                                            <el-col :span="19">{{jobName}}</el-col>
+                                        </el-row>
+                                        <el-row>
+                                            <el-col :span="5">项目描述</el-col>
+                                            <el-col :span="19">{{jobDescription}}</el-col>
+                                        </el-row>
+                                        <el-row>
+                                            <el-col :span="5">输入文件个数</el-col>
+                                            <el-col :span="19">
+                                                {{fileCount}}
+                                            </el-col>
+                                        </el-row>
+                                        <el-row>
+                                            <el-col :span="5">dateFormat</el-col>
+                                            <el-col :span="19">{{dateFormat}}</el-col>
+                                        </el-row>
+                                        <el-row>
+                                            <el-col :span="5">lineFormat</el-col>
+                                            <el-col :span="19">{{lineFormat}}</el-col>
+                                        </el-row>
+                                        <el-row type="flex" justify="center">
+                                            <el-col :span="19" style="display: flex; justify-content: center;"><el-button @click="onSubmit">确认提交</el-button></el-col>
+                                        </el-row>
+                                    </el-col>
+                                </el-row>
+                            </el-card>
+                        </el-col>
+                    </el-row>
+                </el-main>
+            </el-container>
+        </el-container>
+    </el-container>
+</div>
+
+<script>
+    var vue=new Vue({
+        el:'#app',
+        data:{
+            username:'username',
+            jobId:-1,
+            activeStep:3,
+            jobName:'',
+            jobDescription:'',
+            fileCount:0,
+            dateFormat:'',
+            lineFormat:''
+        },
+        methods:{
+            onLogout(){
+                window.location.href="/logout";
+            },
+            chooseProject(command){
+                console.log(command);
+            },
+            clickTab(a,b){
+                if(a === 'a') {
+                    window.location.href = '/html/fileCenter.html'
+                }
+                else if(a === 'c'){
+                    window.location.href = '/html/taskReport.html'
+                }
+                return false;
+            },
+            onSubmit(){
+                let that = this;
+                $.ajax({
+                    url:'/job/submit',
+                    method:'PUT',
+                    data:{
+                        jobId: that.jobId
+                    },
+                    success(res){
+                        if(res.code === 0){
+                            window.location.href = '/html/taskReport.html?jobId=' + that.jobId;
+                        }
+                        else{
+                            that.$message.error('提交失败！')
+                        }
+                    },
+                    fail(){ that.$message.error('提交失败！')}
+                })
+            }
+        },
+        mounted(){
+            var that = this;
+            let url = window.location.href;
+
+            if(url.indexOf('jobId') > -1){
+                let tmp = url.split('jobId=');
+                this.jobId = parseInt(tmp[1]);
+            }
+
+            $.ajax({
+                url:'/user/info',
+                method:'GET',
+                success(res){
+                    if(res.code === 0){
+                        that.username = res.data.username;
+                    }
+                    else{
+                        that.$message.error('获取用户信息出错！');
+                    }
+                },
+                error(res){
+                    that.$message.error('获取用户信息出错！');
+                }
+            })
+            
+            $.ajax({
+                url:'/job/detail',
+                method:'GET',
+                data:{
+                    jobId:that.jobId
+                },
+                success(res){
+                    if(res.code === 0){
+                        that.jobName = res.data.jobName;
+                        that.jobDescription = res.data.description;
+                        that.lineFormat = res.data.lineFormat;
+                        that.dateFormat = res.data.dateFormat;
+                        that.fileCount = res.data.input.split(',').length;
+                    }
+                },
+                fail:console.log
+            })
+        }
+    })
+</script>
+</body>
+</html>

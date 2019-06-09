@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>格式化字符串</title>
     <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/vue/2.6.9/vue.min.js"></script>
     <link href="https://cdn.bootcss.com/element-ui/2.6.1/theme-chalk/index.css" rel="stylesheet">
@@ -14,6 +14,8 @@
     <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>
     <link rel="stylesheet" href="../css/stylesheet.css">
     <link rel="stylesheet" href="../css/ljy.css">
+    <link rel="stylesheet" href="../css/shannon.css">
+
 </head>
 <body>
 <div id="app">
@@ -35,10 +37,11 @@
             <el-container>
                 <el-main>
                     <el-row>
-                        <el-steps :active="activeStep" finish-status="success">
+                        <el-steps :active="activeStep" finish-status="success"style="width: 58%; margin-left: 21%">
                             <el-step title="创建新项目"></el-step>
                             <el-step title="选择输入文件"></el-step>
                             <el-step title="格式化字符串"></el-step>
+                            <el-step title="确认提交"></el-step>
                         </el-steps>
                     </el-row>
                     <el-row style="width: 100% ;margin-top: 4%">
@@ -75,7 +78,7 @@
                                                 <el-button id="createBtn" type="success"  @click="submitForm('defineForm')" >分析日志</el-button>
                                             </el-col>
                                             <el-col :offset="8" :span="4">
-                                                <el-button id="resetBtn" type="danger"  @click="resetForm('defineForm')" >重置</el-button>
+                                                <el-button class="downloadBtn" size="medium" @click="to_filecenter">上一步</el-button>
                                             </el-col>
                                         </el-row>
                                     </el-form-item>
@@ -113,14 +116,8 @@
             chooseProject(command){
                 console.log(command);
             },
-            clickTab(a,b){
-                if(a === 'a') {
-                    window.location.href = '/html/fileCenter.html'
-                }
-                else if(a === 'c'){
-                    window.location.href = '/html/taskReport.html'
-                }
-                return false;
+            to_filecenter(){
+                window.location.href="/html/fileCenter.html?jobId="+this.jobId
             },
             submitForm(formName) {
                 var that=this;
@@ -133,13 +130,14 @@
                                 dateFormat:that.defineForm.define,
                                 jobId:that.jobId,
                                 lineFormat: that.defineForm.lineFormat,
-                                suffix: that.defineForm.suffix
+                                suffix:''
                             },
                             success(res){
                                 if(res.code === 0){
-                                    window.location.href = '/html/taskReport.html?jobId='+that.jobId;
+                                    window.location.href = '/html/confirmSubmit.html?jobId='+that.jobId;
                                 }
                                 else{
+                                    console.log(res)
                                     that.$message.error('format错误');
                                 }
                             },
@@ -151,16 +149,8 @@
                     }
                 });
             },
-            resetForm(formName) {
-                console.log(this.$refs)
-                console.log(this.$refs[formName])
-
-                this.activeFlag=
-                    this.$refs[formName].resetFields();
-                console.log(formName);
-            },
             openHelp(){
-                this.$alert('<strong>这是 <i>HTML</i> 片段</strong>', '如何定义日志格式     9', {
+                this.$alert('1', '如何定义日志格式', {
                     dangerouslyUseHTMLString: true
                 });
             }

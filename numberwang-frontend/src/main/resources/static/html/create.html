@@ -7,7 +7,10 @@
     <script src="https://cdn.bootcss.com/vue/2.6.9/vue.min.js"></script>
     <link href="https://cdn.bootcss.com/element-ui/2.6.1/theme-chalk/index.css" rel="stylesheet">
     <script src="https://cdn.bootcss.com/element-ui/2.6.1/index.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
     <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
     <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>
     <link rel="stylesheet" href="../css/stylesheet.css">
     <link rel="stylesheet" href="../css/ljy.css">
@@ -30,14 +33,15 @@
         </el-header>
         <el-container style="height:100%">
             <el-main>
-                <el-row>
-                    <el-steps :active="activeStep" finish-status="success">
+                <el-row style="width: 60%; margin-left: 20%">
+                    <el-steps :active="activeStep" finish-status="success" >
                         <el-step title="创建新项目"></el-step>
                         <el-step title="选择输入文件"></el-step>
                         <el-step title="格式化字符串"></el-step>
+                        <el-step title="确认提交"></el-step>
                     </el-steps>
                 </el-row>
-                <el-row style="width: 100% ;margin-top: 6%">
+                <el-row style="width: 100% ;margin-top: 4%">
                     <el-col :offset="5" :span="14">
                         <el-card shadow="hover" >
                             <div slot="header" class="card-header">
