@@ -54,85 +54,84 @@
             </el-header>
             <el-container>
                 <el-aside width="250px">
-                    <h6 class="chartListTitle">图表展示项</h6>
+                    <h6 class="listTitle">图表展示项</h6>
                     <el-menu
-                            :default-active="1"
                             mode="vertical"
-                            @select="handleSelect">
-                        <el-menu-item index="1" class="chartListItem">
-                            <span slot="title">请求浏览器分布</span>
+                            @select="listChangeHandle">
+                        <el-menu-item index="requestBrowser" class="listItem">
+                            <span>请求浏览器分布</span>
                         </el-menu-item>
-                        <el-menu-item index="2" class="chartListItem">
-                            <span slot="title">请求协议分布</span>
+                        <el-menu-item index="requestProtocol" class="listItem">
+                            <span>请求协议分布</span>
                         </el-menu-item>
-                        <el-menu-item index="3" class="chartListItem">
-                            <span slot="title">请求时间分布</span>
+                        <el-menu-item index="requestTime" class="listItem">
+                            <span>请求时间分布</span>
                         </el-menu-item>
-                        <el-menu-item index="4" class="chartListItem">
-                            <span slot="title">请求URL分布</span>
+                        <el-menu-item index="requestUrl" class="listItem">
+                            <span>请求URL分布</span>
                         </el-menu-item>
-                        <el-menu-item index="5" class="chartListItem">
-                            <span slot="title">静态资源访问分布</span>
+                        <el-menu-item index="staticResourceAccess" class="listItem">
+                            <span>静态资源访问分布</span>
                         </el-menu-item>
-                        <el-menu-item index="6" class="chartListItem">
-                            <span slot="title">HTTP方法分布</span>
+                        <el-menu-item index="httpMethod" class="listItem">
+                            <span>HTTP方法分布</span>
                         </el-menu-item>
-                        <el-menu-item index="7" class="chartListItem">
-                            <span slot="title">返回状态码分布</span>
+                        <el-menu-item index="returnStatusCode" class="listItem">
+                            <span>返回状态码分布</span>
                         </el-menu-item>
                     </el-menu>
                 </el-aside>
                 <el-main>
-                    <h6 class="keyIndicator">关键指标</h6>
+                    <h6 class="keyIndicatorTitle">关键指标</h6>
                     <el-row>
                         <el-col :span="6">
-                            <el-card shadow="never">
+                            <el-card shadow="hover">
                                 <div>
                                     <span class="keyIndicatorText">
                                         用户数量
                                     </span>
                                     <br/>
                                     <span class="keyIndicatorNumber">
-                                        77
+                                        {{userNumber}}
                                     </span>
                                 </div>
                             </el-card>
                         </el-col>
                         <el-col :span="6">
-                            <el-card shadow="never">
+                            <el-card shadow="hover">
                                 <div>
                                     <span class="keyIndicatorText">
                                         访问次数
                                     </span>
                                     <br/>
                                     <span class="keyIndicatorNumber">
-                                        152
+                                        {{viewNumber}}
                                     </span>
                                 </div>
                             </el-card>
                         </el-col>
                         <el-col :span="6">
-                            <el-card shadow="never">
+                            <el-card shadow="hover">
                                 <div>
                                     <span class="keyIndicatorText">
                                         发送总字节数
                                     </span>
                                     <br/>
                                     <span class="keyIndicatorNumber">
-                                        253
+                                        {{totalSendBytes}}
                                     </span>
                                 </div>
                             </el-card>
                         </el-col>
                         <el-col :span="6">
-                            <el-card shadow="never">
+                            <el-card shadow="hover">
                                 <div>
                                     <span class="keyIndicatorText">
                                         接收总字节数
                                     </span>
                                     <br/>
                                     <span class="keyIndicatorNumber">
-                                        100
+                                        {{totalReceiveBytes}}
                                     </span>
                                 </div>
                             </el-card>
@@ -140,13 +139,12 @@
                     </el-row>
                     <el-container>
                         <el-header style="background-color: #FFFFFF;">
-                        <div class="selectChartType">
+                        <div class="displayType">
                             <template>
-                                <el-select v-model="chartOptionsValue" @change="change">
+                                <el-select v-model="displayValue" @change="displayChangeHandle">
                                     <el-option
-                                            v-for="item in chartOptions"
-                                            :key="item.value"
-                                            :label="item.value"
+                                            v-for="item in displayOptions"
+                                            :label="item.label"
                                             :value="item.value">
                                     </el-option>
                                 </el-select>
@@ -323,18 +321,44 @@
                 id:2
             }],
             tabIndex:"c",
-            selectOption:"requestBrowser",
-            chartOptions: [{
-                value: '表格'
+
+            //图表展示项的值，默认为请求浏览器分布
+            listValue: 'requestBrowser',
+
+            displayOptions: [{
+                value: 'form',
+                label: '表格'
             }, {
-                value: '柱状图'
+                value: 'barChart',
+                label: '柱状图'
             }, {
-                value: '折线图'
+                value: 'lineChart',
+                label: '折线图'
             }, {
-                value: '饼图'
+                value: 'pieChart',
+                label: '饼图'
             }],
-            chartOptionsValue: '表格',
+
+            //展示类型的值，默认为表格
+            displayValue: 'form',
+
+            //4个统计数据
+            userNumber:0,
+            viewNumber:0,
+            totalSendBytes:0,
+            totalReceiveBytes:0,
+
+            //7个表格和图表element
+            requestBrowserTable:null,
+            requestProtocolTable:null,
+            requestTimeTable:null,
+            requestUrlTable:null,
+            staticResourceAccessTable:null,
+            httpMethodTable:null,
+            returnStatusCodeTable:null,
             myChart:null,
+
+            //7个表格数据
             requestBrowserData:[{
                 date: '2016-05-02',
                 name: '王小虎',
@@ -376,6 +400,35 @@
                 }
                 return false;
             },
+
+            //初始化表格和图表
+            init(){
+                this.requestBrowserTable=document.getElementById("requestBrowserTable");
+                this.requestProtocolTable=document.getElementById("requestProtocolTable");
+                this.requestTimeTable=document.getElementById("requestTimeTable");
+                this.requestUrlTable=document.getElementById("requestUrlTable");
+                this.staticResourceAccessTable=document.getElementById("staticResourceAccessTable");
+                this.httpMethodTable=document.getElementById("httpMethodTable");
+                this.returnStatusCodeTable=document.getElementById("returnStatusCodeTable");
+                this.myChart=document.getElementById("myChart");
+            },
+
+            //处理展示项变化的回调函数
+            listChangeHandle(index, indexPath) {
+                if(this.listValue===index.toString()){
+                    return;
+                }
+                this.listValue=index.toString();
+                //TODO:进行切换
+            },
+
+            //处理展示类型变化的回调函数
+            displayChangeHandle(){
+                //TODO:进行切换
+                console.log(this.displayValue);
+            },
+
+            //待修改
             createChart(){
                 var option=null;
                 console.log(this.selectOption);
@@ -409,29 +462,28 @@
                 }
                 this.myChart.setOption(option);
             },
-            handleSelect(key, keyPath) {
-                this.selectOption=key.toString();
-            },
+
+            //网络接口，返回未处理的字符串
             getRequestBrowser(){
-                var option = {
-                    title: {
-                        text: '用户数量'
-                    },
-                    tooltip: {},
-                    // legend: {
-                    //     data:['销量']
-                    // },
-                    xAxis: {
-                        data: ["数量","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
-                    },
-                    yAxis: {},
-                    series: [{
-                        name: '销量',
-                        type: 'bar',
-                        data: [5, 20, 36, 10, 10, 20]
-                    }]
-                };
-                return option;
+                // var option = {
+                //     title: {
+                //         text: '用户数量'
+                //     },
+                //     tooltip: {},
+                //     // legend: {
+                //     //     data:['销量']
+                //     // },
+                //     xAxis: {
+                //         data: ["数量","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
+                //     },
+                //     yAxis: {},
+                //     series: [{
+                //         name: '销量',
+                //         type: 'bar',
+                //         data: [5, 20, 36, 10, 10, 20]
+                //     }]
+                // };
+                // return option;
             },
             getRequestProtocol(){},
             getRequestTime(){},
@@ -453,11 +505,10 @@
                     }]
                 };
                 return option;
-            },
-            change(){
-                console.log(this.value);
             }
         },
+
+        //挂载函数
         mounted(){
             var that = this;
             $.ajax({
@@ -475,8 +526,7 @@
                     that.$message.error('获取用户信息出错！');
                 }
             });
-            this.myChart = echarts.init(document.getElementById('myChart'));
-            //this.myChart.setOption(this.getEmptyChart());
+            that.init();
         }
     })
 </script>
