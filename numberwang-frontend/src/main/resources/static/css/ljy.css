@@ -98,4 +98,10 @@ html{
     margin-left: 5px;
 }
 
-
+.el-step__head.is-success{
+    color: #020E52;
+    border-color: #020E52;
+}
+.el-step__title.is-success{
+    color: #020E52;
+}

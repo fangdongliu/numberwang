@@ -115,3 +115,12 @@ html{
 .el-tabs__nav-wrap::after{
     width: 600px;
 }
+/*进度条的完成显示*/
+.el-step__head.is-success{
+    color: #020E52;
+    border-color: #020E52;
+}
+.el-step__title.is-success{
+    color: #020E52;
+}
+
