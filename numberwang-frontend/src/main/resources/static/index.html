@@ -39,21 +39,19 @@
         <el-container style="height:100%">
             <el-main>
                 <el-row type="flex" justify="center" style="margin-top: 40px;">
-                    <el-col :span="8">
-                        <el-card :body-style="{ padding: '0px' }" shadow="hover" @click.native="goFileCenter">
-                            <img src="./images/file2.png" class="indexImg">
+                    <el-col :span="5">
+                        <el-card class="precard" :body-style="{ padding: '0px' }" shadow="hover" @click.native="goFileCenter">
+                            <img src="./images/filecenter.jpg" class="indexImg">
                             <div class="cardInfo">
-                                <el-divider></el-divider>
-                                进入文件中心
+                                <span>进入文件中心</span>
                                 <div class="arrow">点击进入<i class="el-icon-d-arrow-right"></i></div>
                             </div>
                         </el-card>
                     </el-col>
-                    <el-col :span="8" :offset="2">
-                        <el-card :body-style="{ padding: '0px' }" shadow="hover" @click.native="goProjectCenter">
-                            <img src="./images/project2.png" class="indexImg">
+                    <el-col :span="5" :offset="2">
+                        <el-card class="precard" :body-style="{ padding: '0px' }" shadow="hover" @click.native="goProjectCenter">
+                            <img src="./images/projectcenter.jpg" class="indexImg">
                             <div class="cardInfo">
-                                <el-divider></el-divider>
                                 进入项目中心
                                 <div class="arrow">点击进入<i class="el-icon-d-arrow-right"></i></div>
                             </div>

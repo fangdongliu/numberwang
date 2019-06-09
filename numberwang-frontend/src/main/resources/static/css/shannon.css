@@ -87,24 +87,33 @@
     font-size: small;
 }
 
-.el-card{
-    padding-top: 24px;
+.precard{
     background-color: rgb(235, 235, 252);
     cursor:pointer;
+    filter: blur(0.8px);
+}
+.precard:hover{
+    transition-duration: 0.8s;
+    filter: blur(0px);
+    -webkit-transform:scale(1.05);
 }
 
 .indexImg{
-    width:60%;
+    width:100%;
+    height: 100%;
     display: block;
     margin: 0 auto;
 }
+.indexImg:hover{
 
+}
 .cardInfo{
     background-color: #FFF;
     color: #606266;
-    padding: 0 50px 50px 50px;
+    padding: 30px 50px 50px 50px;
     font-size: large;
     font-weight: 600;
+    filter: blur(0px);
 }
 
 .arrow{

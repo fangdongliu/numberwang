@@ -14,6 +14,7 @@
     <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>
     <link rel="stylesheet" href="../css/stylesheet.css">
     <link rel="stylesheet" href="../css/shannon.css">
+    <link rel="stylesheet" href="../css/ljy.css">
 </head>
 <body>
 <div id="app">
@@ -33,7 +34,7 @@
         </el-header>
         <el-container style="height:100%">
             <el-main>
-                <el-row v-if="flag"style="width: 76%; margin-left: 12%">
+                <el-row v-if="flag"style="width: 76%; margin-left: 12% ;margin-bottom:3%">
                     <el-steps :active="activeStep" finish-status="success">
                         <el-step title="创建新项目"></el-step>
                         <el-step title="选择输入文件"></el-step>
@@ -58,31 +59,30 @@
                         <!--</el-tabs>-->
                     <!--</el-col>-->
                 <!--</el-row>-->
-                <el-row>
-                    <el-col :span="3" :offset="3" id="navTitle">最近文件</el-col>
-                    <el-col :span="3" :offset="20">
-                        <el-upload
-                                class="upload-demo"
-                                ref="upload"
-                                action="/file/upload"
-                                :show-file-list="false"
-                                :on-success="uploadSuccess"
-                                :on-error="uploadFail"
-                                :before-upload="beforeUpload"
-                        >
-                            <el-button id="uploadFileBtn" size="small" slot="trigger">上传文件</el-button>
-                        </el-upload>
-                    </el-col>
-                </el-row>
-                <el-row class="topGap">
+
+                <el-row class="topGap" >
                     <el-col :offset="1" :span="22">
-                        <el-row type="flex" justify="center">
-                            <el-col :span="20">
+                        <el-row type="flex" justify="right">
+                            <el-col :span="16" :offset="2" >
                                 <el-input placeholder="关键词" v-model="searchWord" size="small" id="searchInput">
                                     <el-button slot="append" icon="el-icon-search" @click="searchFiles"></el-button>>
                                 </el-input>
                             </el-col>
+                            <el-col :span="3"  :offset="2">
+                                <el-upload
+                                        class="upload-demo"
+                                        ref="upload"
+                                        action="/file/upload"
+                                        :show-file-list="false"
+                                        :on-success="uploadSuccess"
+                                        :on-error="uploadFail"
+                                        :before-upload="beforeUpload"
+                                >
+                                    <el-button class="downloadBtn" size="mini" slot="trigger">上传文件</el-button>
+                                </el-upload>
+                            </el-col>
                         </el-row>
+
                         <el-row class="topGap" type="flex" justify="center">
                             <el-col :span="20">
                                 <el-row>
@@ -149,19 +149,19 @@
                             </el-col>
                         </el-row>
                         <el-row class="topGap" type="flex" justify="center" v-if="flag" >
-                            <el-col :span="3" >
+                            <el-col :span="3" style="display:flex; justify-content: center;" >
                                 <el-button class="downloadBtn" size="medium" @click="setInputBtn">下一步</el-button>
                             </el-col>
-                            <el-col :span="3" >
+                            <el-col :span="3"  style="display:flex; justify-content: center;" >
                                 <el-button class="downloadBtn" size="medium" @click="to_create">上一步</el-button>
                             </el-col>
-                            <el-col :span="3" >
-                                <el-button class="downloadBtn" size="medium" @click="to_index">返回</el-button>
+                            <el-col :span="3" style="display:flex; justify-content: center;" >
+                                <el-button type="danger" size="medium"@click="to_index">返回</el-button>
                             </el-col>
                         </el-row>
                         <el-row class="topGap" type="flex" justify="center" v-if="!flag">
                             <el-col :span="3" style="display: flex;justify-content: center;">
-                                <el-button class="downloadBtn" size="medium" @click="to_index">返回</el-button>
+                                <el-button  type="danger" @click="to_index">返回</el-button>
                             </el-col>
                         </el-row>
                     </el-col>
