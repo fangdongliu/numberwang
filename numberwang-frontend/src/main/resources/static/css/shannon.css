@@ -127,3 +127,36 @@
 .arrow i{
     margin-left: 10px;
 }
+
+#infoDiv{
+    border:1px solid #d7dae2;
+    /*border-bottom: none;*/
+    background-color: #FFF;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+}
+
+.infoLine{
+    /*border-bottom: 1px solid #d7dae2;*/
+    height: 50px;
+}
+
+.infoTitle{
+    line-height: 50px;
+    /*border-right:1px solid #d7dae2;*/
+    color: #202958;
+    font-weight: bold;
+    padding:0 10px;
+}
+
+.infoContent{
+    line-height: 50px;
+    color: #606266;
+    padding:0 10px;
+}
+
+.helpPara{
+    text-indent: 30px;
+    margin-bottom: 10px;
+    color: #303133;
+}

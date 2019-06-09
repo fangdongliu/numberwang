@@ -142,7 +142,7 @@
                                 }
                             },
                             fail:console.log
-                         })
+                        })
                     } else {
                         console.log('error submit!!');
                         return false;
@@ -150,9 +150,7 @@
                 });
             },
             openHelp(){
-                this.$alert('1', '如何定义日志格式', {
-                    dangerouslyUseHTMLString: true
-                });
+                window.location.href='/html/help.html?jobId='+ this.jobId;
             }
         },
         mounted(){

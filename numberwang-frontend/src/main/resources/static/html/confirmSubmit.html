@@ -42,39 +42,38 @@
                             <el-step title="确认提交"></el-step>
                         </el-steps>
                     </el-row>
-                    <el-row type="flex" justify="center">
+                    <el-row type="flex" justify="center" class="topGap">
                         <el-col :span="12">
-                            <el-card style="cursor: default">
-                                <el-row type="flex" justify="center">
-                                    <el-col :span="24">
-                                        <el-row>
-                                            <el-col :span="5">项目名称</el-col>
-                                            <el-col :span="19">{{jobName}}</el-col>
-                                        </el-row>
-                                        <el-row>
-                                            <el-col :span="5">项目描述</el-col>
-                                            <el-col :span="19">{{jobDescription}}</el-col>
-                                        </el-row>
-                                        <el-row>
-                                            <el-col :span="5">输入文件个数</el-col>
-                                            <el-col :span="19">
-                                                {{fileCount}}
-                                            </el-col>
-                                        </el-row>
-                                        <el-row>
-                                            <el-col :span="5">dateFormat</el-col>
-                                            <el-col :span="19">{{dateFormat}}</el-col>
-                                        </el-row>
-                                        <el-row>
-                                            <el-col :span="5">lineFormat</el-col>
-                                            <el-col :span="19">{{lineFormat}}</el-col>
-                                        </el-row>
-                                        <el-row type="flex" justify="center">
-                                            <el-col :span="19" style="display: flex; justify-content: center;"><el-button @click="onSubmit">确认提交</el-button></el-col>
-                                        </el-row>
-                                    </el-col>
-                                </el-row>
-                            </el-card>
+                            <el-row type="flex" justify="center">
+                                <el-col :span="24" id="infoDiv">
+                                    <el-row class="infoLine">
+                                        <el-col :span="7" class="infoTitle">项目名称</el-col>
+                                        <el-col :span="17" class="infoContent">{{jobName}}</el-col>
+                                    </el-row>
+                                    <el-row class="infoLine">
+                                        <el-col :span="7" class="infoTitle">项目描述</el-col>
+                                        <el-col :span="17" class="infoContent">{{jobDescription}}</el-col>
+                                    </el-row>
+                                    <el-row class="infoLine">
+                                        <el-col :span="7" class="infoTitle">输入文件个数</el-col>
+                                        <el-col :span="17" class="infoContent">
+                                            {{fileCount}}
+                                        </el-col>
+                                    </el-row>
+                                    <el-row class="infoLine">
+                                        <el-col :span="7" class="infoTitle">dateFormat</el-col>
+                                        <el-col :span="17" class="infoContent">{{dateFormat}}</el-col>
+                                    </el-row>
+                                    <el-row class="infoLine">
+                                        <el-col :span="7" class="infoTitle">lineFormat</el-col>
+                                        <el-col :span="17" class="infoContent">{{lineFormat}}</el-col>
+                                    </el-row>
+                                </el-col>
+                            </el-row>
+                            <el-row type="flex" justify="center" class="topGap">
+                                <el-col :span="5" style="display: flex; justify-content: center;"><el-button class="downloadBtn" @click="onSubmit">确认提交</el-button></el-col>
+                                <el-col :span="5" style="display: flex; justify-content: center;"><el-button class="deleteBtn" @click="back">上一步</el-button></el-col>
+                            </el-row>
                         </el-col>
                     </el-row>
                 </el-main>
@@ -130,6 +129,9 @@
                     },
                     fail(){ that.$message.error('提交失败！')}
                 })
+            },
+            back(){
+                window.location.href='/html/taskDefine.html?jobId='+ this.jobId;
             }
         },
         mounted(){
