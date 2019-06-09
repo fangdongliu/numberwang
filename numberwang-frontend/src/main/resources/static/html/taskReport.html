@@ -357,6 +357,7 @@
             httpMethodTable:null,
             returnStatusCodeTable:null,
             myChart:null,
+            eCharts:null,
 
             //7个表格数据
             requestBrowserData:[{
@@ -411,6 +412,7 @@
                 this.httpMethodTable=document.getElementById("httpMethodTable");
                 this.returnStatusCodeTable=document.getElementById("returnStatusCodeTable");
                 this.myChart=document.getElementById("myChart");
+                this.eCharts=echarts.init(this.myChart);
             },
 
             //处理展示项变化的回调函数
@@ -428,40 +430,57 @@
                 console.log(this.displayValue);
             },
 
-            //待修改
-            createChart(){
-                var option=null;
-                console.log(this.selectOption);
-                switch (this.selectOption) {
-                    case "requestBrowser":
-                        option=this.getRequestBrowser();
-                        break;
-                    case "requestProtocol":
-                        option=this.getRequestProtocol();
-                        break;
-                    case "requestTime":
-                        option=this.getRequestTime();
-                        break;
-                    case "requestUrl":
-                        option=this.getRequestUrl();
-                        break;
-                    case "staticResourceAccess":
-                        option=this.getStaticResourceAccess();
-                        break;
-                    case "httpMethod":
-                        option=this.getHttpMethod();
-                        break;
-                    case "returnStatusCode":
-                        option=this.getReturnStatusCode();
-                        break;
-                    default:
-                        break;
-                }
-                if(option==null){
-                    option=this.getEmptyChart();
-                }
-                this.myChart.setOption(option);
+            setNone(){
+                this.requestBrowserTable.style.display="none";
+                this.requestProtocolTable.style.display="none";
+                this.requestTimeTable.style.display="none";
+                this.requestUrlTable.style.display="none";
+                this.staticResourceAccessTable.style.display="none";
+                this.httpMethodTable.style.display="none";
+                this.returnStatusCodeTable.style.display="none";
+                this.myChart.style.display="none";
             },
+
+            display(){
+                this.setNone();
+                this.myChart.style.display="inline";
+                this.eCharts.setOption(this.getEmptyChart());
+            },
+
+            // //待修改
+            // createChart(){
+            //     var option=null;
+            //     console.log(this.selectOption);
+            //     switch (this.selectOption) {
+            //         case "requestBrowser":
+            //             option=this.getRequestBrowser();
+            //             break;
+            //         case "requestProtocol":
+            //             option=this.getRequestProtocol();
+            //             break;
+            //         case "requestTime":
+            //             option=this.getRequestTime();
+            //             break;
+            //         case "requestUrl":
+            //             option=this.getRequestUrl();
+            //             break;
+            //         case "staticResourceAccess":
+            //             option=this.getStaticResourceAccess();
+            //             break;
+            //         case "httpMethod":
+            //             option=this.getHttpMethod();
+            //             break;
+            //         case "returnStatusCode":
+            //             option=this.getReturnStatusCode();
+            //             break;
+            //         default:
+            //             break;
+            //     }
+            //     if(option==null){
+            //         option=this.getEmptyChart();
+            //     }
+            //     this.myChart.setOption(option);
+            // },
 
             //网络接口，返回未处理的字符串
             getRequestBrowser(){
@@ -494,14 +513,22 @@
             getEmptyChart(){
                 var option = {
                     title: {
-                        text: '空表'
+                        text: '用户数量'
                     },
-                    xAxis: {},
-                    yAxis: {},
+                    legend: {
+                        data:['数量']
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: ["1","2","3","4","5","6"]
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
                     series: [{
-                        name: '空表',
+                        name: '数量',
                         type: 'bar',
-                        data: null
+                        data: [5, 20, 36, 10, 10, 20]
                     }]
                 };
                 return option;
@@ -527,6 +554,7 @@
                 }
             });
             that.init();
+            that.display();
         }
     })
 </script>

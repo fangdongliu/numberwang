@@ -43,12 +43,12 @@
 }
 
 .displayTable{
-    display: none;
+    /*display: none;*/
 }
 
 #myChart{
     width: 1200px;
-    height:560px;
+    height:520px;
     margin-left: 20px;
-    display: none;
+    /*display: none;*/
 }
