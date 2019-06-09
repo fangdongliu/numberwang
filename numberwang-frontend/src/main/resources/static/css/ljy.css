@@ -85,4 +85,17 @@ html{
     background-color: rgb(235,235,252) !important;
 }
 
+#forHelp{
+    float:right;
+    margin-right: 10px;
+    font-size: 14px;
+    font-weight: normal;
+    color: #606266;
+    cursor:pointer;
+}
+
+#forHelp i{
+    margin-left: 5px;
+}
+
 
