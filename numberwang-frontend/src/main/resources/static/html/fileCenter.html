@@ -219,10 +219,10 @@
                     },
                     success(res){
                         if(res.code === 0){
-                            // for(let i of res.data){
-                            //     i.createDate = i.createDate.substring(0,10)
-                            //         + ' '+ i.createDate.substring(11,19)
-                            // }
+                            for(let i of res.data){
+                                i.createDate = i.createDate.substring(0,10)
+                                    + ' '+ i.createDate.substring(11,19)
+                            }
                             that.fileList = res.data;
                         }else{
                             that.$message.error('获取文件信息出错！')
