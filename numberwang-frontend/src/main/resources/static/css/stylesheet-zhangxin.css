@@ -2,13 +2,16 @@
     padding: 0;
 }
 
+.list{
+    border: 1px #e6e8ea;
+    border-right-style: solid;
+}
+
 .listTitle{
     font-size: larger;
-    color: #ffffff;
     line-height: 45px;
     font-weight: bolder;
     padding-left: 20px;
-    background: #082b52;
 }
 
 .listItem{
@@ -18,11 +21,9 @@
 
 .keyIndicatorTitle{
     font-size: larger;
-    color: #ffffff;
     line-height: 45px;
     padding-left: 20px;
     font-weight: bolder;
-    background: #020E52;
 }
 
 .keyIndicatorText{
@@ -42,13 +43,8 @@
     margin-left: 50px;
 }
 
-.displayTable{
-    /*display: none;*/
-}
-
 #myChart{
     width: 1200px;
     height:520px;
     margin-left: 20px;
-    /*display: none;*/
 }

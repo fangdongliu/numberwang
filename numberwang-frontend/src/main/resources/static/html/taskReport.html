@@ -33,34 +33,36 @@
         </el-header>
         <el-container>
             <el-container>
-                <el-aside width="250px">
-                    <h6 class="listTitle">图表展示项</h6>
-                    <el-menu
-                            mode="vertical"
-                            @select="listChangeHandle">
-                        <el-menu-item index="requestBrowser" class="listItem">
-                            <span>请求浏览器分布</span>
-                        </el-menu-item>
-                        <el-menu-item index="requestProtocol" class="listItem">
-                            <span>请求协议分布</span>
-                        </el-menu-item>
-                        <el-menu-item index="requestTime" class="listItem">
-                            <span>请求时间分布</span>
-                        </el-menu-item>
-                        <el-menu-item index="requestUrl" class="listItem">
-                            <span>请求URL分布</span>
-                        </el-menu-item>
-                        <el-menu-item index="staticResourceAccess" class="listItem">
-                            <span>静态资源访问分布</span>
-                        </el-menu-item>
-                        <el-menu-item index="httpMethod" class="listItem">
-                            <span>HTTP方法分布</span>
-                        </el-menu-item>
-                        <el-menu-item index="returnStatusCode" class="listItem">
-                            <span>返回状态码分布</span>
-                        </el-menu-item>
-                    </el-menu>
-                </el-aside>
+                <div class="list">
+                    <el-aside width="250px">
+                        <h6 class="listTitle">图表展示项</h6>
+                        <el-menu
+                                mode="vertical"
+                                @select="listChangeHandle">
+                            <el-menu-item index="requestBrowser" class="listItem">
+                                <span>请求浏览器分布</span>
+                            </el-menu-item>
+                            <el-menu-item index="requestProtocol" class="listItem">
+                                <span>请求协议分布</span>
+                            </el-menu-item>
+                            <el-menu-item index="requestTime" class="listItem">
+                                <span>请求时间分布</span>
+                            </el-menu-item>
+                            <el-menu-item index="requestUrl" class="listItem">
+                                <span>请求URL分布</span>
+                            </el-menu-item>
+                            <el-menu-item index="staticResourceAccess" class="listItem">
+                                <span>静态资源访问分布</span>
+                            </el-menu-item>
+                            <el-menu-item index="httpMethod" class="listItem">
+                                <span>HTTP方法分布</span>
+                            </el-menu-item>
+                            <el-menu-item index="returnStatusCode" class="listItem">
+                                <span>返回状态码分布</span>
+                            </el-menu-item>
+                        </el-menu>
+                    </el-aside>
+                </div>
                 <el-main>
                     <h6 class="keyIndicatorTitle">关键指标</h6>
                     <el-row>
@@ -132,152 +134,142 @@
                         </div>
                         </el-header>
                         <el-main>
-                            <div id="requestBrowserTable" class="displayTable">
-                            <template>
-                                    <el-table
-                                            :data="requestBrowserData">
-                                        <el-table-column
-                                                prop="date"
-                                                label="日期"
-                                                width="180">
-                                        </el-table-column>
-                                        <el-table-column
-                                                prop="name"
-                                                label="姓名"
-                                                width="180">
-                                        </el-table-column>
-                                        <el-table-column
-                                                prop="address"
-                                                label="地址">
-                                        </el-table-column>
-                                    </el-table>
-                                </template>
+                            <div id="requestBrowserForm">
+                                <el-table
+                                        style="width: 1200px;min-height: 520px;margin-left: 50px;"
+                                        stripe="true"
+                                        :data="requestBrowserData">
+                                    <el-table-column
+                                            prop="browserName"
+                                            label="浏览器"
+                                            min-width="180">
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="number"
+                                            label="数量"
+                                            min-width="180">
+                                    </el-table-column>
+                                </el-table>
                             </div>
-                            <div id="requestProtocolTable" class="displayTable">
-                                <template>
-                                    <el-table
-                                            :data="requestProtocolData">
-                                        <!--<el-table-column-->
-                                                <!--prop="date"-->
-                                                <!--label="日期"-->
-                                                <!--width="180">-->
-                                        <!--</el-table-column>-->
-                                        <!--<el-table-column-->
-                                                <!--prop="name"-->
-                                                <!--label="姓名"-->
-                                                <!--width="180">-->
-                                        <!--</el-table-column>-->
-                                        <!--<el-table-column-->
-                                                <!--prop="address"-->
-                                                <!--label="地址">-->
-                                        <!--</el-table-column>-->
-                                    </el-table>
-                                </template>
+                            <div id="requestProtocolForm" class="displayTable">
+                                <el-table
+                                        height="522px"
+                                        :data="requestProtocolData">
+                                    <!--<el-table-column-->
+                                            <!--prop="date"-->
+                                            <!--label="日期"-->
+                                            <!--width="180">-->
+                                    <!--</el-table-column>-->
+                                    <!--<el-table-column-->
+                                            <!--prop="name"-->
+                                            <!--label="姓名"-->
+                                            <!--width="180">-->
+                                    <!--</el-table-column>-->
+                                    <!--<el-table-column-->
+                                            <!--prop="address"-->
+                                            <!--label="地址">-->
+                                    <!--</el-table-column>-->
+                                </el-table>
                             </div>
-                            <div id="requestTimeTable" class="displayTable">
-                                <template>
-                                    <el-table
-                                            :data="requestTimeData">
-                                        <!--<el-table-column-->
-                                                <!--prop="date"-->
-                                                <!--label="日期"-->
-                                                <!--width="180">-->
-                                        <!--</el-table-column>-->
-                                        <!--<el-table-column-->
-                                                <!--prop="name"-->
-                                                <!--label="姓名"-->
-                                                <!--width="180">-->
-                                        <!--</el-table-column>-->
-                                        <!--<el-table-column-->
-                                                <!--prop="address"-->
-                                                <!--label="地址">-->
-                                        <!--</el-table-column>-->
-                                    </el-table>
-                                </template>
+                            <div id="requestTimeForm" class="displayTable">
+                                <el-table
+                                        height="522px"
+                                        :data="requestTimeData">
+                                    <!--<el-table-column-->
+                                            <!--prop="date"-->
+                                            <!--label="日期"-->
+                                            <!--width="180">-->
+                                    <!--</el-table-column>-->
+                                    <!--<el-table-column-->
+                                            <!--prop="name"-->
+                                            <!--label="姓名"-->
+                                            <!--width="180">-->
+                                    <!--</el-table-column>-->
+                                    <!--<el-table-column-->
+                                            <!--prop="address"-->
+                                            <!--label="地址">-->
+                                    <!--</el-table-column>-->
+                                </el-table>
                             </div>
-                            <div id="requestUrlTable" class="displayTable">
-                                <template>
-                                    <el-table
-                                            :data="requestUrlData">
-                                        <!--<el-table-column-->
-                                                <!--prop="date"-->
-                                                <!--label="日期"-->
-                                                <!--width="180">-->
-                                        <!--</el-table-column>-->
-                                        <!--<el-table-column-->
-                                                <!--prop="name"-->
-                                                <!--label="姓名"-->
-                                                <!--width="180">-->
-                                        <!--</el-table-column>-->
-                                        <!--<el-table-column-->
-                                                <!--prop="address"-->
-                                                <!--label="地址">-->
-                                        <!--</el-table-column>-->
-                                    </el-table>
-                                </template>
+                            <div id="requestUrlForm" class="displayTable">
+                                <el-table
+                                        height="522px"
+                                        :data="requestUrlData">
+                                    <!--<el-table-column-->
+                                            <!--prop="date"-->
+                                            <!--label="日期"-->
+                                            <!--width="180">-->
+                                    <!--</el-table-column>-->
+                                    <!--<el-table-column-->
+                                            <!--prop="name"-->
+                                            <!--label="姓名"-->
+                                            <!--width="180">-->
+                                    <!--</el-table-column>-->
+                                    <!--<el-table-column-->
+                                            <!--prop="address"-->
+                                            <!--label="地址">-->
+                                    <!--</el-table-column>-->
+                                </el-table>
                             </div>
-                            <div id="staticResourceAccessTable" class="displayTable">
-                                <template>
-                                    <el-table
-                                            :data="staticResourceAccessData">
-                                        <!--<el-table-column-->
-                                                <!--prop="date"-->
-                                                <!--label="日期"-->
-                                                <!--width="180">-->
-                                        <!--</el-table-column>-->
-                                        <!--<el-table-column-->
-                                                <!--prop="name"-->
-                                                <!--label="姓名"-->
-                                                <!--width="180">-->
-                                        <!--</el-table-column>-->
-                                        <!--<el-table-column-->
-                                                <!--prop="address"-->
-                                                <!--label="地址">-->
-                                        <!--</el-table-column>-->
-                                    </el-table>
-                                </template>
+                            <div id="staticResourceAccessForm" class="displayTable">
+                                <el-table
+                                        height="522px"
+                                        :data="staticResourceAccessData">
+                                    <!--<el-table-column-->
+                                            <!--prop="date"-->
+                                            <!--label="日期"-->
+                                            <!--width="180">-->
+                                    <!--</el-table-column>-->
+                                    <!--<el-table-column-->
+                                            <!--prop="name"-->
+                                            <!--label="姓名"-->
+                                            <!--width="180">-->
+                                    <!--</el-table-column>-->
+                                    <!--<el-table-column-->
+                                            <!--prop="address"-->
+                                            <!--label="地址">-->
+                                    <!--</el-table-column>-->
+                                </el-table>
                             </div>
-                            <div id="httpMethodTable" class="displayTable">
-                                <template>
-                                    <el-table
-                                            :data="httpMethodData">
-                                        <!--<el-table-column-->
-                                                <!--prop="date"-->
-                                                <!--label="日期"-->
-                                                <!--width="180">-->
-                                        <!--</el-table-column>-->
-                                        <!--<el-table-column-->
-                                                <!--prop="name"-->
-                                                <!--label="姓名"-->
-                                                <!--width="180">-->
-                                        <!--</el-table-column>-->
-                                        <!--<el-table-column-->
-                                                <!--prop="address"-->
-                                                <!--label="地址">-->
-                                        <!--</el-table-column>-->
-                                    </el-table>
-                                </template>
+                            <div id="httpMethodForm" class="displayTable">
+                                <el-table
+                                        height="522px"
+                                        :data="httpMethodData">
+                                    <!--<el-table-column-->
+                                            <!--prop="date"-->
+                                            <!--label="日期"-->
+                                            <!--width="180">-->
+                                    <!--</el-table-column>-->
+                                    <!--<el-table-column-->
+                                            <!--prop="name"-->
+                                            <!--label="姓名"-->
+                                            <!--width="180">-->
+                                    <!--</el-table-column>-->
+                                    <!--<el-table-column-->
+                                            <!--prop="address"-->
+                                            <!--label="地址">-->
+                                    <!--</el-table-column>-->
+                                </el-table>
                             </div>
-                            <div id="returnStatusCodeTable" class="displayTable">
-                                <template>
-                                    <el-table
-                                            :data="returnStatusCodeData">
-                                        <!--<el-table-column-->
-                                                <!--prop="date"-->
-                                                <!--label="日期"-->
-                                                <!--width="180">-->
-                                        <!--</el-table-column>-->
-                                        <!--<el-table-column-->
-                                                <!--prop="name"-->
-                                                <!--label="姓名"-->
-                                                <!--width="180">-->
-                                        <!--</el-table-column>-->
-                                        <!--<el-table-column-->
-                                                <!--prop="address"-->
-                                                <!--label="地址">-->
-                                        <!--</el-table-column>-->
-                                    </el-table>
-                                </template>
+                            <div id="returnStatusCodeForm" class="displayTable">
+                                <el-table
+                                        height="520px"
+                                        :data="returnStatusCodeData">
+                                    <!--<el-table-column-->
+                                            <!--prop="date"-->
+                                            <!--label="日期"-->
+                                            <!--width="180">-->
+                                    <!--</el-table-column>-->
+                                    <!--<el-table-column-->
+                                            <!--prop="name"-->
+                                            <!--label="姓名"-->
+                                            <!--width="180">-->
+                                    <!--</el-table-column>-->
+                                    <!--<el-table-column-->
+                                            <!--prop="address"-->
+                                            <!--label="地址">-->
+                                    <!--</el-table-column>-->
+                                </el-table>
                             </div>
                             <div id="myChart"></div>
                         </el-main>
@@ -329,33 +321,35 @@
             totalReceiveBytes:0,
 
             //7个表格和图表element
-            requestBrowserTable:null,
-            requestProtocolTable:null,
-            requestTimeTable:null,
-            requestUrlTable:null,
-            staticResourceAccessTable:null,
-            httpMethodTable:null,
-            returnStatusCodeTable:null,
+            requestBrowserForm:null,
+            requestProtocolForm:null,
+            requestTimeForm:null,
+            requestUrlForm:null,
+            staticResourceAccessForm:null,
+            httpMethodForm:null,
+            returnStatusCodeForm:null,
             myChart:null,
             eCharts:null,
 
             //7个表格数据
             requestBrowserData:[{
-                date: '2016-05-02',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1518 弄'
-            }, {
-                date: '2016-05-04',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1517 弄'
-            }, {
-                date: '2016-05-01',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1519 弄'
-            }, {
-                date: '2016-05-03',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1516 弄'
+                browserName: 'Chrome',
+                number: '1028',
+            },{
+                browserName: 'Firefox',
+                number: '405',
+            },{
+                browserName: 'Safari',
+                number: '253',
+            },{
+                browserName: 'Opera',
+                number: '342',
+            },{
+                browserName: 'Internet Explorer',
+                number: '8',
+            },{
+                browserName: 'Edge',
+                number: '510',
             }],
             requestProtocolData:[],
             requestTimeData:[],
@@ -384,117 +378,110 @@
 
             //初始化表格和图表
             init(){
-                this.requestBrowserTable=document.getElementById("requestBrowserTable");
-                this.requestProtocolTable=document.getElementById("requestProtocolTable");
-                this.requestTimeTable=document.getElementById("requestTimeTable");
-                this.requestUrlTable=document.getElementById("requestUrlTable");
-                this.staticResourceAccessTable=document.getElementById("staticResourceAccessTable");
-                this.httpMethodTable=document.getElementById("httpMethodTable");
-                this.returnStatusCodeTable=document.getElementById("returnStatusCodeTable");
+                this.requestBrowserForm=document.getElementById("requestBrowserForm");
+                this.requestProtocolForm=document.getElementById("requestProtocolForm");
+                this.requestTimeForm=document.getElementById("requestTimeForm");
+                this.requestUrlForm=document.getElementById("requestUrlForm");
+                this.staticResourceAccessForm=document.getElementById("staticResourceAccessForm");
+                this.httpMethodForm=document.getElementById("httpMethodForm");
+                this.returnStatusCodeForm=document.getElementById("returnStatusCodeForm");
                 this.myChart=document.getElementById("myChart");
                 this.eCharts=echarts.init(this.myChart);
             },
 
             //处理展示项变化的回调函数
-            listChangeHandle(index, indexPath) {
+            listChangeHandle(index,indexPath) {
                 if(this.listValue===index.toString()){
                     return;
                 }
                 this.listValue=index.toString();
-                //TODO:进行切换
+                this.display();
             },
 
             //处理展示类型变化的回调函数
             displayChangeHandle(){
-                //TODO:进行切换
-                console.log(this.displayValue);
+                this.display();
             },
 
-            setNone(){
-                this.requestBrowserTable.style.display="none";
-                this.requestProtocolTable.style.display="none";
-                this.requestTimeTable.style.display="none";
-                this.requestUrlTable.style.display="none";
-                this.staticResourceAccessTable.style.display="none";
-                this.httpMethodTable.style.display="none";
-                this.returnStatusCodeTable.style.display="none";
+            //设所有元素不可见
+            setAllInvisible(){
+                this.requestBrowserForm.style.display="none";
+                this.requestProtocolForm.style.display="none";
+                this.requestTimeForm.style.display="none";
+                this.requestUrlForm.style.display="none";
+                this.staticResourceAccessForm.style.display="none";
+                this.httpMethodForm.style.display="none";
+                this.returnStatusCodeForm.style.display="none";
                 this.myChart.style.display="none";
             },
 
-            display(){
-                this.setNone();
-                this.myChart.style.display="inline";
-                this.eCharts.setOption(this.getEmptyChart());
+            //设其中一个表格可见
+            setFormVisible(){
+                switch (this.listValue) {
+                    case "requestBrowser":
+                        this.requestBrowserForm.style.display="block";
+                        break;
+                    case "requestProtocol":
+                        this.requestProtocolForm.style.display="block";
+                        break;
+                    case "requestTime":
+                        this.requestTimeForm.style.display="block";
+                        break;
+                    case "requestUrl":
+                        this.requestUrlForm.style.display="block";
+                        break;
+                    case "staticResourceAccess":
+                        this.staticResourceAccessForm.style.display="block";
+                        break;
+                    case "httpMethod":
+                        this.httpMethodForm.style.display="block";
+                        break;
+                    case "returnStatusCode":
+                        this.returnStatusCodeForm.style.display="block";
+                        break;
+                    default:
+                        break;
+                }
             },
 
-            // //待修改
-            // createChart(){
-            //     var option=null;
-            //     console.log(this.selectOption);
-            //     switch (this.selectOption) {
-            //         case "requestBrowser":
-            //             option=this.getRequestBrowser();
-            //             break;
-            //         case "requestProtocol":
-            //             option=this.getRequestProtocol();
-            //             break;
-            //         case "requestTime":
-            //             option=this.getRequestTime();
-            //             break;
-            //         case "requestUrl":
-            //             option=this.getRequestUrl();
-            //             break;
-            //         case "staticResourceAccess":
-            //             option=this.getStaticResourceAccess();
-            //             break;
-            //         case "httpMethod":
-            //             option=this.getHttpMethod();
-            //             break;
-            //         case "returnStatusCode":
-            //             option=this.getReturnStatusCode();
-            //             break;
-            //         default:
-            //             break;
-            //     }
-            //     if(option==null){
-            //         option=this.getEmptyChart();
-            //     }
-            //     this.myChart.setOption(option);
-            // },
+            display(){
+                this.setAllInvisible();
+                if(this.displayValue!=='form'){
+                    this.myChart.style.display="block";
+                    //TODO:获取数据
+                    var option;
+                    if(this.displayValue==='barChart'){
+                        option=this.testBarChart();
+                    }
+                    else if(this.displayValue==='lineChart'){
+                        option=this.testLineChart();
+                    }
+                    else if(this.displayValue==='pieChart'){
+                        option=this.testPieChart();
+                    }
+                    this.eCharts.setOption(option);
+                }
+                else{
+                    this.setFormVisible();
+                    //TODO:获取数据
+                }
+            },
 
             //网络接口，返回未处理的字符串
-            getRequestBrowser(){
-                // var option = {
-                //     title: {
-                //         text: '用户数量'
-                //     },
-                //     tooltip: {},
-                //     // legend: {
-                //     //     data:['销量']
-                //     // },
-                //     xAxis: {
-                //         data: ["数量","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
-                //     },
-                //     yAxis: {},
-                //     series: [{
-                //         name: '销量',
-                //         type: 'bar',
-                //         data: [5, 20, 36, 10, 10, 20]
-                //     }]
-                // };
-                // return option;
-            },
+            getRequestBrowser(){},
             getRequestProtocol(){},
             getRequestTime(){},
             getRequestUrl(){},
             getStaticResourceAccess(){},
             getHttpMethod(){},
             getReturnStatusCode(){},
-            getEmptyChart(){
+
+            testBarChart(){
                 var option = {
                     title: {
-                        text: '用户数量'
+                        text: '测试图表'
                     },
+                    tooltip: {},
                     legend: {
                         data:['数量']
                     },
@@ -508,6 +495,56 @@
                     series: [{
                         name: '数量',
                         type: 'bar',
+                        data: [5, 20, 36, 10, 10, 20]
+                    }]
+                };
+                return option;
+            },
+
+            testLineChart(){
+                var option = {
+                    title: {
+                        text: '测试图表'
+                    },
+                    tooltip: {},
+                    legend: {
+                        data:['数量']
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: ["1","2","3","4","5","6"]
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: [{
+                        name: '数量',
+                        type: 'line',
+                        data: [5, 20, 36, 10, 10, 20]
+                    }]
+                };
+                return option;
+            },
+
+            testPieChart(){
+                var option = {
+                    title: {
+                        text: '测试图表'
+                    },
+                    tooltip: {},
+                    legend: {
+                        data:['数量']
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: ["1","2","3","4","5","6"]
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: [{
+                        name: '数量',
+                        type: 'pie',
                         data: [5, 20, 36, 10, 10, 20]
                     }]
                 };
