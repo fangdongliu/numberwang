@@ -130,13 +130,14 @@
                                 dateFormat:that.defineForm.define,
                                 jobId:that.jobId,
                                 lineFormat: that.defineForm.lineFormat,
-                                suffix: '123'
+                                suffix:''
                             },
                             success(res){
                                 if(res.code === 0){
-                                    window.location.href = '/html/taskReport.html?jobId='+that.jobId;
+                                    window.location.href = '/html/confirmSubmit.html?jobId='+that.jobId;
                                 }
                                 else{
+                                    console.log(res)
                                     that.$message.error('format错误');
                                 }
                             },
@@ -149,7 +150,7 @@
                 });
             },
             openHelp(){
-                this.$alert('<strong>这是 <i>HTML</i> 片段</strong>', '如何定义日志格式     9', {
+                this.$alert('1', '如何定义日志格式', {
                     dangerouslyUseHTMLString: true
                 });
             }
