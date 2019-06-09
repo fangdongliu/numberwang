@@ -38,10 +38,10 @@
                 <el-row type="flex" justify="center">
                     <el-col :span="15">
                         <el-row style="font-weight: bold; font-size: large; margin:20px 0;">如何定义格式化字符串——</el-row>
-                        <el-row>
+                        <el-row class="topGap">
                             <el-col :span="24">
-                                <p class="helpPara">定义行格式使服务器能够识别每一行数据的内容。格式串由两种元素组成：
-                                    格式化项、特殊字符。</p>
+                                <p class="helpPara">定义<strong>行格式字符串</strong>使服务器能够识别每一行数据的内容。
+                                    格式串由两种元素组成： 格式化项、特殊字符。</p>
                                 <p class="helpPara">行格式从前往后解析每行。</p>
                                 <p class="helpPara">遇到双引号(")会匹配输入直至该字符出现。遇到格式化项(%开头的项)则
                                     会读取当前位置 的单词并置入对应项。若匹配未通过的行会被判为
@@ -50,12 +50,42 @@
                                 <p class="helpPara">以下是对一些特殊字段进行的额外定义：</p>
                             </el-col>
                         </el-row>
-                        <el-row>
-                            <el-col :span="24">
-                                <el-row></el-row>
+                        <el-row type="flex" justify="center" class="topGap">
+                            <el-col :span="18" id="infoDiv">
+                                <el-row class="infoLine" v-for="item in list">
+                                    <el-col :span="12" class="infoTitle">{{item.title}}</el-col>
+                                    <el-col :span="12" class="infoContent">{{item.content}}</el-col>
+                                </el-row>
                             </el-col>
                         </el-row>
-                        <el-row><el-button @click="back">返回</el-button></el-row>
+                        <el-row class="topGap">
+                            <el-col :span="24">
+                                <p class="helpPara">如以下行格式字符串举例：</p>
+                                <p class="helpPara">日志数据：27.19.74.143 - - [30/May/2013:17:38:20 +0800] \"GET /static/image/common/f
+                                    aq.gif HTTP/1.1\" 200 1127</p>
+                                <p class="helpPara">匹配字符串：%IP%W-[%TM]"%MD%URL%PRT"%CD%SB</p>
+                                <p class="helpPara">其中%TM是日期格式字符串，匹配规则请继续向下阅读。</p>
+                                <p class="helpPara">定义<strong>日期格式字符串</strong>用于解析日期格式化项，格式的第一个字符为日期所占单
+                                    词数，其后由字符所占字节长度+字符含义拼接组成字符串，特殊字符会相应匹配一个字符，具体定义如下:</p>
+                            </el-col>
+                        </el-row>
+                        <el-row type="flex" justify="center" class="topGap">
+                            <el-col :span="18" id="infoDiv">
+                                <el-row class="infoLine" v-for="item in list2">
+                                    <el-col :span="12" class="infoTitle">{{item.title}}</el-col>
+                                    <el-col :span="12" class="infoContent">{{item.content}}</el-col>
+                                </el-row>
+                            </el-col>
+                        </el-row>
+                        <el-row class="topGap">
+                            <el-col :span="24">
+                                <p class="helpPara">如以下日期格式字符串字符串举例：</p>
+                                <p class="helpPara">日期格式：30/May/2013:17:38:20 +0800</p>
+                                <p class="helpPara">匹配字符串：22d/M/4y:2h</p>
+
+                            </el-col>
+                        </el-row>
+                        <el-row type="flex" justify="center" class="topGap"><el-button @click="back" class="downloadBtn">我明白了</el-button></el-row>
                     </el-col>
                 </el-row>
             </el-main>
@@ -68,7 +98,76 @@
         el:'#app',
         data:{
             username:'username',
-            jobId:-1
+            jobId:-1,
+            list:[{
+                title:'字符含义',
+                content:'匹配字符串'
+            }, {
+                title:'请求IP',
+                content:'%IP'
+            },{
+                title:'跳过一个单词',
+                content:'%W'
+            },{
+                title:'服务端发送字节数',
+                content:'%SB'
+            },{
+                title:'服务端接受字节数',
+                content:'%RB'
+            },{
+                title:'花费时间',
+                content:'%TT'
+            },{
+                title:'开始时间（可能用到多个单词）',
+                content:'%ED'
+            },{
+                title:'HTTP方法',
+                content:'%MD'
+            },{
+                title:'请求的协议',
+                content:'%PRT'
+            },{
+                title:'请求的URL',
+                content:'%URL'
+            },{
+                title:'查询字符串',
+                content:'%Q'
+            },{
+                title:'请求来源（浏览器）',
+                content:'%SRC'
+            },{
+                title:'返回状态码',
+                content:'%CD'
+            },{
+                title:'处理线程',
+                content:'%TH'
+            },{
+                title:'请求计算机名',
+                content:'%PC'
+            },{
+                title:'sessionID',
+                content:'%SD'
+            }],
+            list2:[{
+                title:'字符含义',
+                content:'匹配字符串'
+            }, {
+                title:'年',
+                content:'y'
+            },{
+                title:'月（数字）',
+                content:'m'
+            },{
+                title:'月（英文缩写）',
+                content:'M'
+            },{
+                title:'日',
+                content:'d'
+            },{
+                title:'小时',
+                content:'h'
+            }
+            ]
         },
         methods:{
             onLogout(){

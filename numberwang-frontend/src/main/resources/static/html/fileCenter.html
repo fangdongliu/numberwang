@@ -214,14 +214,15 @@
                     data:{
                         page:that.currentPage-1,
                         pageSize:that.pageSize,
-                        filename: that.searchWord
+                        filename: that.searchWord,
+                        createDate:that.date
                     },
                     success(res){
                         if(res.code === 0){
-                            for(let i of res.data){
-                                i.createDate = i.createDate.substring(0,10)
-                                    + ' '+ i.createDate.substring(11,19)
-                            }
+                            // for(let i of res.data){
+                            //     i.createDate = i.createDate.substring(0,10)
+                            //         + ' '+ i.createDate.substring(11,19)
+                            // }
                             that.fileList = res.data;
                         }else{
                             that.$message.error('获取文件信息出错！')
@@ -327,10 +328,20 @@
                 this.$message.error('上传文件失败！')
             },
             beforeUpload(file){
+                let name=file.name;
+                name = name.split('.');
+                let suffix = name[name.length - 1];
+
+                if(suffix !=='log' && suffix !=='txt'){
+                    this.$message.error('请上传log或txt文件');
+                    return false;
+                }
+
                 if(file.size >= 10485760){
                     this.$message.error('上传文件失败！')
                     return false;
                 }
+
             },
             selectFiles(val){
                 this.selectedFiles = val;
