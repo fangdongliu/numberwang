@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>帮助</title>
     <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/vue/2.6.9/vue.min.js"></script>
     <link href="https://cdn.bootcss.com/element-ui/2.6.1/theme-chalk/index.css" rel="stylesheet">
@@ -12,13 +12,10 @@
     <!-- 引入组件库 -->
     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
     <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>
-    <link rel="stylesheet" href="./css/stylesheet.css">
-    <link rel="stylesheet" href="./css/shannon.css">
-    <style>
-        [v-clock]{
-            display: none;
-        }
-    </style>
+    <link rel="stylesheet" href="../css/stylesheet.css">
+    <link rel="stylesheet" href="../css/ljy.css">
+    <link rel="stylesheet" href="../css/shannon.css">
+
 </head>
 <body>
 <div id="app">
@@ -26,7 +23,7 @@
         <el-header>
             <el-row>
                 <el-col :offset="1" :span="5" style="display: flex;">
-                    <img src="./images/logo.png" style="height:60px; width: auto;"/>
+                    <img src="../images/logo.png" style="height:60px; width: auto;"/>
                     <span class="headerName">方神带我们飞</span>
                 </el-col>
                 <el-col :offset="14" :span="4" style="line-height: 60px;">
@@ -38,24 +35,27 @@
         </el-header>
         <el-container style="height:100%">
             <el-main>
-                <el-row type="flex" justify="center" style="margin-top: 40px;">
-                    <el-col :span="5">
-                        <el-card class="precard" :body-style="{ padding: '0px' }" shadow="hover" @click.native="goFileCenter">
-                            <img src="./images/filecenter.jpg" class="indexImg">
-                            <div class="cardInfo">
-                                <span>进入文件中心</span>
-                                <div class="arrow">点击进入<i class="el-icon-d-arrow-right"></i></div>
-                            </div>
-                        </el-card>
-                    </el-col>
-                    <el-col :span="5" :offset="2">
-                        <el-card class="precard" :body-style="{ padding: '0px' }" shadow="hover" @click.native="goProjectCenter">
-                            <img src="./images/projectcenter.jpg" class="indexImg">
-                            <div class="cardInfo">
-                                进入项目中心
-                                <div class="arrow">点击进入<i class="el-icon-d-arrow-right"></i></div>
-                            </div>
-                        </el-card>
+                <el-row type="flex" justify="center">
+                    <el-col :span="15">
+                        <el-row style="font-weight: bold; font-size: large; margin:20px 0;">如何定义格式化字符串——</el-row>
+                        <el-row>
+                            <el-col :span="24">
+                                <p class="helpPara">定义行格式使服务器能够识别每一行数据的内容。格式串由两种元素组成：
+                                    格式化项、特殊字符。</p>
+                                <p class="helpPara">行格式从前往后解析每行。</p>
+                                <p class="helpPara">遇到双引号(")会匹配输入直至该字符出现。遇到格式化项(%开头的项)则
+                                    会读取当前位置 的单词并置入对应项。若匹配未通过的行会被判为
+                                    无效的日志。
+                                <p class="helpPara">每一行以空白符分割为单词。</p>
+                                <p class="helpPara">以下是对一些特殊字段进行的额外定义：</p>
+                            </el-col>
+                        </el-row>
+                        <el-row>
+                            <el-col :span="24">
+                                <el-row></el-row>
+                            </el-col>
+                        </el-row>
+                        <el-row><el-button @click="back">返回</el-button></el-row>
                     </el-col>
                 </el-row>
             </el-main>
@@ -67,24 +67,24 @@
     var vue=new Vue({
         el:'#app',
         data:{
-            username:'username'
+            username:'username',
+            jobId:-1
         },
         methods:{
             onLogout(){
                 window.location.href="/logout";
             },
-            goFileCenter(){
-                window.location.href='html/fileCenter.html?flag=1';
-                //直接进入文件中心，不允许选择多个文件进行日志分析
-            },
-            goProjectCenter(){
-                window.location.href='/html/projectCenter.html';
+            back(){
+                window.location.href='/html/taskDefine.html?jobId='+ this.jobId
             }
         },
-
-
         mounted(){
             var that = this;
+            let url = window.location.href;
+            if(url.indexOf('jobId') > -1){
+                let tmp = url.split('jobId=');
+                this.jobId = parseInt(tmp[1]);
+            }
             $.ajax({
                 url:'/user/info',
                 method:'GET',

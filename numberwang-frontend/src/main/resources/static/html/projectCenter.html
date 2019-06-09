@@ -39,18 +39,16 @@
         </el-header>
         <el-container style="height:100%">
             <el-main>
-                <el-row>
-                    <el-col :span="3" :offset="19">
-                        <el-button type="primary" class="newpro-btn" @click="jump">
-                            新建项目</el-button>
-                    </el-col>
-                </el-row>
                 <el-row type="flex" justify="center">
                     <el-col :span="18" style="margin-top: 20px">
                         <el-card shadow="hover" >
                             <div slot="header" class="card-header">
-                                <span>我的项目</span>
+                                <span>我的项目
+                                <el-button size="mini"
+                                           type="success" @click="jump" style="float: right">
+                                    新建项目</el-button></span>
                             </div>
+
                             <el-table :data="jobList" style="width: 100%"
                                       :row-class-name="tableRowClassName">
                                 <el-table-column prop="jobName" label="项目名" min-width="180">
