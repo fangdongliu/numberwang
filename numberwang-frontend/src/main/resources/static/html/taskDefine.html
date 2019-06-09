@@ -7,7 +7,10 @@
     <script src="https://cdn.bootcss.com/vue/2.6.9/vue.min.js"></script>
     <link href="https://cdn.bootcss.com/element-ui/2.6.1/theme-chalk/index.css" rel="stylesheet">
     <script src="https://cdn.bootcss.com/element-ui/2.6.1/index.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
     <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
     <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>
     <link rel="stylesheet" href="../css/stylesheet.css">
     <link rel="stylesheet" href="../css/ljy.css">
@@ -31,85 +34,48 @@
         <el-container style="height:100%">
             <el-container>
                 <el-main>
-                    <!--在此输入内容-->
                     <el-row>
-                        <el-col :span="4" style="justify-content: center;display: flex;">
-                            <el-dropdown size="medium" split-button type="primary" @command="chooseProject">
-                                选择项目
-                                <el-dropdown-menu slot="dropdown">
-                                    <el-dropdown-item v-for="item in projectList" v-bind:command="item.id">项目{{item.name}}</el-dropdown-item>
-                                </el-dropdown-menu>
-                            </el-dropdown>
-                        </el-col>
-                        <el-col :span="20">
-                            <el-tabs v-model="tabIndex" :before-leave="clickTab">
-                                <el-tab-pane name="a" label="上传日志数据">1</el-tab-pane>
-                                <el-tab-pane name="b" label="定义日志格式"></el-tab-pane>
-                                <el-tab-pane name="c" label="生成日志图表">2</el-tab-pane>
-                            </el-tabs>
-                        </el-col>
+                        <el-steps :active="activeStep" finish-status="success">
+                            <el-step title="创建新项目"></el-step>
+                            <el-step title="选择输入文件"></el-step>
+                            <el-step title="格式化字符串"></el-step>
+                        </el-steps>
                     </el-row>
                     <el-row style="width: 100% ;margin-top: 4%">
                         <el-col :offset="5" :span="14">
                             <el-card shadow="hover" >
                                 <div slot="header" class="card-header">
                                     <span>定义日志格式</span>
+                                    <span id="forHelp" @click="openHelp">帮助<i class="el-icon-question"></i></span>
                                 </div>
                                 <el-form id="defineForm" ref="defineForm" :model="defineForm" :rules="defineRules">
                                     <el-form-item class="inputItem" prop="define">
                                         <el-input v-model="defineForm.define"
-                                                  placeholder="请输入dataFormat"
+                                                  placeholder="请输入dateFormat"
                                                   name="define"
                                                   type="textarea"
-                                                  :rows="3"
                                                   maxlength="100"
                                                   resize="none"
                                                   clearable
                                                   show-word-limit></el-input>
                                     </el-form-item>
-                                    <el-form-item class="inputItem" prop="jobid">
-                                        <el-input v-model="defineForm.jobid"
-                                                  placeholder="请输入jobid"
-                                                  name="jobid"
+                                    <el-form-item class="inputItem" prop="lineFormat">
+                                        <el-input v-model="defineForm.lineFormat"
+                                                  placeholder="请输入lineFormat"
+                                                  name="lineFormat"
                                                   type="textarea"
-                                                  :rows="1"
+                                                  maxlength="100"
                                                   resize="none"
                                                   clearable
-                                                  ></el-input>
+                                                  show-word-limit></el-input>
                                     </el-form-item>
                                     <el-form-item class="inputItem">
-                                        <el-form-item class="inputItem" prop="lineFormat">
-                                            <el-input v-model="defineForm.lineFormat"
-                                                      placeholder="请输入lineFormat"
-                                                      name="lineFormat"
-                                                      type="textarea"
-                                                      :rows="3"
-                                                      maxlength="100"
-                                                      resize="none"
-                                                      clearable
-                                                      show-word-limit></el-input>
-                                        </el-form-item>
-                                    </el-form-item>
-                                        <el-form-item class="inputItem">
-                                            <el-form-item class="inputItem">
-                                                <el-form-item class="inputItem" prop="suffix">
-                                                    <el-input v-model="defineForm.suffix"
-                                                              placeholder="请输入suffix"
-                                                              name="suffix"
-                                                              type="textarea"
-                                                              :rows="3"
-                                                              maxlength="100"
-                                                              resize="none"
-                                                              clearable
-                                                              show-word-limit></el-input>
-                                                </el-form-item>
-                                                <el-form-item class="inputItem">
                                         <el-row style="width: 100% ;margin-top: 5%">
                                             <el-col :offset="4" :span="4">
-                                                <el-button id="createBtn" type="success"  @click="submitForm('defineForm')" >Create</el-button>
+                                                <el-button id="createBtn" type="success"  @click="submitForm('defineForm')" >分析日志</el-button>
                                             </el-col>
                                             <el-col :offset="8" :span="4">
-                                                <el-button id="resetBtn" type="danger"  @click="resetForm('defineForm')" >Reset</el-button>
+                                                <el-button id="resetBtn" type="danger"  @click="resetForm('defineForm')" >重置</el-button>
                                             </el-col>
                                         </el-row>
                                     </el-form-item>
@@ -129,22 +95,16 @@
         data:{
             username:'username',
             defineForm:{
-                define:''
+                define:'',
+                lineFormat:''
             },
             defineRules:{
-                define:[{required: true, message: '项目名不能为空', trigger: 'blur'}],
-                jobid:[{required: true,message: '项目id不能为空',trigger: 'blur'}],
-                lineFormat:[{required: true,message: '项目id不能为空',trigger: 'blur'}],
-                suffix:[{required: true,message: '项目id不能为空',trigger: 'blur'}]
+                define:[{required: true, message: 'dateFormat不能为空', trigger: 'blur'}],
+                lineFormat:[{required: true,message: 'lineFormat不能为空',trigger: 'blur'}],
             },
-            projectList:[{
-                name:1,
-                id:1
-            }, {
-                name:2,
-                id:2
-            }],
-            tabIndex:"b"
+            tabIndex:"b",
+            jobId:-1,
+            activeStep:2
         },
         methods:{
             onLogout(){
@@ -155,7 +115,7 @@
             },
             clickTab(a,b){
                 if(a === 'a') {
-                    window.location.href = '/html/taskUpload.html'
+                    window.location.href = '/html/fileCenter.html'
                 }
                 else if(a === 'c'){
                     window.location.href = '/html/taskReport.html'
@@ -163,21 +123,21 @@
                 return false;
             },
             submitForm(formName) {
+                var that=this;
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        var that=this;
                         $.ajax({
                             url:'/job/setFormat',
                             method:'put',
                             data:{
-                                dataFormat:that.define,
-                                jobid:that.jobid,
-                                lineFormat: that.lineFormat,
-                                suffix: that.suffix
+                                dateFormat:that.defineForm.define,
+                                jobId:that.jobId,
+                                lineFormat: that.defineForm.lineFormat,
+                                suffix: that.defineForm.suffix
                             },
                             success(res){
                                 if(res.code === 0){
-                                    window.location.href = '/html/taskReport.html'
+                                    window.location.href = '/html/taskReport.html?jobId='+that.jobId;
                                 }
                                 else{
                                     that.$message.error('format错误');
@@ -198,10 +158,22 @@
                 this.activeFlag=
                     this.$refs[formName].resetFields();
                 console.log(formName);
+            },
+            openHelp(){
+                this.$alert('<strong>这是 <i>HTML</i> 片段</strong>', '如何定义日志格式     9', {
+                    dangerouslyUseHTMLString: true
+                });
             }
         },
         mounted(){
             var that = this;
+            let url = window.location.href;
+
+            if(url.indexOf('jobId') > -1){
+                let tmp = url.split('jobId=');
+                this.jobId = parseInt(tmp[1]);
+            }
+
             $.ajax({
                 url:'/user/info',
                 method:'GET',

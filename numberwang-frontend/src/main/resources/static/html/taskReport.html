@@ -33,23 +33,24 @@
         </el-header>
         <el-container>
             <el-header style="height: 100px;margin-top: 20px;background-color: #FFFFFF;color: #b4c6d6;">
-                <el-row>
-                    <el-col :span="4" style="justify-content: center;display: flex;">
-                        <el-dropdown size="medium" split-button type="primary" @command="chooseProject">
-                                选择项目
-                            <el-dropdown-menu slot="dropdown">
-                                <el-dropdown-item v-for="item in projectList" v-bind:command="item.id">项目{{item.name}}</el-dropdown-item>
-                            </el-dropdown-menu>
-                        </el-dropdown>
-                    </el-col>
-                    <el-col :span="20">
-                        <el-tabs v-model="tabIndex" :before-leave="clickTab">
-                            <el-tab-pane name="a" label="上传日志数据"></el-tab-pane>
-                            <el-tab-pane name="b" label="定义日志格式"></el-tab-pane>
-                            <el-tab-pane name="c" label="生成日志图表"></el-tab-pane>
-                        </el-tabs>
-                    </el-col>
-                </el-row>
+                步骤条样式啥的都改不动了，明天（啊不今天）再改吧。。楠神要睡了23333
+                <!--<el-row>-->
+                    <!--<el-col :span="4" style="justify-content: center;display: flex;">-->
+                        <!--<el-dropdown size="medium" split-button type="primary" @command="chooseProject">-->
+                                <!--选择项目-->
+                            <!--<el-dropdown-menu slot="dropdown">-->
+                                <!--<el-dropdown-item v-for="item in projectList" v-bind:command="item.id">项目{{item.name}}</el-dropdown-item>-->
+                            <!--</el-dropdown-menu>-->
+                        <!--</el-dropdown>-->
+                    <!--</el-col>-->
+                    <!--<el-col :span="20">-->
+                        <!--<el-tabs v-model="tabIndex" :before-leave="clickTab">-->
+                            <!--<el-tab-pane name="a" label="上传日志数据"></el-tab-pane>-->
+                            <!--<el-tab-pane name="b" label="定义日志格式"></el-tab-pane>-->
+                            <!--<el-tab-pane name="c" label="生成日志图表"></el-tab-pane>-->
+                        <!--</el-tabs>-->
+                    <!--</el-col>-->
+                <!--</el-row>-->
             </el-header>
             <el-container>
                 <el-aside width="250px">
@@ -371,7 +372,7 @@
                     window.location.href = '/html/taskDefine.html'
                 }
                 else if(a === 'a'){
-                    window.location.href = '/html/taskUpload.html'
+                    window.location.href = '/html/fileCenter.html'
                 }
                 return false;
             },
