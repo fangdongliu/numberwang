@@ -6,11 +6,12 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="numberwang" />
         <module name="numberwang-backend" />
         <module name="numberwang-entity" />
         <module name="numberwang-frontend" />
         <module name="numberwang-mock" />
+        <module name="numberwangip" />
+        <module name="numberwangmrworker" />
         <module name="project" />
       </profile>
     </annotationProcessing>

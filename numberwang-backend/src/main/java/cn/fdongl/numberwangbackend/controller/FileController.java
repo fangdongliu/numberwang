@@ -40,6 +40,11 @@ public class FileController {
         return fileService.upload(file);
     }
 
+    @GetMapping("count")
+    public Result count(AppUser user){
+        return Result.success(fileRepository.countByCreateBy(user.getUser().getId()));
+    }
+
     @GetMapping("list")
     public Result list(
             AppUser appUser,
@@ -105,7 +110,7 @@ public class FileController {
 
     @PutMapping("rename")
     public Result rename(@RequestParam Long fileId,@RequestParam String filename) throws Exception {
-        LogFile logFile = fileRepository.getOne(fileId);
+        LogFile logFile = fileRepository.findById(fileId).get();
         logFile.setFilename(filename);
         fileRepository.save(logFile);
         return Result.success(logFile);

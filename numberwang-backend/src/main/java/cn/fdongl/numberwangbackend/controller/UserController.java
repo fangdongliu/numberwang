@@ -25,6 +25,13 @@ public class UserController {
         return userService.register(username, password, mail);
     }
 
+    @GetMapping("/user/info")
+    @ResponseBody
+    public Result info(AppUser user){
+        user.getUser().setPassword("");
+        return Result.success(user.getUser());
+    }
+
     @RequestMapping("/login")
     public String login(){
         return "login";

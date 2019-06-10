@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ReportRepository extends JpaRepository<Report,Long> {
 
-    Report findByJobIdAndVersionGreaterThan(Long jobId, Long version);
+    Report findByJobIdAndVersionGreaterThanAndStatusIsNot(Long jobId, Long version,Long status);
 
 }

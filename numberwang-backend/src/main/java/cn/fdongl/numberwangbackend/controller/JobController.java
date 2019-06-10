@@ -100,7 +100,7 @@ public class JobController {
     @PutMapping("submit")
     public Result submit(
             AppUser user,
-            @RequestParam Long jobId){
+            @RequestParam Long jobId) throws Exception {
         Job job = jobRepository.findByIdAndCreateBy(jobId,user.getUser().getId());
         jobService.reset(jobId);
         workSend.send(jobId);

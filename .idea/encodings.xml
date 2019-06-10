@@ -4,6 +4,8 @@
     <file url="file://$PROJECT_DIR$/numberwang-backend" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/numberwang-entity" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/numberwang-frontend" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/numberwang-ip" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/numberwang-mock" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/numberwangmrworker" charset="UTF-8" />
   </component>
 </project>

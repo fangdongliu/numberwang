@@ -1,18 +1,36 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:h2test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-    platform: h2
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://39.106.57.140:3306/wang?useSSL=false&serverTimezone=Hongkong&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true
+    username: yidong
+    password: zhengwu
+#    url: jdbc:h2:mem:h2test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+#    platform: h2
+#    username: sa
+#    password:
+#    driver-class-name: org.h2.Driver
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 200MB
+      max-request-size: 200MB
+  jackson:
+    date-format: yyyy/MM/dd
+    time-zone: Hongkong
   freemarker:
     suffix: .ftlh
-  h2:
-    console:
-      enabled: true
-      path: /console
-      settings:
-        trace: false
-        web-allow-others: false
-
+#  h2:
+#    console:
+#      enabled: true
+#      path: /console
+#      settings:
+#        trace: false
+#        web-allow-others: false
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    show-sql: true
 fs-prefix: fp-

@@ -26,6 +26,12 @@
     font-weight: bolder;
 }
 
+.keyIndicatorCard{
+    height: 100px;
+    width: 100px;
+    display: inline;
+}
+
 .keyIndicatorText{
     line-height: 30px;
     padding-left: 20px;
@@ -43,8 +49,25 @@
     margin-left: 50px;
 }
 
-#myChart{
+#barChart{
     width: 1200px;
     height:520px;
     margin-left: 20px;
+}
+
+#lineChart{
+    width: 1200px;
+    height:520px;
+    margin-left: 20px;
+}
+
+#pieChart{
+    width: 1200px;
+    height:520px;
+    margin-left: 20px;
+}
+
+.el-card{
+    display: inline-block !important;
+    width: 24%;
 }
