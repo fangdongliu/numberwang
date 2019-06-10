@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Import;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
-@ComponentScan(basePackages = "cn.fdongl.numberwangmock")
+@ComponentScan(basePackages = "cn.fdongl.numberwangbackend")
 public class NumberwangFrontendApplication {
     public static void main(String[] args) {
         SpringApplication.run(NumberwangFrontendApplication.class, args);

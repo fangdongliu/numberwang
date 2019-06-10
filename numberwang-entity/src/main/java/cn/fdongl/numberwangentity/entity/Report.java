@@ -1,6 +1,6 @@
 package cn.fdongl.numberwangentity.entity;
 
-import com.sun.istack.internal.Interned;
+
 import lombok.Data;
 
 import javax.persistence.*;
@@ -13,7 +13,6 @@ public class Report {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Column(unique = true)
     Long jobId;
 
     /**
@@ -36,8 +35,10 @@ public class Report {
     /**
      * 0有效
      * 1完成
-     * 2无效
+     * -1无效
      */
+
+    @Column(name="\"status\"")
     Long status;
 
 }

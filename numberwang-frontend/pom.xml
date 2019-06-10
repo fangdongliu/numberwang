@@ -21,7 +21,7 @@
     <dependencies>
         <dependency>
             <groupId>cn.fdongl</groupId>
-            <artifactId>numberwang-mock</artifactId>
+            <artifactId>numberwang-backend</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>

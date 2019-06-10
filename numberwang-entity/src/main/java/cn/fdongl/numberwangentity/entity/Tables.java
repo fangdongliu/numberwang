@@ -20,6 +20,8 @@ public class Tables {
 
     String tableName;
 
+    @Lob
+    @Column(name="\"value\"")
     String value;
 
 }

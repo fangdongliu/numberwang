@@ -22,7 +22,7 @@
             <el-row>
                 <el-col :offset="1" :span="5" style="display: flex;">
                     <img src="../images/logo.png" style="height:60px; width: auto;"/>
-                    <span class="headerName">方神带我们飞</span>
+                    <span class="headerName">楠神带我们飞</span>
                 </el-col>
                 <el-col :offset="14" :span="4" style="line-height: 60px;">
                     <span class="headerUsername">{{username}}</span>
@@ -33,254 +33,96 @@
         </el-header>
         <el-container>
             <el-container>
-                <el-aside width="250px">
-                    <h6 class="listTitle">图表展示项</h6>
-                    <el-menu
-                            mode="vertical"
-                            @select="listChangeHandle">
-                        <el-menu-item index="requestBrowser" class="listItem">
-                            <span>请求浏览器分布</span>
-                        </el-menu-item>
-                        <el-menu-item index="requestProtocol" class="listItem">
-                            <span>请求协议分布</span>
-                        </el-menu-item>
-                        <el-menu-item index="requestTime" class="listItem">
-                            <span>请求时间分布</span>
-                        </el-menu-item>
-                        <el-menu-item index="requestUrl" class="listItem">
-                            <span>请求URL分布</span>
-                        </el-menu-item>
-                        <el-menu-item index="staticResourceAccess" class="listItem">
-                            <span>静态资源访问分布</span>
-                        </el-menu-item>
-                        <el-menu-item index="httpMethod" class="listItem">
-                            <span>HTTP方法分布</span>
-                        </el-menu-item>
-                        <el-menu-item index="returnStatusCode" class="listItem">
-                            <span>返回状态码分布</span>
-                        </el-menu-item>
-                    </el-menu>
-                </el-aside>
+                <div class="list">
+                    <el-aside width="250px">
+                        <h6 class="listTitle">图表展示项</h6>
+                        <el-menu
+                                mode="vertical"
+                                @select="listChangeHandle">
+                            <el-menu-item v-key="item.id" v-for="item in tables" v-bind:index="item.id" class="listItem">
+                                <span>{{item.description}}</span>
+                            </el-menu-item>
+                            <!--<el-menu-item index="requestBrowser" class="listItem">-->
+                            <!--<span>请求浏览器分布</span>-->
+                            <!--</el-menu-item>-->
+                            <!--<el-menu-item index="requestProtocol" class="listItem">-->
+                            <!--<span>请求协议分布</span>-->
+                            <!--</el-menu-item>-->
+                            <!--<el-menu-item index="requestTime" class="listItem">-->
+                            <!--<span>请求时间分布</span>-->
+                            <!--</el-menu-item>-->
+                            <!--<el-menu-item index="requestUrl" class="listItem">-->
+                            <!--<span>请求URL分布</span>-->
+                            <!--</el-menu-item>-->
+                            <!--<el-menu-item index="staticResourceAccess" class="listItem">-->
+                            <!--<span>静态资源访问分布</span>-->
+                            <!--</el-menu-item>-->
+                            <!--<el-menu-item index="httpMethod" class="listItem">-->
+                            <!--<span>HTTP方法分布</span>-->
+                            <!--</el-menu-item>-->
+                            <!--<el-menu-item index="returnStatusCode" class="listItem">-->
+                            <!--<span>返回状态码分布</span>-->
+                            <!--</el-menu-item>-->
+                        </el-menu>
+                    </el-aside>
+                </div>
                 <el-main>
                     <h6 class="keyIndicatorTitle">关键指标</h6>
-                    <el-row>
-                        <el-col :span="6">
-                            <el-card shadow="hover">
-                                <div>
+                    <el-card shadow="hover" v-for="item in summary">
+                        <div>
                                     <span class="keyIndicatorText">
-                                        用户数量
+                                        {{item.name}}
                                     </span>
-                                    <br/>
-                                    <span class="keyIndicatorNumber">
-                                        {{userNumber}}
+                            <br/>
+                            <span class="keyIndicatorNumber">
+                                        {{item.value}}
                                     </span>
-                                </div>
-                            </el-card>
-                        </el-col>
-                        <el-col :span="6">
-                            <el-card shadow="hover">
-                                <div>
-                                    <span class="keyIndicatorText">
-                                        访问次数
-                                    </span>
-                                    <br/>
-                                    <span class="keyIndicatorNumber">
-                                        {{viewNumber}}
-                                    </span>
-                                </div>
-                            </el-card>
-                        </el-col>
-                        <el-col :span="6">
-                            <el-card shadow="hover">
-                                <div>
-                                    <span class="keyIndicatorText">
-                                        发送总字节数
-                                    </span>
-                                    <br/>
-                                    <span class="keyIndicatorNumber">
-                                        {{totalSendBytes}}
-                                    </span>
-                                </div>
-                            </el-card>
-                        </el-col>
-                        <el-col :span="6">
-                            <el-card shadow="hover">
-                                <div>
-                                    <span class="keyIndicatorText">
-                                        接收总字节数
-                                    </span>
-                                    <br/>
-                                    <span class="keyIndicatorNumber">
-                                        {{totalReceiveBytes}}
-                                    </span>
-                                </div>
-                            </el-card>
-                        </el-col>
-                    </el-row>
+                        </div>
+                    </el-card>
+
                     <el-container>
                         <el-header style="background-color: #FFFFFF;">
-                        <div class="displayType">
-                            <template>
-                                <el-select v-model="displayValue" @change="displayChangeHandle">
-                                    <el-option
-                                            v-for="item in displayOptions"
-                                            :label="item.label"
-                                            :value="item.value">
-                                    </el-option>
-                                </el-select>
-                            </template>
-                        </div>
+                            <el-tabs v-model="activeName" @tab-click="handleClick">
+
+                                <el-tab-pane label="表格" name="first"> <el-main>
+                                    <div id="t">
+                                        <el-table
+                                                style="width: 1200px;min-height: 520px;margin-left: 50px;"
+                                                stripe="true"
+                                                :data="tableData">
+                                            <el-table-column v-for="(item,index) in tableHeader"
+                                                             v-bind:prop="'fd'+index"
+                                                             v-bind:label="item"
+                                                             min-width="180"></el-table-column>
+                                        </el-table>
+                                        <el-pagination
+                                                @size-change="handleSizeChange"
+                                                @current-change="handleCurrentChange"
+                                                :current-page.sync="pppp"
+                                                :page-size="pageSize"
+                                                layout="total, prev, pager, next"
+                                                :total="count">
+                                        </el-pagination>
+                                    </div>
+
+                                </el-main></el-tab-pane>
+                                <el-tab-pane label="柱状图" name="second" disabled><div id="barChart"></div></el-tab-pane>
+                                <el-tab-pane label="折线图" name="third" disabled><div id="lineChart"></div></el-tab-pane>
+                                <el-tab-pane label="饼图" name="fourth" disabled><div id="pieChart"></div></el-tab-pane>
+                            </el-tabs>
+                            <!--<div class="displayType">-->
+                            <!--<template>-->
+                            <!--<el-select v-model="displayValue" @change="displayChangeHandle">-->
+                            <!--<el-option-->
+                            <!--v-for="item in displayOptions"-->
+                            <!--:label="item.label"-->
+                            <!--:value="item.value">-->
+                            <!--</el-option>-->
+                            <!--</el-select>-->
+                            <!--</template>-->
+                            <!--</div>-->
                         </el-header>
-                        <el-main>
-                            <div id="requestBrowserTable" class="displayTable">
-                            <template>
-                                    <el-table
-                                            :data="requestBrowserData">
-                                        <el-table-column
-                                                prop="date"
-                                                label="日期"
-                                                width="180">
-                                        </el-table-column>
-                                        <el-table-column
-                                                prop="name"
-                                                label="姓名"
-                                                width="180">
-                                        </el-table-column>
-                                        <el-table-column
-                                                prop="address"
-                                                label="地址">
-                                        </el-table-column>
-                                    </el-table>
-                                </template>
-                            </div>
-                            <div id="requestProtocolTable" class="displayTable">
-                                <template>
-                                    <el-table
-                                            :data="requestProtocolData">
-                                        <!--<el-table-column-->
-                                                <!--prop="date"-->
-                                                <!--label="日期"-->
-                                                <!--width="180">-->
-                                        <!--</el-table-column>-->
-                                        <!--<el-table-column-->
-                                                <!--prop="name"-->
-                                                <!--label="姓名"-->
-                                                <!--width="180">-->
-                                        <!--</el-table-column>-->
-                                        <!--<el-table-column-->
-                                                <!--prop="address"-->
-                                                <!--label="地址">-->
-                                        <!--</el-table-column>-->
-                                    </el-table>
-                                </template>
-                            </div>
-                            <div id="requestTimeTable" class="displayTable">
-                                <template>
-                                    <el-table
-                                            :data="requestTimeData">
-                                        <!--<el-table-column-->
-                                                <!--prop="date"-->
-                                                <!--label="日期"-->
-                                                <!--width="180">-->
-                                        <!--</el-table-column>-->
-                                        <!--<el-table-column-->
-                                                <!--prop="name"-->
-                                                <!--label="姓名"-->
-                                                <!--width="180">-->
-                                        <!--</el-table-column>-->
-                                        <!--<el-table-column-->
-                                                <!--prop="address"-->
-                                                <!--label="地址">-->
-                                        <!--</el-table-column>-->
-                                    </el-table>
-                                </template>
-                            </div>
-                            <div id="requestUrlTable" class="displayTable">
-                                <template>
-                                    <el-table
-                                            :data="requestUrlData">
-                                        <!--<el-table-column-->
-                                                <!--prop="date"-->
-                                                <!--label="日期"-->
-                                                <!--width="180">-->
-                                        <!--</el-table-column>-->
-                                        <!--<el-table-column-->
-                                                <!--prop="name"-->
-                                                <!--label="姓名"-->
-                                                <!--width="180">-->
-                                        <!--</el-table-column>-->
-                                        <!--<el-table-column-->
-                                                <!--prop="address"-->
-                                                <!--label="地址">-->
-                                        <!--</el-table-column>-->
-                                    </el-table>
-                                </template>
-                            </div>
-                            <div id="staticResourceAccessTable" class="displayTable">
-                                <template>
-                                    <el-table
-                                            :data="staticResourceAccessData">
-                                        <!--<el-table-column-->
-                                                <!--prop="date"-->
-                                                <!--label="日期"-->
-                                                <!--width="180">-->
-                                        <!--</el-table-column>-->
-                                        <!--<el-table-column-->
-                                                <!--prop="name"-->
-                                                <!--label="姓名"-->
-                                                <!--width="180">-->
-                                        <!--</el-table-column>-->
-                                        <!--<el-table-column-->
-                                                <!--prop="address"-->
-                                                <!--label="地址">-->
-                                        <!--</el-table-column>-->
-                                    </el-table>
-                                </template>
-                            </div>
-                            <div id="httpMethodTable" class="displayTable">
-                                <template>
-                                    <el-table
-                                            :data="httpMethodData">
-                                        <!--<el-table-column-->
-                                                <!--prop="date"-->
-                                                <!--label="日期"-->
-                                                <!--width="180">-->
-                                        <!--</el-table-column>-->
-                                        <!--<el-table-column-->
-                                                <!--prop="name"-->
-                                                <!--label="姓名"-->
-                                                <!--width="180">-->
-                                        <!--</el-table-column>-->
-                                        <!--<el-table-column-->
-                                                <!--prop="address"-->
-                                                <!--label="地址">-->
-                                        <!--</el-table-column>-->
-                                    </el-table>
-                                </template>
-                            </div>
-                            <div id="returnStatusCodeTable" class="displayTable">
-                                <template>
-                                    <el-table
-                                            :data="returnStatusCodeData">
-                                        <!--<el-table-column-->
-                                                <!--prop="date"-->
-                                                <!--label="日期"-->
-                                                <!--width="180">-->
-                                        <!--</el-table-column>-->
-                                        <!--<el-table-column-->
-                                                <!--prop="name"-->
-                                                <!--label="姓名"-->
-                                                <!--width="180">-->
-                                        <!--</el-table-column>-->
-                                        <!--<el-table-column-->
-                                                <!--prop="address"-->
-                                                <!--label="地址">-->
-                                        <!--</el-table-column>-->
-                                    </el-table>
-                                </template>
-                            </div>
-                            <div id="myChart"></div>
-                        </el-main>
+
                     </el-container>
                 </el-main>
             </el-container>
@@ -292,7 +134,13 @@
     var vue=new Vue({
         el:'#app',
         data:{
+            activeName:'first',
             username:'username',
+            jobId:-1,
+            version:0,
+            summary:[],
+            tables: [],
+            pppp:1,
             projectList:[{
                 name:1,
                 id:1
@@ -300,7 +148,17 @@
                 name:2,
                 id:2
             }],
+
+            tableData:[],
+            echartData:[],
+            reportId:0,
+            tablePath:'',
+
+            page:0,
+            pageSize:10,
             tabIndex:"c",
+            count:0,
+            tableHeader:[],
 
             //图表展示项的值，默认为请求浏览器分布
             listValue: 'requestBrowser',
@@ -322,39 +180,32 @@
             //展示类型的值，默认为表格
             displayValue: 'form',
 
-            //4个统计数据
-            userNumber:0,
-            viewNumber:0,
-            totalSendBytes:0,
-            totalReceiveBytes:0,
-
-            //7个表格和图表element
-            requestBrowserTable:null,
-            requestProtocolTable:null,
-            requestTimeTable:null,
-            requestUrlTable:null,
-            staticResourceAccessTable:null,
-            httpMethodTable:null,
-            returnStatusCodeTable:null,
-            myChart:null,
+            barChart:null,
+            lineChart:null,
+            pieChart:null,
+            barEcharts:null,
+            lineEcharts:null,
+            pieEcharts:null,
 
             //7个表格数据
             requestBrowserData:[{
-                date: '2016-05-02',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1518 弄'
-            }, {
-                date: '2016-05-04',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1517 弄'
-            }, {
-                date: '2016-05-01',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1519 弄'
-            }, {
-                date: '2016-05-03',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1516 弄'
+                browserName: 'Chrome',
+                number: '1028',
+            },{
+                browserName: 'Firefox',
+                number: '405',
+            },{
+                browserName: 'Safari',
+                number: '253',
+            },{
+                browserName: 'Opera',
+                number: '342',
+            },{
+                browserName: 'Internet Explorer',
+                number: '8',
+            },{
+                browserName: 'Edge',
+                number: '510',
             }],
             requestProtocolData:[],
             requestTimeData:[],
@@ -365,6 +216,94 @@
 
         },
         methods:{
+            requestGraphData(success){
+                $.ajax({
+                    url:this.tablePath,
+                    method:'GET',
+                    data:{
+                        reportId:this.reportId,
+                        page:0,
+                        pageSize:30
+                    },
+                    success
+                })
+            },
+            hideEchart(chart){
+                chart.style.display="none";
+            },
+            showEchart(chart){
+                chart.style.display="block";
+            },
+            handleClick(item,event){
+                switch (item.name) {
+                    case 'first':
+                        this.requestTableData();
+                        break;
+                    case 'second':
+                        this.hideEchart(this.barChart);
+                        this.requestGraphData((res)=>{
+                            // this.echartData = res.data;
+                            this.echartData=this.tableData;
+                            this.barEcharts.setOption(this.testBarChart());
+                            this.showEchart(this.barChart);
+                        });
+                        break;
+                    case 'third':
+                        this.hideEchart(this.lineChart);
+                        this.requestGraphData((res)=>{
+                            // this.echartData = res.data;
+                            this.echartData=this.tableData;
+                            this.lineEcharts.setOption(this.testLineChart());
+                            this.showEchart(this.lineChart);
+                        })
+                        break;
+                    case 'fourth':
+                        this.hideEchart(this.pieChart);
+                        this.requestGraphData((res)=>{
+                            // this.echartData = res.data;
+                            this.echartData=this.tableData;
+                            this.pieEcharts.setOption(this.testPieChart());
+                            this.showEchart(this.pieChart);
+                        })
+                }
+            },
+            handleSizeChange(val) {
+                this.page = 0;
+                this.pppp = 1;
+                this.pageSize = val;
+                this.requestTableData();
+                console.log(`每页 ${val} 条`);
+            },
+            handleCurrentChange(val) {
+                this.page = val - 1;
+                console.log(`当前页: ${val}`);
+                this.requestTableData();
+            },
+            requestTableData(){
+                $.ajax({
+                    url:this.tablePath,
+                    method:'GET',
+                    data:{
+                        reportId:this.reportId,
+                        page:this.page,
+                        pageSize:this.pageSize
+                    },
+                    success(res){
+                        console.log(res);
+                        var data = [];
+                        for(var i of res.data){
+                            var tmp = i.value.split('\1');
+                            var o = {};
+                            for(var i = 0;i<tmp.length;i++){
+                                o['fd'+i]=tmp[i];
+                            }
+                            data.push(o);
+                        }
+                        console.log(data);
+                        vue.tableData = data;
+                    }
+                })
+            },
             onLogout(){
                 window.location.href="/logout";
             },
@@ -383,114 +322,285 @@
 
             //初始化表格和图表
             init(){
-                this.requestBrowserTable=document.getElementById("requestBrowserTable");
-                this.requestProtocolTable=document.getElementById("requestProtocolTable");
-                this.requestTimeTable=document.getElementById("requestTimeTable");
-                this.requestUrlTable=document.getElementById("requestUrlTable");
-                this.staticResourceAccessTable=document.getElementById("staticResourceAccessTable");
-                this.httpMethodTable=document.getElementById("httpMethodTable");
-                this.returnStatusCodeTable=document.getElementById("returnStatusCodeTable");
+                this.requestBrowserForm=document.getElementById("requestBrowserForm");
+                this.requestProtocolForm=document.getElementById("requestProtocolForm");
+                this.requestTimeForm=document.getElementById("requestTimeForm");
+                this.requestUrlForm=document.getElementById("requestUrlForm");
+                this.staticResourceAccessForm=document.getElementById("staticResourceAccessForm");
+                this.httpMethodForm=document.getElementById("httpMethodForm");
+                this.returnStatusCodeForm=document.getElementById("returnStatusCodeForm");
                 this.myChart=document.getElementById("myChart");
+                this.eCharts=echarts.init(this.myChart);
             },
 
             //处理展示项变化的回调函数
-            listChangeHandle(index, indexPath) {
+            listChangeHandle(index,indexPath) {
                 if(this.listValue===index.toString()){
                     return;
                 }
+                for(var i of this.tables){
+                    if(i.id === index){
+                        this.page=0;
+                        this.count = i.count;
+                        this.tableHeader = i.schema.split(',');
+                        this.tableData=[];
+                        this.tablePath = i.path;
+                        this.requestTableData();
+                        break;
+                    }
+                }
                 this.listValue=index.toString();
-                //TODO:进行切换
+                this.display();
             },
 
             //处理展示类型变化的回调函数
             displayChangeHandle(){
-                //TODO:进行切换
-                console.log(this.displayValue);
+                this.display();
             },
 
-            //待修改
-            createChart(){
-                var option=null;
-                console.log(this.selectOption);
-                switch (this.selectOption) {
+            //设所有元素不可见
+            setAllInvisible(){
+                this.requestBrowserForm.style.display="none";
+                this.requestProtocolForm.style.display="none";
+                this.requestTimeForm.style.display="none";
+                this.requestUrlForm.style.display="none";
+                this.staticResourceAccessForm.style.display="none";
+                this.httpMethodForm.style.display="none";
+
+            },
+
+            //设其中一个表格可见
+            setFormVisible(){
+                switch (this.listValue) {
                     case "requestBrowser":
-                        option=this.getRequestBrowser();
+                        this.requestBrowserForm.style.display="block";
                         break;
                     case "requestProtocol":
-                        option=this.getRequestProtocol();
+                        this.requestProtocolForm.style.display="block";
                         break;
                     case "requestTime":
-                        option=this.getRequestTime();
+                        this.requestTimeForm.style.display="block";
                         break;
                     case "requestUrl":
-                        option=this.getRequestUrl();
+                        this.requestUrlForm.style.display="block";
                         break;
                     case "staticResourceAccess":
-                        option=this.getStaticResourceAccess();
+                        this.staticResourceAccessForm.style.display="block";
                         break;
                     case "httpMethod":
-                        option=this.getHttpMethod();
+                        this.httpMethodForm.style.display="block";
                         break;
                     case "returnStatusCode":
-                        option=this.getReturnStatusCode();
+                        this.returnStatusCodeForm.style.display="block";
                         break;
                     default:
                         break;
                 }
-                if(option==null){
-                    option=this.getEmptyChart();
-                }
-                this.myChart.setOption(option);
+            },
+
+            display(){
+                this.barChart=document.getElementById("barChart");
+                this.barEcharts=echarts.init(this.barChart);
+
+                this.lineChart=document.getElementById("lineChart");
+                this.lineEcharts=echarts.init(this.lineChart);
+
+                this.pieChart=document.getElementById("pieChart");
+                this.pieEcharts=echarts.init(this.pieChart);
+                // this.eCharts.setOption(this.testBarChart());
+                // this.returnStatusCodeForm.style.display="none";
+                // this.myChart.style.display="none";
+                // this.setAllInvisible();
+                // if(this.displayValue!=='form'){
+                //     // this.myChart.style.display="block";
+                //     //TODO:获取数据
+                //     var option;
+                //     if(this.displayValue==='barChart'){
+                //         option=this.testBarChart();
+                //     }
+                //     else if(this.displayValue==='lineChart'){
+                //         option=this.testLineChart();
+                //     }
+                //     else if(this.displayValue==='pieChart'){
+                //         option=this.testPieChart();
+                //     }
+                //     this.eCharts.setOption(option);
+                // }
+                // else{
+                //     // this.setFormVisible();
+                //     //TODO:获取数据
+                // }
             },
 
             //网络接口，返回未处理的字符串
-            getRequestBrowser(){
-                // var option = {
-                //     title: {
-                //         text: '用户数量'
-                //     },
-                //     tooltip: {},
-                //     // legend: {
-                //     //     data:['销量']
-                //     // },
-                //     xAxis: {
-                //         data: ["数量","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
-                //     },
-                //     yAxis: {},
-                //     series: [{
-                //         name: '销量',
-                //         type: 'bar',
-                //         data: [5, 20, 36, 10, 10, 20]
-                //     }]
-                // };
-                // return option;
-            },
+            getRequestBrowser(){},
             getRequestProtocol(){},
             getRequestTime(){},
             getRequestUrl(){},
             getStaticResourceAccess(){},
             getHttpMethod(){},
             getReturnStatusCode(){},
-            getEmptyChart(){
+
+            testBarChart(){
+                var l = 0;
+                var r = this.tableHeader.length-1;
+                var x = [];
+                var y = [];
+                for(var i of this.echartData){
+                    x.push(i[l+'']);
+                    y.push(i[r+'']);
+                }
                 var option = {
                     title: {
-                        text: '空表'
+                        text: '测试图表'
                     },
-                    xAxis: {},
-                    yAxis: {},
+                    tooltip: {},
+                    legend: {
+                        data:['数量']
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: x
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
                     series: [{
-                        name: '空表',
+                        name: '数量',
                         type: 'bar',
-                        data: null
+                        data: y
+                    }]
+                };
+                return option;
+            },
+
+            testLineChart(){
+                var l = 0;
+                var r = this.tableHeader.length-1;
+                var x = [];
+                var y = [];
+                for(var i of this.echartData){
+                    x.push(i[l+'']);
+                    y.push(i[r+'']);
+                }
+                var option = {
+                    title: {
+                        text: '测试图表'
+                    },
+                    tooltip: {},
+                    legend: {
+                        data:['数量']
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: x
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: [{
+                        name: '数量',
+                        type: 'line',
+                        data: y
+                    }]
+                };
+                return option;
+            },
+
+            testPieChart(){
+                var l = 0;
+                var r = this.tableHeader.length-1;
+                var x = [];
+                var y = [];
+                for(var i of this.echartData){
+                    x.push(i[l+'']);
+                    y.push(i[r+'']);
+                }
+                var option = {
+                    title: {
+                        text: '测试图表'
+                    },
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: "{a} <br/>{b} : {c} ({d}%)"
+                    },
+                    legend: {
+                        type: 'scroll',
+                        orient: 'vertical',
+                        right: 10,
+                        top: 20,
+                        bottom: 20,
+                        data: x
+                    },
+                    series: [{
+                        name: '数量',
+                        type: 'pie',
+                        data: y
                     }]
                 };
                 return option;
             }
         },
 
-        //挂载函数
         mounted(){
             var that = this;
+
+            let url = window.location.href;
+            if(url.indexOf('jobId') > -1){
+                let tmp = url.split('jobId=');
+                that.jobId = parseInt(tmp[1]);
+            }
+
+            let intervalId = setInterval(function () {
+                $.ajax({
+                    url:'/report/status',
+                    method:'GET',
+                    data:{
+                        version:vue.version,
+                        jobId:vue.jobId
+                    },
+                    success(res) {
+                        if (res.data != null) {
+                            if (res.data.report.status === 1) {
+                                clearInterval(intervalId);
+                            }
+
+                            if (res.data.report.version > vue.version){
+                                //res.data.report.id
+                                vue.reportId = res.data.report.id;
+                                vue.version = res.data.report.version;
+                                vue.summary = res.data.summary;//id,name,description,value
+                                if(vue.tables.length == 0 && res.data.tables.length>0){
+                                    var i = res.data.tables[0];
+
+                                    vue.page = 0;
+                                    vue.count = i.count;
+                                    vue.tableHeader = i.schema.split(',');
+                                    vue.tableData = [];
+                                    vue.tablePath = i.path;
+                                    vue.requestTableData();
+
+
+                                }
+                                vue.tables = res.data.tables;//id,name,schema,description,count,path
+
+                                $.ajax({
+                                    url:path,
+                                    method:'get',
+                                    data:{
+                                        page:0,
+                                        pageSize:10,
+                                        reportId:0,
+                                    },
+                                    success(res){
+                                        //res: id , reportId, tableName, value:\1 -- schema:,
+                                    }
+                                })
+                            }
+                        }
+                    }
+                })
+            },3000);
             $.ajax({
                 url:'/user/info',
                 method:'GET',
@@ -506,7 +616,8 @@
                     that.$message.error('获取用户信息出错！');
                 }
             });
-            that.init();
+            // vue.requestTableData();
+            // this.display();
         }
     })
 </script>
