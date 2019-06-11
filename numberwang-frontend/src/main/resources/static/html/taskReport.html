@@ -394,7 +394,7 @@
                                 vue.pieEcharts.setOption(opt);
                                 break;
                         }
-                        this.showEchart(chartType);
+                        vue.showEchart(chartType);
                     }
                 })
             },
@@ -512,62 +512,63 @@
                 };
             },
 
-            mounted() {
-                let url = window.location.href;
-                if (url.indexOf('jobId') > -1) {
-                    let tmp = url.split('jobId=');
-                    that.jobId = parseInt(tmp[1]);
-                }
 
-                let intervalId = setInterval(function () {
-                    $.ajax({
-                        url: '/report/status',
-                        method: 'GET',
-                        data: {
-                            version: vue.version,
-                            jobId: vue.jobId
-                        },
-                        success(res) {
-                            if (res.data != null) {
-                                if (res.data.report.status === 1) {
-                                    clearInterval(intervalId);
+        },
+        mounted() {
+            let url = window.location.href;
+            if (url.indexOf('jobId') > -1) {
+                let tmp = url.split('jobId=');
+                this.jobId = parseInt(tmp[1]);
+            }
+
+            let intervalId = setInterval(function () {
+                $.ajax({
+                    url: '/report/status',
+                    method: 'GET',
+                    data: {
+                        version: vue.version,
+                        jobId: vue.jobId
+                    },
+                    success(res) {
+                        if (res.data != null) {
+                            if (res.data.report.status === 1) {
+                                clearInterval(intervalId);
+                            }
+                            if (res.data.report.version > vue.version) {
+                                vue.reportId = res.data.report.id;
+                                vue.version = res.data.report.version;
+                                vue.summary = res.data.summary;
+                                if (vue.tables.length === 0 && res.data.tables.length > 0) {
+                                    var i = res.data.tables[0];
+                                    vue.page = 0;
+                                    vue.count = i.count;
+                                    vue.tableHeader = i.schema.split(',');
+                                    vue.tableData = [];
+                                    vue.tablePath = i.path;
+                                    vue.requestTableData();
                                 }
-                                if (res.data.report.version > vue.version) {
-                                    vue.reportId = res.data.report.id;
-                                    vue.version = res.data.report.version;
-                                    vue.summary = res.data.summary;
-                                    if (vue.tables.length === 0 && res.data.tables.length > 0) {
-                                        var i = res.data.tables[0];
-                                        vue.page = 0;
-                                        vue.count = i.count;
-                                        vue.tableHeader = i.schema.split(',');
-                                        vue.tableData = [];
-                                        vue.tablePath = i.path;
-                                        vue.requestTableData();
-                                    }
-                                    vue.tables = res.data.tables;
-                                }
+                                vue.tables = res.data.tables;
                             }
                         }
-                    })
-                }, 3000);
-
-                $.ajax({
-                    url:'/user/info',
-                    method:'GET',
-                    success(res){
-                        if(res.code === 0){
-                            that.username = res.data.username;
-                        }
-                        else{
-                            that.$message.error('获取用户信息出错！');
-                        }
-                    },
-                    error(res){
-                        that.$message.error('获取用户信息出错！');
                     }
-                });
-            }
+                })
+            }, 3000);
+
+            $.ajax({
+                url:'/user/info',
+                method:'GET',
+                success(res){
+                    if(res.code === 0){
+                        vue.username = res.data.username;
+                    }
+                    else{
+                        vue.$message.error('获取用户信息出错！');
+                    }
+                },
+                error(res){
+                    vue.$message.error('获取用户信息出错！');
+                }
+            });
         }
     })
 </script>
